@@ -23,7 +23,10 @@ public class DeptController {
 	@Autowired
 	private DeptDao dd;
 	
-	
+	@PostMapping("/ad")
+	public Integer test(){
+		return null;
+	}
 	//实体类对象
 	@PostMapping("/addDept")//只能用在方法上不能写在类上
 	public Integer addDept(Dept data) {
