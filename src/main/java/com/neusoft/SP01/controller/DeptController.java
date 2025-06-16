@@ -18,6 +18,9 @@ import com.neusoft.SP01.po.ResponseBean;
 @CrossOrigin("*")
 @RequestMapping("/DeptController")
 @RestController
+/**
+ * ~~~
+ */
 public class DeptController {
 	
 	@Autowired
