@@ -1,4 +1,4 @@
-package com.neusoft.SP01.po;
+package com.neusoft.SP01.po.bed;
 
 public class User {
 	private Integer userId;

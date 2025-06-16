@@ -1,4 +1,4 @@
-package com.neusoft.SP01.po;
+package com.neusoft.SP01.po.bed;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 
