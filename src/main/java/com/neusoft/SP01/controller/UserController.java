@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin("*")
-@RequestMapping("/CheckOutController")
+@RequestMapping("/UserController")
 @RestController
-public class CheckOutController {
+public class UserController {
 }
