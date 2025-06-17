@@ -1,13 +1,7 @@
 package com.neusoft.SP01.controller;
 
-import com.neusoft.SP01.po.Customer;
-import com.neusoft.SP01.po.PageResponseBean;
-import com.neusoft.SP01.po.ResponseBean;
-import com.neusoft.SP01.po.User;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.neusoft.SP01.po.*;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RequestMapping("/UserController")
@@ -30,13 +24,56 @@ public class UserController {
     }
 
     @GetMapping("/showUserCust")
-    public PageResponseBean<Customer> searchUserCust(String userId){
+    public PageResponseBean<Customer> showUserCust(String userId){
         return null;
     }
 
-    @GetMapping("/showUnUser")
-    public PageResponseBean<Customer> searchUnCust(String userId){
+    @GetMapping("/showUnCust")
+    public PageResponseBean<Customer> showUnCust(String userId){
         return null;
     }
 
+    @GetMapping("/searchUnCust")
+    public PageResponseBean<Customer> searchUnCust(String custName){
+        return null;
+    }
+
+    @GetMapping("/searchUserCust")
+    public PageResponseBean<Customer> searchUserCust(String custName){
+        return null;
+    }
+
+    @PostMapping("/addUserCust")
+    public ResponseBean<Integer> addUserCust(String userId, String custId){
+        return null;
+    }
+
+    @PostMapping("/deleteUserCust")
+    public ResponseBean<Integer> deleteUserCust(String userId, String custId){
+        return null;
+    }
+
+    @PostMapping("/addUser")
+    public ResponseBean<Integer> addUser(User user){
+        return null;
+    }
+
+    @PostMapping("/editUser")
+    public ResponseBean<Integer> editUser(User user){
+        return null;
+    }
+
+    @GetMapping("/showCustPro")
+    public PageResponseBean<NursingProject> showCustPro(String cutsId){
+        return null;
+    }
+
+    @GetMapping("/searchCustPro")
+    public PageResponseBean<NursingProject> searchCustPro(String custId, String proName){
+        return null;
+    }
+    @PostMapping("/addCareRecord")
+    public ResponseBean<Integer> addCareRecord(String custProRe, NursingRecord nursingRecord){
+        return null;
+    }
 }
