@@ -37,8 +37,7 @@ public interface CustomerDao {
     Integer updateCustomer(CustCheckInDTO data);
     
     /*更新客户合同到期时间*/
-    @Update("UPDATE check_in_record SET end_time = #{newEndTime} " +
-            "WHERE customer_id = #{customerId} AND state = 1")
+    @Update("UPDATE ")
     Integer updateContractEndTime(Integer customerId,String newEndTime);
     
     /*逻辑删除*/
@@ -47,9 +46,7 @@ public interface CustomerDao {
     
     
     /*查询客户当前使用的床位信息*/
-    @Select("SELECT br.* FROM bed_record br " +
-            "JOIN check_in_record cir ON br.check_in_id = cir.check_in_record_id " +
-            "WHERE cir.customer_id = #{customerId} AND br.state = 1")
+    @Select("SELECT ")
     CustCheckInDTO findCurrentBedByCustomer(Integer customerId);
 
 }
