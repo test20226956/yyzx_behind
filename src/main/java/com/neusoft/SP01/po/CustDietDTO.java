@@ -5,6 +5,42 @@ public class CustDietDTO {
     private Customer customer;
     private BedRecord bedRecord;
 
+    private Integer age;
+
+    public CustomerDiet getCustomerDiet() {
+        return customerDiet;
+    }
+
+    public void setCustomerDiet(CustomerDiet customerDiet) {
+        this.customerDiet = customerDiet;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public BedRecord getBedRecord() {
+        return bedRecord;
+    }
+
+    public void setBedRecord(BedRecord bedRecord) {
+        this.bedRecord = bedRecord;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+
+
 //    //  客户膳食配置id
 //    private Integer customerDietId;
 //    //  客户姓名
