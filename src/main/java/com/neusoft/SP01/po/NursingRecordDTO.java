@@ -9,6 +9,41 @@ public class NursingRecordDTO extends NursingRecord{
     //护理人员
     private String nurse;
     private String nurseTel;
+	public Integer getNursingRecordId() {
+		return nursingRecordId;
+	}
+	public void setNursingRecordId(Integer nursingRecordId) {
+		this.nursingRecordId = nursingRecordId;
+	}
+	public String getProjectName() {
+		return projectName;
+	}
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getNurse() {
+		return nurse;
+	}
+	public void setNurse(String nurse) {
+		this.nurse = nurse;
+	}
+	public String getNurseTel() {
+		return nurseTel;
+	}
+	public void setNurseTel(String nurseTel) {
+		this.nurseTel = nurseTel;
+	}
+	public NursingRecordDTO() {
+		super();
+	}
+    
+    
 
 
 
