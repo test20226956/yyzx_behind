@@ -43,8 +43,8 @@ public class NursingServiceController {
     }
 
     //给用户添加护理项目 - 这时添加的护理项目可能是一个list？
-    @PostMapping("/addNursingPro")
-    public ResponseBean<Integer> addNursingPro(Integer custId, List<Integer> proIds) {
+    @PostMapping("/addNursingProForCust")
+    public ResponseBean<Integer> addNursingProForCust(Integer custId, List<Integer> proIds) {
         return null;
     }
 
