@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 public interface UserDao {
     //登录
-    @Select("select * from yyzx_st.t_user where account=#{account} and password=#{password}")
-    User findUser(User user);
+	@Select("SELECT * FROM yyzx_st.t_user WHERE account = #{account}")
+    User findUserByAccount(String account);
     /*
     用户管理
      */
