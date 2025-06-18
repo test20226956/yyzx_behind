@@ -1,16 +1,31 @@
 package com.neusoft.SP01.controller;
 
-import com.neusoft.SP01.po.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.neusoft.SP01.po.Customer;
+import com.neusoft.SP01.po.NursingProject;
+import com.neusoft.SP01.po.NursingRecord;
+import com.neusoft.SP01.po.PageResponseBean;
+import com.neusoft.SP01.po.ResponseBean;
+import com.neusoft.SP01.po.User;
+import com.neusoft.SP01.service.UserService;
 
 @CrossOrigin("*")
 @RequestMapping("/UserController")
 @RestController
 public class UserController {
+	@Autowired
+    private UserService us;
 
-    @GetMapping("/login")
-    public ResponseBean<User> login(String id, String pwd){
-        return null;
+	@GetMapping("/login")
+    public ResponseBean<?> login(String account,String password) {
+        return us.login(account, password);
     }
 
     @GetMapping("/showUser")
