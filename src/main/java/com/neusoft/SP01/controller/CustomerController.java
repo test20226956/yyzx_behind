@@ -1,23 +1,35 @@
 package com.neusoft.SP01.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.neusoft.SP01.po.CustCheckInDTO;
-import com.neusoft.SP01.po.ResponseBean;
 import com.neusoft.SP01.po.PageResponseBean;
-import org.springframework.web.bind.annotation.*;
+import com.neusoft.SP01.po.ResponseBean;
+import com.neusoft.SP01.service.CustomerService;
 
 @CrossOrigin("/*")
 @RestController
 @RequestMapping("/CustomerController")
 public class CustomerController {
+	
+	@Autowired  // 确保正确注入
+    private CustomerService customerService;
+	
 // 搜索所有自理老人(分页)
     @GetMapping("/showSelfCust")
-    public PageResponseBean<CustCheckInDTO> showSelfCust(long cur,long pageSize){
-        return null;
+    public PageResponseBean<?> showSelfCust(long pageNum,long pageSize){
+    	return customerService.getSelfCareCustomersByPage(pageNum, pageSize);
     }
+    
 // 搜索所有护理老人(分页)
     @GetMapping("/showCareCust")
-    public PageResponseBean<CustCheckInDTO> showCareCust(long cur,long pageSize){
-        return null;
+    public PageResponseBean<?>showCareCust(long pageNum,long pageSize){
+        return customerService.getCareCustomersByPage(pageNum,pageSize);
     }
 
 //  查询客户入住信息(分页)
