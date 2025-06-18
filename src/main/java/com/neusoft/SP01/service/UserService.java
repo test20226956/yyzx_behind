@@ -18,12 +18,12 @@ public class UserService {
         // 1. 验证账号是否存在
         User user = userDao.findUserByAccount(account);
         if (user == null) {
-            return new ResponseBean<>(400, "账号不存在");
+            return new ResponseBean<>(500, "账号不存在");
         }
         
         // 2. 验证密码是否正确
         if (!user.getPassword().equals(password)) {
-            return new ResponseBean<>(401, "密码错误");
+            return new ResponseBean<>(500, "密码错误");
         }
         
         // 3. 登录成功，返回用户信息(密码置空)
