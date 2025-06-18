@@ -43,4 +43,20 @@ public class NursingProjectController {
         return null;
     }
 
+
+    //服务关注部分
+
+    // 显示用户未购买的护理项目
+    @GetMapping("/showUnNursingPro")
+    public ResponseBean<List<NursingProject>> showUnNursingPro(Integer custId){
+        return null;
+    }
+
+    // 搜索项目（非分页）
+    @GetMapping("/searchNursingPro")
+    public ResponseBean<List<NursingProject>> searchNursingPro(String name){
+        return null;
+    }
+
+
 }

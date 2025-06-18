@@ -1,29 +1,55 @@
 package com.neusoft.SP01.controller;
 
-import com.neusoft.SP01.po.CheckOutRecord;
-import com.neusoft.SP01.po.CustCheckInDTO;
-import com.neusoft.SP01.po.OutRecord;
-import com.neusoft.SP01.po.ResponseBean;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.neusoft.SP01.po.*;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RequestMapping("/GoOutController")
 @RestController
 public class GoOutController {
     @GetMapping("/showGoOut")
-    public ResponseBean<OutRecord> showGoOut(){
+    public PageResponseBean<OutRecord> showGoOut(){
         return null;
     }
 
     @GetMapping("/searchGoOut")
-    public ResponseBean<OutRecord> searchGoOut(String custName){
+    public PageResponseBean<OutRecord> searchGoOut(String custName){
         return null;
     }
-    @GetMapping("/checkGoOut")
+
+    @PostMapping("/checkGoOut")
     public ResponseBean<Integer> goCheckOut(String goOutId, Integer state){
+        return null;
+    }
+
+    @GetMapping("/showCust")
+    public PageResponseBean<Customer> showCust(String custId){
+        return null;
+    }
+
+    @PostMapping("/addGoOutRe")
+    public ResponseBean<Integer> addGoOutRe(OutRecord outRecord){
+        return null;
+    }
+
+    @GetMapping("/searchCust")
+    public PageResponseBean<Customer> searchCust(String userId, String cuatName){
+        return null;
+    }
+
+    @GetMapping("/showCustGoOutRe")
+    public PageResponseBean<OutRecord> showCustGoOutRe(String custId){
+        return null;
+    }
+
+    @PostMapping("/custGoOutCome")
+    public ResponseBean<Integer> custGoOutCome(OutRecord outRecord){
+        return null;
+    }
+
+    @GetMapping("/searchCustGoOutRe")
+    public PageResponseBean<OutRecord> searchCustGoOutRe(String custName){
         return null;
     }
 }
