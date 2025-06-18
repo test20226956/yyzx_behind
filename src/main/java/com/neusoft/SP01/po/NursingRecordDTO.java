@@ -1,50 +1,38 @@
 package com.neusoft.SP01.po;
 
-public class NursingRecordDTO extends NursingRecord{
-    private Integer nursingRecordId;
+public class NursingRecordDTO{
     //和项目有关的部分
-    private String projectName;
-    private String description;
+	private  NursingProject nursingProject;
+//    private String projectName;
+//    private String description;
 
-    //护理人员
-    private String nurse;
-    private String nurseTel;
-	public Integer getNursingRecordId() {
-		return nursingRecordId;
+	public NursingProject getNursingProject() {
+		return nursingProject;
 	}
-	public void setNursingRecordId(Integer nursingRecordId) {
-		this.nursingRecordId = nursingRecordId;
+
+	public void setNursingProject(NursingProject nursingProject) {
+		this.nursingProject = nursingProject;
 	}
-	public String getProjectName() {
-		return projectName;
+
+	public NursingRecord getNursingRecord() {
+		return nursingRecord;
 	}
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+
+	public void setNursingRecord(NursingRecord nursingRecord) {
+		this.nursingRecord = nursingRecord;
 	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public String getNurse() {
+
+	public User getNurse() {
 		return nurse;
 	}
-	public void setNurse(String nurse) {
+
+	public void setNurse(User nurse) {
 		this.nurse = nurse;
 	}
-	public String getNurseTel() {
-		return nurseTel;
-	}
-	public void setNurseTel(String nurseTel) {
-		this.nurseTel = nurseTel;
-	}
-	public NursingRecordDTO() {
-		super();
-	}
-    
-    
 
+	//护理记录部分
+	private NursingRecord nursingRecord;
 
-
+    //护理人员
+	private User nurse; //需要的是名字和tel
 }
