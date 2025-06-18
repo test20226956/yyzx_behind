@@ -72,8 +72,14 @@ public class UserController {
     public PageResponseBean<NursingProject> searchCustPro(String custId, String proName){
         return null;
     }
+
     @PostMapping("/addCareRecord")
     public ResponseBean<Integer> addCareRecord(String custProRe, NursingRecord nursingRecord){
+        return null;
+    }
+
+    @GetMapping("/showCareRecord")
+    public PageResponseBean<NursingRecord> shoeCareRecord(String cuatId){
         return null;
     }
 }

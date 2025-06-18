@@ -1,8 +1,6 @@
 package com.neusoft.SP01.controller;
 
-import com.neusoft.SP01.po.NursingService;
-import com.neusoft.SP01.po.PageResponseBean;
-import com.neusoft.SP01.po.ResponseBean;
+import com.neusoft.SP01.po.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,9 +10,9 @@ import java.util.List;
 @CrossOrigin("*")
 public class NursingServiceController {
     //设置护理级别功能
-    //1.展示用户的护理服务 - 不对 还得改
+    //1.展示用户的护理服务
     @GetMapping("/showCustPro")
-    public PageResponseBean<List<NursingService>> showCustPro(Integer custId, Long cur, Long pageSize) {
+    public PageResponseBean<List<NursingServiceDTO>> showCustPro(Integer custId, Long cur, Long pageSize) {
         return null;
     }
 
@@ -29,5 +27,25 @@ public class NursingServiceController {
         return null;
     }
 
+    //服务关注
+
+    //给客户的项目续费
+    //这里其实前端的数据类型应该是NursingServiceDTO
+    @PostMapping("/editNursingPro")
+    public ResponseBean<Integer> editNursingPro(NursingServiceDTO nursingServiceDTO) {
+        return null;
+    }
+
+    //移除护理项目
+    @PostMapping("/deleteNursingPro")
+    public ResponseBean<Integer> deleteNursingPro(Integer nursingServiceId) {
+        return null;
+    }
+
+    //给用户添加护理项目 - 这时添加的护理项目可能是一个list？
+    @PostMapping("/addNursingPro")
+    public ResponseBean<Integer> addNursingPro(Integer custId, List<Integer> proIds) {
+        return null;
+    }
 
 }
