@@ -30,13 +30,13 @@ public class BedController {
 
     //    显示所有床位使用记录（根据状态是否为当前使用返回对应的记录）(分页)
     @GetMapping("/showAllBedRecord")
-    public ResponseBean<List<CustBedDTO>> showAllBedRecord(Integer state) {
+    public PageResponseBean<List<CustBedDTO>> showAllBedRecord(Integer state,long cur,long pageSize) {
         return null;
     }
 
     //    根据客户姓名查询使用记录
     @GetMapping("/searchBedRecord")
-    public ResponseBean<List<CustBedDTO>> searchBedRecord(String cname, Integer state, String startTime) {
+    public PageResponseBean<List<CustBedDTO>> searchBedRecord(String cname, Integer state, String startTime,long cur,long pageSize) {
         return null;
     }
 
