@@ -38,7 +38,7 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("/showUserCust")
+    @GetMapping("/showUserCust")//这里应该新建一个DTO对应展示
     public PageResponseBean<Customer> showUserCust(String userId){
         return null;
     }
