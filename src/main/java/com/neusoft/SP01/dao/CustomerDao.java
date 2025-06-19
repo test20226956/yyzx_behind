@@ -2,6 +2,7 @@ package com.neusoft.SP01.dao;
 
 import java.util.List;
 
+import com.neusoft.SP01.po.CustDailyNursingDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -130,6 +131,7 @@ public interface CustomerDao {
 	        "JOIN t_room r ON b.room_id = r.room_id " +
 	        "WHERE c.type = '1' AND cir.state = 1 " +
 	        "LIMIT #{offset}, #{pageSize}")
+<<<<<<< HEAD
 	@Results({
 	    // 主对象映射
 	    @Result(property = "age", column = "age"),
@@ -181,6 +183,9 @@ public interface CustomerDao {
 	    @Result(property = "room.bedCount", column = "r_bed_count")
 	})
 	
+=======
+	//@Select("select * from dept")
+>>>>>>> 2717d61643caaf93f04a5270ace67abb2c4185a5
 	List<CustCheckInDTO> showCareCust(long offset,long pageSize);
 	@Select("SELECT COUNT(*) FROM t_customer c " +
             "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
@@ -335,5 +340,13 @@ public interface CustomerDao {
     /*查询客户当前使用的床位信息*/
     @Select("SELECT ")
     CustCheckInDTO findCurrentBedByCustomer(Integer customerId);
+
+
+
+
+	/*=============护工模块 显示该护工下的老人 对应请求路径"/user/showUserCust"=========*/
+	List<CustDailyNursingDTO> findUserCust(Integer userId);
+	//根据老人姓名模糊搜索
+	List<CustDailyNursingDTO> findUserCustByName(Integer userId,String name);
 
 }
