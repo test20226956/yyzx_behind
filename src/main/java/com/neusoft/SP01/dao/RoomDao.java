@@ -13,8 +13,9 @@ import java.util.List;
 @Mapper
 public interface RoomDao {
     //查询楼层所有可使用房间
-    @Select("select * from yyzx_st.t_room where floor=#{floor}")
+    @Select("select * from t_room where floor=#{floor}")
     List<Room> findRooms(Integer floor);
+    
     //根据房间号获得具体房间的床位信息(是写在Room还是Bed里面？)
     List<Bed> findBedsByRoom(Integer roomNumber);
 }
