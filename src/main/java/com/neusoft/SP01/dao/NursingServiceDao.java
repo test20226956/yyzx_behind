@@ -2,6 +2,7 @@ package com.neusoft.SP01.dao;
 
 import com.neusoft.SP01.po.NursingProject;
 import com.neusoft.SP01.po.NursingService;
+import com.neusoft.SP01.po.NursingServiceDailyDTO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,4 +30,8 @@ public interface NursingServiceDao {
     //给用户添加护理项目（购买护理服务）
     @Insert("insert into yyzx_st.t_nursing_service values (null,#{customerId},#{nursingLevelId},#{nursingProjectId},#{amount},#{purchaseTime},#{endTime})")
     void addNursingService(NursingService ns);
+
+
+    /*======对应原型护工 日常护理 显示用户的护理服务=====*/
+    List<NursingServiceDailyDTO> findNursingServiceByCustomerId(Integer customerId);
 }
