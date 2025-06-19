@@ -1,14 +1,28 @@
 package com.neusoft.SP01.controller;
 
-import com.neusoft.SP01.po.*;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.neusoft.SP01.po.Bed;
+import com.neusoft.SP01.po.BedRecord;
+import com.neusoft.SP01.po.BedSta;
+import com.neusoft.SP01.po.CustBedDTO;
+import com.neusoft.SP01.po.PageResponseBean;
+import com.neusoft.SP01.po.ResponseBean;
+import com.neusoft.SP01.service.BedService;
+
 @CrossOrigin("*")
-@RequestMapping("/BedController")
+@RequestMapping("/Bed")
 @RestController
 public class BedController {
+	@Autowired  // 确保正确注入
+    private BedService bs;
 
     //    获得该楼层的床位统计数据
     @GetMapping("/searchBedSta")
@@ -25,7 +39,7 @@ public class BedController {
     //    根据房间号获取可使用的床位
     @GetMapping("/searchFreeBed")
     public ResponseBean<List<Bed>> searchFreeBed(Integer roomId) {
-        return null;
+    	return bs.searchFreeBed(roomId);
     }
 
     //    显示所有床位使用记录（根据状态是否为当前使用返回对应的记录）(分页)

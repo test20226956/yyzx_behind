@@ -16,6 +16,12 @@ import com.neusoft.SP01.po.CustCheckInDTO;
 
 @Mapper
 public interface BedRecordDao {
+	// 添加床位记录
+    @Insert("INSERT INTO t_bed_record(bed_id, check_in_id, state, start_time) " +
+            "VALUES(#{bedRecord.bedId}, #{bedRecord.checkInId}, " +
+            "#{bedRecord.state}, #{bedRecord.startTime})")
+    int insertBedRecord(@Param("bedRecord") BedRecord bedRecord);
+	
     
     /* 查询所有床位记录*/
     @Select("SELECT * FROM bed_record")

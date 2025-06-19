@@ -8,6 +8,24 @@ public class CustCheckInDTO {
 	private Customer customer;
 	private Family family;
 	private BedRecord bedRecord;
+	private Bed bed;
+	private Room room;
+
+	public Bed getBed() {
+		return bed;
+	}
+
+	public void setBed(Bed bed) {
+		this.bed = bed;
+	}
+
+	public Room getRoom() {
+		return room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
 
 	private Integer age;
 
