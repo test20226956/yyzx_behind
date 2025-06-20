@@ -1,10 +1,8 @@
 package com.neusoft.SP01;
 
-import com.neusoft.SP01.dao.CustomerDao;
-import com.neusoft.SP01.dao.NursingRecordDao;
-import com.neusoft.SP01.dao.NursingServiceDao;
-import com.neusoft.SP01.po.CustDailyNursingDTO;
-import com.neusoft.SP01.po.NursingServiceDailyDTO;
+import com.neusoft.SP01.dao.*;
+import com.neusoft.SP01.po.*;
+import com.neusoft.SP01.service.OutRecordService;
 import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +25,19 @@ class Sp01ApplicationTests {
 	private NursingRecordDao n;
 	@Autowired
 	private NursingServiceDao nsd;
+	@Autowired
+	private CheckOutRecordDao cord;
+	@Autowired
+	private OutRecordDao ord;
 	@Test
 	void showuserCust(){
 		List<CustDailyNursingDTO> userCust = c.findUserCust(101);
 		System.out.println(userCust);
+	}
+	@Test
+	void findUserCustManage(){
+		List<CustNursingManageDTO> userCustManage = c.findUserCustManage(101);
+		System.out.println(userCustManage);
 	}
 	@Test
 	void showuserCustByName(){
@@ -51,5 +58,29 @@ class Sp01ApplicationTests {
 	void findNursingServiceByCustomerId(){
 		List<NursingServiceDailyDTO> n = nsd.findNursingServiceByCustomerId(1);
 		System.out.println(n);
+	}
+	@Test
+	void findUserCustManageByName(){
+		List<CustNursingManageDTO> l = c.findUserCustManageByName(1, "李");
+		System.out.println(l);
+	}
+	@Test
+	void findCheckOutRecordByCustomerId(){
+		List<CustCheckOutDTO> c = cord.findCheckOutRecordByCustomerId(1);
+		System.out.println(c);
+	}
+	@Test
+	void findOutRecordByCustomerId(){
+		List<CustOutRecordDTO> o = ord.findOutRecordByCustomerId(1);
+		System.out.println(o);
+	}
+
+	/*===service====*/
+	@Autowired
+	private OutRecordService ors;
+	@Test
+	void ors1(){
+		PageResponseBean<List<CustOutRecordDTO>> o = ors.findOutRecordByCustomerId(1,2,1);
+		System.out.println(o);
 	}
 }
