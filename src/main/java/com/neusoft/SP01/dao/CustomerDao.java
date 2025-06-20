@@ -3,6 +3,7 @@ package com.neusoft.SP01.dao;
 import java.util.List;
 
 import com.neusoft.SP01.po.CustDailyNursingDTO;
+import com.neusoft.SP01.po.CustNursingManageDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -341,7 +342,12 @@ public interface CustomerDao {
 
 	/*=============护工模块 显示该护工下的老人 对应请求路径"/user/showUserCust"=========*/
 	List<CustDailyNursingDTO> findUserCust(Integer userId);
+	//客户管理模块显示老人信息（其实是增加了身份证号，入住时间以及到期时间这三项内容）
+	List<CustNursingManageDTO> findUserCustManage(Integer userId);
 	//根据老人姓名模糊搜索
 	List<CustDailyNursingDTO> findUserCustByName(Integer userId,String name);
+	//客户管理模块根据老人姓名模糊搜索（其实是增加了身份证号，入住时间以及到期时间这三项内容）
+	List<CustNursingManageDTO> findUserCustManageByName(Integer userId,String name);
+
 
 }
