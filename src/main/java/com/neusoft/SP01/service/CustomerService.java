@@ -44,10 +44,17 @@ public class CustomerService {
         
         // 构建分页响应
         PageResponseBean<List<CustCheckInDTO>> response = new PageResponseBean<>();
-        response.setStatus(200);
-        response.setMsg("查询成功");
-        response.setData(list);
-        response.setTotal(total);
+        if (list == null || list.isEmpty()) {
+	        response.setStatus(500);
+	        response.setMsg("无数据");
+	        response.setData(null);
+	        response.setTotal(0);
+	    } else {
+	        response.setStatus(200);
+	        response.setMsg("查询成功");
+	        response.setData(list);
+	        response.setTotal(total);
+	    }
         
         return response;
     }
@@ -64,10 +71,17 @@ public class CustomerService {
         
         // 构建分页响应
         PageResponseBean<List<CustCheckInDTO>> response = new PageResponseBean<>();
-        response.setStatus(200);
-        response.setMsg("查询成功");
-        response.setData(list);
-        response.setTotal(total);
+        if (list == null || list.isEmpty()) {
+	        response.setStatus(500);
+	        response.setMsg("无数据");
+	        response.setData(null);
+	        response.setTotal(0);
+	    } else {
+	        response.setStatus(200);
+	        response.setMsg("查询成功");
+	        response.setData(list);
+	        response.setTotal(total);
+	    }
         
         return response;
     }

@@ -29,8 +29,22 @@ public interface CheckInRecordDao {
     @Select("SELECT * FROM t_check_in_record WHERE customer_id=#{customerId} AND state=1")
     CheckInRecord findActiveCheckInRecord(@Param("customerId") Integer customerId);
     
+    /*获取客户当前有效的入住记录ID*/
+    @Select("SELECT check_in_record_id FROM t_check_in_record " +
+            "WHERE customer_id = #{customerId} AND state = 1") // state=1表示有效入住
+    Integer findActiveCheckInId(@Param("customerId") Integer customerId);
+    
+    /*更新入住记录状态为0（退住）*/
+    @Update("UPDATE t_check_in_record SET state = 0 WHERE check_in_record_id = #{checkInRecordId}")
+    int updateCheckInToInactive(@Param("checkInRecordId") Integer checkInRecordId);
+    
     // 更新入住记录的结束时间
     @Update("UPDATE t_check_in_record SET end_time=#{endTime} WHERE check_in_record_id=#{checkInRecordId}")
     int updateEndTime(@Param("checkInRecordId") Integer checkInRecordId, 
                     @Param("endTime") String endTime);
+    
+    /*获取入住记录关联的床位记录ID*/
+    @Select("SELECT bed_record_id FROM t_bed_record " +
+            "WHERE check_in_record_id = #{checkInRecordId} AND state = 1")
+    Integer findActiveBedRecordId(@Param("checkInRecordId") Integer checkInRecordId);
 }
