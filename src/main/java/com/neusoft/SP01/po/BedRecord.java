@@ -3,7 +3,7 @@ package com.neusoft.SP01.po;
 public class BedRecord {
 	private Integer bedRecordId;
 	private Integer bedId;
-	private Integer checkInId;
+	private Integer checkInRecordId;
 	private Integer state;
 	private String startTime;
 	private String endTime;
@@ -20,10 +20,10 @@ public class BedRecord {
 		this.bedId = bedId;
 	}
 	public Integer getCheckInId() {
-		return checkInId;
+		return checkInRecordId;
 	}
 	public void setCheckInId(Integer checkInId) {
-		this.checkInId = checkInId;
+		this.checkInRecordId = checkInId;
 	}
 	public Integer getState() {
 		return state;

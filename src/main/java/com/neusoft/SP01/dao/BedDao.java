@@ -21,6 +21,11 @@ public interface BedDao {
  // 更新床位状态为空闲
     @Update("UPDATE t_bed SET available = 0 WHERE bed_id = #{bedId}")
     int setBedAvailable(@Param("bedId") Integer bedId);
+    
+    /*更新实际床位状态为可用*/
+    @Update("UPDATE t_bed SET available = 0 WHERE bed_id = " +
+            "(SELECT bed_id FROM t_bed_record WHERE bed_record_id = #{bedRecordId})")
+    int updatePhysicalBedStatus(@Param("bedRecordId") Integer bedRecordId);
 
  // 根据房间ID和床号查询床位信息
     @Select("SELECT * FROM t_bed WHERE room_id = #{roomId} AND bed_number = #{bedNumber}")
