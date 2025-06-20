@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.neusoft.SP01.po.CheckOutRecord;
 import com.neusoft.SP01.po.CheckOutRecordWithName;
 
 @Mapper
@@ -39,6 +40,9 @@ public interface CheckOutRecordDao {
             "   <if test='state != null'>" +
             "       AND r.state = #{state}" +
             "   </if>" +
+            "   <if test='applyTime != null and applyTime != \"\"'>" +
+            "       AND r.apply_time >= #{applyTime}" +
+            "   </if>" +
             "</where>" +
             "ORDER BY r.apply_time DESC " +
             "LIMIT #{offset}, #{pageSize}" +
@@ -46,6 +50,7 @@ public interface CheckOutRecordDao {
     List<CheckOutRecordWithName> queryByConditions(
             @Param("customerName") String customerName,
             @Param("state") Integer state,
+            @Param("applyTime") String applyTime,
             @Param("offset") long offset,
             @Param("pageSize") long pageSize);
 
@@ -61,11 +66,15 @@ public interface CheckOutRecordDao {
             "   <if test='state != null'>" +
             "       AND r.state = #{state}" +
             "   </if>" +
+            "   <if test='applyTime != null and applyTime != \"\"'>" +
+            "       AND r.apply_time >= #{applyTime}" +
+            "   </if>" +
             "</where>" +
             "</script>")
     long countByConditions(
             @Param("customerName") String customerName,
-            @Param("state") Integer state);
+            @Param("state") Integer state,
+            @Param("applyTime") String applyTime);
     
     /*审核*/
     @Update("UPDATE t_check_out_record " +

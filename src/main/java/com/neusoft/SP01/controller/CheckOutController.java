@@ -19,7 +19,7 @@ import com.neusoft.SP01.service.CheckOutRecordService;
 import com.neusoft.SP01.service.CustomerService;
 
 @CrossOrigin("*")
-@RequestMapping("/CheckOut")
+@RequestMapping("/CheckOutController")
 @RestController
 public class CheckOutController {
 	@Autowired  // 确保正确注入
@@ -39,12 +39,13 @@ public class CheckOutController {
     public PageResponseBean<List<CheckOutRecordWithName>> queryCheckOut(
             @RequestParam(required = false) String customerName,
             @RequestParam(required = false) Integer state,
+            @RequestParam(required = false) String applyTime,
             @RequestParam(defaultValue = "1") long pageNum,
             @RequestParam(defaultValue = "10") long pageSize) {
         
-        return cors.queryCheckOut(customerName, state, pageNum, pageSize);
+        return cors.queryCheckOut(customerName, state, applyTime,pageNum, pageSize);
     }
-    
+    //审批退住
     @PostMapping("/sheckCheckOut")
     public ResponseBean<Integer> approveCheckOut(
             @RequestParam Integer checkOutRecordId,

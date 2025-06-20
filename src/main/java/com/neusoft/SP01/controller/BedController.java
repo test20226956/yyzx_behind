@@ -18,7 +18,7 @@ import com.neusoft.SP01.po.ResponseBean;
 import com.neusoft.SP01.service.BedService;
 
 @CrossOrigin("*")
-@RequestMapping("/Bed")
+@RequestMapping("/BedController")
 @RestController
 public class BedController {
 	@Autowired  // 确保正确注入
