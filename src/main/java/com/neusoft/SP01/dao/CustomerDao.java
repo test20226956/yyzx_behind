@@ -103,6 +103,7 @@ public interface CustomerDao {
             "WHERE c.type = '0' AND cir.state = 1")
     long countSelfCareCustomers();
 	
+	
 	/*查询所有护理老人客户列表*/
 	@Select("SELECT " +
 	        "cir.check_in_record_id, cir.customer_id, cir.nursing_level_id, cir.user_id, " +
@@ -131,7 +132,6 @@ public interface CustomerDao {
 	        "JOIN t_room r ON b.room_id = r.room_id " +
 	        "WHERE c.type = '1' AND cir.state = 1 " +
 	        "LIMIT #{offset}, #{pageSize}")
-<<<<<<< HEAD
 	@Results({
 	    // 主对象映射
 	    @Result(property = "age", column = "age"),
@@ -182,10 +182,6 @@ public interface CustomerDao {
 	    @Result(property = "room.floor", column = "r_floor"),
 	    @Result(property = "room.bedCount", column = "r_bed_count")
 	})
-	
-=======
-	//@Select("select * from dept")
->>>>>>> 2717d61643caaf93f04a5270ace67abb2c4185a5
 	List<CustCheckInDTO> showCareCust(long offset,long pageSize);
 	@Select("SELECT COUNT(*) FROM t_customer c " +
             "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
@@ -321,12 +317,11 @@ public interface CustomerDao {
 	
 	
 	
-	/*更新客户基本信息*/
-    @Update("UPDATE customer SET name=#{name}, type=#{type}, gender=#{gender}, " +
+ // 更新客户信息
+    @Update("UPDATE t_customer SET name=#{name}, type=#{type}, gender=#{gender}, " +
             "identity=#{identity}, blood_type=#{bloodType}, tel=#{tel} " +
-            "WHERE customer_id = #{customerId}")
-    
-    Integer updateCustomer(CustCheckInDTO data);
+            "WHERE customer_id=#{customerId}")
+    int updateCustomer(Customer customer);
     
     /*更新客户合同到期时间*/
     @Update("UPDATE ")

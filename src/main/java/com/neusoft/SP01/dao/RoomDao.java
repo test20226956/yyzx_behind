@@ -1,21 +1,32 @@
 package com.neusoft.SP01.dao;
 
-import com.neusoft.SP01.po.Bed;
-import com.neusoft.SP01.po.Room;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-
 import java.util.List;
 
-/**
- * 对应t_room
- */
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+
+import com.neusoft.SP01.po.Room;
+
+
 @Mapper
 public interface RoomDao {
-    //查询楼层所有可使用房间
-    @Select("select * from t_room where floor=#{floor}")
-    List<Room> findRooms(Integer floor);
     
-    //根据房间号获得具体房间的床位信息(是写在Room还是Bed里面？)
-    List<Bed> findBedsByRoom(Integer roomNumber);
+	// 根据楼层号和房间号查询房间信息
+    @Select("SELECT * FROM t_room WHERE floor = #{floor} AND room_number = #{roomNumber}")
+    @Results({
+        @Result(property = "roomId", column = "room_id"),
+        @Result(property = "roomNumber", column = "room_number"),
+        @Result(property = "floor", column = "floor"),
+        @Result(property = "buildingNumber", column = "building_number"),
+        @Result(property = "bedCount", column = "bed_count")
+    })
+    Room findRoomByFloorAndNumber(@Param("floor") Integer floor, 
+                                @Param("roomNumber") String roomNumber);
+    
+    @Select("SELECT * FROM t_room WHERE floor = #{floor}")
+    List<Room> findRooms(@Param("floor") Integer floor);
 }
+
