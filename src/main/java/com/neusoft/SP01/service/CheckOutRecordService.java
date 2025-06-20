@@ -63,13 +63,14 @@ public class CheckOutRecordService {
     public PageResponseBean<List<CheckOutRecordWithName>> queryCheckOut(
             String customerName, 
             Integer state,
+            String applyTime,
             long pageNum, 
             long pageSize) {
         
         long offset = (pageNum - 1) * pageSize;
         List<CheckOutRecordWithName> list = cord.queryByConditions(
-                customerName, state, offset, pageSize);
-        long total = cord.countByConditions(customerName, state);
+                customerName, state,applyTime, offset, pageSize);
+        long total = cord.countByConditions(customerName, state,applyTime);
         
         PageResponseBean<List<CheckOutRecordWithName>> response = new PageResponseBean<>();
         if (list == null || list.isEmpty()) {
@@ -131,6 +132,8 @@ public class CheckOutRecordService {
                         
                         // 4.6 更新实际床位状态为可用
                         bd.updatePhysicalBedStatus(bedRecordId);
+                    }else {
+                    	throw new RuntimeException("未找到相关床位记录");
                     }
                 }else {
                 	throw new RuntimeException("未找到相关入住记录");

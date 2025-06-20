@@ -11,18 +11,31 @@ import java.util.List;
 @CrossOrigin("*")
 @RequestMapping("/GoOutController")
 @RestController
-public class GoOutController {
+public class OutRecordController {
     @Autowired
     OutRecordService ors;
+    
+ // 展示所有的退住申请列表（分页）
     @GetMapping("/showGoOut")
-    public PageResponseBean<OutRecord> showGoOut(){
-        return null;
+    public PageResponseBean<List<OutRecordWithName>> showGoOut(
+            @RequestParam(defaultValue = "1") long pageNum,
+            @RequestParam(defaultValue = "10") long pageSize) {
+        return ors.showGoOut(pageNum, pageSize);
+    }
+    
+  //多条件查询
+    @GetMapping("/searchGoOut")
+    public PageResponseBean<List<OutRecordWithName>> queryGoOut(
+            @RequestParam(required = false) String customerName,
+            @RequestParam(required = false) Integer state,
+            @RequestParam(required = false) String applyTime,
+            @RequestParam(defaultValue = "1") long pageNum,
+            @RequestParam(defaultValue = "10") long pageSize) {
+        
+        return ors.queryGoOut(customerName, state, applyTime,pageNum, pageSize);
     }
 
-    @GetMapping("/searchGoOut")
-    public PageResponseBean<OutRecord> searchGoOut(String custName){
-        return null;
-    }
+    
 
     @PostMapping("/checkGoOut")
     public ResponseBean<Integer> goCheckOut(String goOutId, Integer state){

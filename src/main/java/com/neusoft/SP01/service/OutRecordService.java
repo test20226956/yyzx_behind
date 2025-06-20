@@ -1,19 +1,17 @@
 package com.neusoft.SP01.service;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.neusoft.SP01.dao.OutRecordDao;
-import com.neusoft.SP01.po.CustOutRecordDTO;
-import com.neusoft.SP01.po.PageResponseBean;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.neusoft.SP01.dao.UserDao;
-import com.neusoft.SP01.po.ResponseBean;
-import com.neusoft.SP01.po.User;
-
-import java.util.List;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.neusoft.SP01.dao.OutRecordDao;
+import com.neusoft.SP01.po.CheckOutRecordWithName;
+import com.neusoft.SP01.po.CustOutRecordDTO;
+import com.neusoft.SP01.po.OutRecordWithName;
+import com.neusoft.SP01.po.PageResponseBean;
 
 @Service
 public class OutRecordService {
@@ -33,6 +31,64 @@ public class OutRecordService {
         response.setMsg("success"); // 成功消息
         response.setData(p.getResult()); // 当前页数据
         response.setTotal(p.getTotal()); // 总记录数
+        return response;
+    }
+    
+ // 展示所有退住申请（分页）
+    public PageResponseBean<List<OutRecordWithName>> showGoOut(long pageNum, long pageSize) {
+    	//计算偏移量
+        long offset = (pageNum - 1) * pageSize;
+        
+        // 查询分页数据（现在返回带姓名的结果）
+        List<OutRecordWithName> list = ord.showGoOut(offset, pageSize);
+        
+        // 查询总数
+        long total = ord.countGoOut();
+        
+        // 构建分页响应
+        PageResponseBean<List<OutRecordWithName>> response = new PageResponseBean<>();
+        if (list == null || list.isEmpty()) {
+	        response.setStatus(500);
+	        response.setMsg("无数据");
+	        response.setData(null);
+	        response.setTotal(0);
+	    } else {
+	        response.setStatus(200);
+	        response.setMsg("查询成功");
+	        response.setData(list);
+	        response.setTotal(total);
+	    }
+        
+        return response;
+        
+    }
+    
+  //条件查询（分页）
+    public PageResponseBean<List<OutRecordWithName>> queryGoOut(
+            String customerName, 
+            Integer state,
+            String applyTime,
+            long pageNum, 
+            long pageSize) {
+        
+        long offset = (pageNum - 1) * pageSize;
+        List<OutRecordWithName> list = ord.queryByConditions(
+                customerName, state,applyTime, offset, pageSize);
+        long total = ord.countByConditions(customerName, state,applyTime);
+        
+        PageResponseBean<List<OutRecordWithName>> response = new PageResponseBean<>();
+        if (list == null || list.isEmpty()) {
+	        response.setStatus(500);
+	        response.setMsg("无数据");
+	        response.setData(null);
+	        response.setTotal(0);
+	    } else {
+	        response.setStatus(200);
+	        response.setMsg("查询成功");
+	        response.setData(list);
+	        response.setTotal(total);
+	    }
+        
         return response;
     }
     

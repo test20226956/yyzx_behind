@@ -18,7 +18,7 @@ import com.neusoft.SP01.service.CustomerService;
 
 @CrossOrigin("/*")
 @RestController
-@RequestMapping("/Customer")
+@RequestMapping("/CustomerController")
 public class CustomerController {
 	
 	@Autowired  // 确保正确注入

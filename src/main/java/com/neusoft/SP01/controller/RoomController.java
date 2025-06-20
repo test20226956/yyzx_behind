@@ -14,7 +14,7 @@ import com.neusoft.SP01.service.RoomService;
 
 @CrossOrigin("/*")
 @RestController
-@RequestMapping("/Room")
+@RequestMapping("/RoomController")
 public class RoomController {
 	
 	@Autowired  // 确保正确注入
