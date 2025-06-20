@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.neusoft.SP01.po.CheckInRecord;
 
@@ -18,4 +20,17 @@ public interface CheckInRecordDao {
             "#{checkInRecord.checkInTime}, #{checkInRecord.endTime}, #{checkInRecord.state})")
     @Options(useGeneratedKeys = true, keyProperty = "checkInRecord.checkInRecordId")
     int insertCheckInRecord(@Param("checkInRecord") CheckInRecord checkInRecord);
+    
+ // 逻辑删除入住记录（设置状态为隐藏）
+    @Update("UPDATE t_check_in_record SET state = 0 WHERE customer_id = #{customerId} AND state = 1")
+    int hideCheckInRecord(@Param("customerId") Integer customerId);
+    
+ // 获取客户当前有效的入住记录
+    @Select("SELECT * FROM t_check_in_record WHERE customer_id=#{customerId} AND state=1")
+    CheckInRecord findActiveCheckInRecord(@Param("customerId") Integer customerId);
+    
+    // 更新入住记录的结束时间
+    @Update("UPDATE t_check_in_record SET end_time=#{endTime} WHERE check_in_record_id=#{checkInRecordId}")
+    int updateEndTime(@Param("checkInRecordId") Integer checkInRecordId, 
+                    @Param("endTime") String endTime);
 }

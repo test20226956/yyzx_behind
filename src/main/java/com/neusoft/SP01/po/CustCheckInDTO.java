@@ -69,6 +69,11 @@ public class CustCheckInDTO {
 		this.age = age;
 	}
 
+	public CustCheckInDTO() {
+		super();
+	}
+	
+
 
 
 ////  入住登记id

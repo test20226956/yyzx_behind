@@ -17,10 +17,32 @@ import com.neusoft.SP01.po.CustCheckInDTO;
 @Mapper
 public interface BedRecordDao {
 	// 添加床位记录
-    @Insert("INSERT INTO t_bed_record(bed_id, check_in_id, state, start_time) " +
+    @Insert("INSERT INTO t_bed_record(bed_id, check_in_id, state, start_time,end_time) " +
             "VALUES(#{bedRecord.bedId}, #{bedRecord.checkInId}, " +
-            "#{bedRecord.state}, #{bedRecord.startTime})")
+            "#{bedRecord.state}, #{bedRecord.startTime}, #{bedRecord.endTime})")
     int insertBedRecord(@Param("bedRecord") BedRecord bedRecord);
+    
+    // 获取客户当前显示的床位记录
+    @Select("SELECT * FROM t_bed_record WHERE check_in_id = " +
+            "(SELECT check_in_record_id FROM t_check_in_record " +
+            "WHERE customer_id = #{customerId}) " +
+            "AND state = 1 LIMIT 1")
+    BedRecord findActiveBedRecordByCustomer(@Param("customerId") Integer customerId);
+    
+    // 逻辑删除床位记录（设置状态为隐藏）
+    @Update("UPDATE t_bed_record SET state = 0 WHERE bed_record_id = #{bedRecordId}")
+    int hideBedRecord(@Param("bedRecordId") Integer bedRecordId);
+    
+ // 获取当前有效的床位记录
+    @Select("SELECT * FROM t_bed_record WHERE check_in_id=#{checkInId} AND state=1")
+    BedRecord findActiveBedRecord(@Param("checkInId") Integer checkInId);
+    
+    // 更新床位记录的结束时间
+    @Update("UPDATE t_bed_record SET end_time=#{endTime} WHERE bed_record_id=#{bedRecordId}")
+    int updateBedEndTime(@Param("bedRecordId") Integer bedRecordId, 
+                       @Param("endTime") String endTime);
+    
+    
 	
     
     /* 查询所有床位记录*/
@@ -53,9 +75,7 @@ public interface BedRecordDao {
     @Select("SELECT * FROM bed_record WHERE check_in_id = #{checkInId}")
     List<BedRecord> findBedRecordsByCustomer(Integer checkInId);
     
-    /*查询客户当前使用的床位记录*/
-    @Select("SELECT * FROM bed_record WHERE check_in_id = #{checkInId} AND state = 1")
-    BedRecord findActiveBedRecordByCustomer(Integer checkInId);
+    
     
     /*查询床位的历史使用记录*/
     @Select("SELECT * FROM bed_record WHERE bed_id = #{bedId} AND state = 2")

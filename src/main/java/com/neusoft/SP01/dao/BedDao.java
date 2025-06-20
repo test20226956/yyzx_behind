@@ -2,18 +2,14 @@ package com.neusoft.SP01.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.neusoft.SP01.po.Bed;
-import com.neusoft.SP01.po.BedRecord;
-import com.neusoft.SP01.po.CheckInRecord;
-import com.neusoft.SP01.po.Customer;
-import com.neusoft.SP01.po.Room;
 
 @Mapper
 public interface BedDao {
@@ -21,6 +17,24 @@ public interface BedDao {
 	// 更新床位状态
     @Update("UPDATE t_bed SET available = 1 WHERE bed_id = #{bedId}")
     int updateBedStatus(@Param("bedId") Integer bedId);
+    
+ // 更新床位状态为空闲
+    @Update("UPDATE t_bed SET available = 0 WHERE bed_id = #{bedId}")
+    int setBedAvailable(@Param("bedId") Integer bedId);
+
+ // 根据房间ID和床号查询床位信息
+    @Select("SELECT * FROM t_bed WHERE room_id = #{roomId} AND bed_number = #{bedNumber}")
+    @Results({
+        @Result(property = "bedId", column = "bed_id"),
+        @Result(property = "roomId", column = "room_id"),
+        @Result(property = "bedNumber", column = "bed_number"),
+        @Result(property = "available", column = "available")
+    })
+    Bed findBedByRoomAndNumber(@Param("roomId") Integer roomId, 
+                             @Param("bedNumber") Integer bedNumber);
+    
+    
+    
 
     /* ---------------------- 床位基本信息操作 ---------------------- */
     
