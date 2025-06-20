@@ -9,8 +9,16 @@ public class ResponseBean<T> {
 	private String msg;
 	
 	private T data;
-	
-	
+
+	@Override
+	public String toString() {
+		return "ResponseBean{" +
+				"status=" + status +
+				", msg='" + msg + '\'' +
+				", data=" + data +
+				'}';
+	}
+
 	public Integer getStatus() {
 		return status;
 	}

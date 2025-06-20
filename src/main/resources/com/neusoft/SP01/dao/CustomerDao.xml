@@ -35,25 +35,89 @@ ORDER BY
             c.name,
             YEAR(CURDATE()) - SUBSTRING(c.identity, 7, 4) AS age,
             CASE c.gender WHEN 0 THEN '男' WHEN 1 THEN '女' ELSE '未知' END AS gender,
-    c.blood_type ,
-    r.floor ,
-    r.room_number ,
-    f.name AS fName,
-    f.tel
+            c.blood_type ,
+            r.floor ,
+            r.room_number ,
+            f.name AS fName,
+            f.tel
 FROM
     t_customer c
 JOIN
     t_check_in_record cir ON c.customer_id = cir.customer_id AND cir.state = 1 and c.name like concat('%',#{name},'%')
 JOIN
     t_bed_record br ON cir.check_in_record_id = br.check_in_id AND br.state = 1 and user_id=#{userId}
-        JOIN
-        t_bed b ON br.bed_id = b.bed_id
-        JOIN
-        t_room r ON b.room_id = r.room_id
-        LEFT JOIN
-        t_family f ON c.customer_id = f.customer_id
-        ORDER BY
-        c.customer_id;
+JOIN
+t_bed b ON br.bed_id = b.bed_id
+JOIN
+t_room r ON b.room_id = r.room_id
+LEFT JOIN
+t_family f ON c.customer_id = f.customer_id
+ORDER BY
+c.customer_id;
+    </select>
+<!--    客户管理模块显示老人信息（其实是增加了身份证号，入住时间以及到期时间这三项内容）-->
+    <select id="findUserCustManage" resultType="com.neusoft.SP01.po.CustNursingManageDTO">
+        SELECT
+            c.customer_id,
+            c.name,
+            YEAR(CURDATE()) - SUBSTRING(c.identity, 7, 4) AS age,
+            CASE c.gender WHEN 0 THEN '男' WHEN 1 THEN '女' ELSE '未知' END AS gender,
+            c.identity,
+            c.blood_type ,
+            r.floor ,
+            r.room_number ,
+            f.name AS fName,
+            f.tel,
+            cir.check_in_time,
+            cir.end_time
+FROM
+    t_customer c
+JOIN
+    t_check_in_record cir ON c.customer_id = cir.customer_id AND cir.state = 1
+JOIN
+    t_bed_record br ON cir.check_in_record_id = br.check_in_id AND br.state = 1
+JOIN
+    t_bed b ON br.bed_id = b.bed_id
+JOIN
+    t_room r ON b.room_id = r.room_id
+LEFT JOIN
+    t_family f ON c.customer_id = f.customer_id
+where
+    user_id=#{userId}
+ORDER BY
+c.customer_id;
+    </select>
+<!--    客户管理模块根据老人姓名模糊搜索（其实是增加了身份证号，入住时间以及到期时间这三项内容）-->
+    <select id="findUserCustManageByName" resultType="com.neusoft.SP01.po.CustNursingManageDTO">
+        SELECT
+            c.customer_id,
+            c.name,
+            YEAR(CURDATE()) - SUBSTRING(c.identity, 7, 4) AS age,
+            CASE c.gender WHEN 0 THEN '男' WHEN 1 THEN '女' ELSE '未知' END AS gender,
+            c.identity,
+            c.blood_type ,
+            r.floor ,
+            r.room_number ,
+            f.name AS fName,
+            f.tel,
+            cir.check_in_time,
+            cir.end_time
+FROM
+    t_customer c
+JOIN
+    t_check_in_record cir ON c.customer_id = cir.customer_id AND cir.state = 1
+JOIN
+    t_bed_record br ON cir.check_in_record_id = br.check_in_id AND br.state = 1
+JOIN
+    t_bed b ON br.bed_id = b.bed_id
+JOIN
+    t_room r ON b.room_id = r.room_id
+LEFT JOIN
+    t_family f ON c.customer_id = f.customer_id
+where
+    user_id=#{userId} and c.name like concat('%',#{name},'%')
+ORDER BY
+c.customer_id;
     </select>
 
 </mapper>
