@@ -79,6 +79,22 @@ public interface OutRecordDao {
             @Param("customerName") String customerName,
             @Param("state") Integer state,
             @Param("applyTime") String applyTime);
+    
+    
+    /*审核*/
+    @Update("UPDATE t_out_record " +
+            "SET state = #{state}, " +
+            "admin_id = #{adminId}, " +
+            "examine_time = #{examineTime} " +
+            "WHERE out_record_id = #{outRecordId}")
+    int approveOut(@Param("outRecordId") Integer outRecordId,
+                       @Param("state") Integer state,
+                       @Param("adminId") Integer adminId,
+                       @Param("examineTime") String examineTime);
+    
+    /*根据退住记录ID获取客户ID*/
+    @Select("SELECT customer_id FROM t_out_record WHERE out_record_id = #{outRecordId}")
+    Integer findCustomerIdByOutId(@Param("outRecordId") Integer outRecordId);
 	
     
     /*

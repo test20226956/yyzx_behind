@@ -15,7 +15,7 @@ public class OutRecordController {
     @Autowired
     OutRecordService ors;
     
- // 展示所有的退住申请列表（分页）
+ // 展示所有的外出退住申请列表（分页）
     @GetMapping("/showGoOut")
     public PageResponseBean<List<OutRecordWithName>> showGoOut(
             @RequestParam(defaultValue = "1") long pageNum,
@@ -34,13 +34,18 @@ public class OutRecordController {
         
         return ors.queryGoOut(customerName, state, applyTime,pageNum, pageSize);
     }
+  //审批外出退住
+    @PostMapping("/checkGoOut")
+    public ResponseBean<Integer> approveOut(
+            @RequestParam Integer outRecordId,
+            @RequestParam Integer state,
+            @RequestParam Integer adminId) {
+        return ors.approveOut(outRecordId, state, adminId);
+    }
 
     
 
-    @PostMapping("/checkGoOut")
-    public ResponseBean<Integer> goCheckOut(String goOutId, Integer state){
-        return null;
-    }
+   
 
     @GetMapping("/showCust")
     public PageResponseBean<Customer> showCust(String custId){

@@ -46,7 +46,7 @@ public class CheckOutController {
         return cors.queryCheckOut(customerName, state, applyTime,pageNum, pageSize);
     }
     //审批退住
-    @PostMapping("/sheckCheckOut")
+    @PostMapping("/checkCheckOut")
     public ResponseBean<Integer> approveCheckOut(
             @RequestParam Integer checkOutRecordId,
             @RequestParam Integer state,
@@ -55,10 +55,7 @@ public class CheckOutController {
     }
     
     
-    @PostMapping("/checkCheckOut")
-    public ResponseBean<Integer> checkCheckOut(String checkOutId, Integer state){
-        return null;
-    }
+   
 
     @GetMapping("/showCust")
     public PageResponseBean<Customer> showCust(String custId){
