@@ -9,5 +9,34 @@ public class BedSta {
     //  有人床数
     private Integer taken;
     //  外出床数
-    private Integer out;
+    private Integer goOut;
+	public Integer getTotal() {
+		return total;
+	}
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
+	public Integer getFree() {
+		return free;
+	}
+	public void setFree(Integer free) {
+		this.free = free;
+	}
+	public Integer getTaken() {
+		return taken;
+	}
+	public void setTaken(Integer taken) {
+		this.taken = taken;
+	}
+	public Integer getGoOut() {
+		return goOut;
+	}
+	public void setGoOut(Integer goOut) {
+		this.goOut = goOut;
+	}
+	public BedSta() {
+		super();
+	}
+    
+    
 }

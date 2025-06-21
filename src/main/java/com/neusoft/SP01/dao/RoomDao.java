@@ -26,6 +26,10 @@ public interface RoomDao {
     Room findRoomByFloorAndNumber(@Param("floor") Integer floor, 
                                 @Param("roomNumber") String roomNumber);
     
+    /*按楼层查询房间列表*/
+    @Select("SELECT * FROM t_room WHERE floor = #{floor} ORDER BY room_number")
+    List<Room> findRoomsByFloor(@Param("floor") Integer floor);
+    
     @Select("SELECT * FROM t_room WHERE floor = #{floor}")
     List<Room> findRooms(@Param("floor") Integer floor);
 }

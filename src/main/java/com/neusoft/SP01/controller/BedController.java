@@ -1,12 +1,14 @@
 package com.neusoft.SP01.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.neusoft.SP01.po.Bed;
@@ -23,17 +25,27 @@ import com.neusoft.SP01.service.BedService;
 public class BedController {
 	@Autowired  // 确保正确注入
     private BedService bs;
+	
+	// 获取床位统计信息
+    @GetMapping("/allBed")
+    public ResponseBean<BedSta> getAllBedStats() {
+        return bs.getAllBedStats();
+    }
 
     //    获得该楼层的床位统计数据
     @GetMapping("/searchBedSta")
-    public ResponseBean<BedSta> searchBedSta(Integer floor) {
-        return null;
+    public ResponseBean<Map<String, Object>> getFloorDetails(
+            @RequestParam(required = false, defaultValue = "1") Integer floor) {
+        return bs.getFloorDetails(floor);
     }
 
     //    根据房间号获取房间的床位信息
-    @GetMapping("/searchBedByRoom")
-    public ResponseBean<List<Bed>> searchBedByRoom(Integer roomId) {
-        return null;
+    @GetMapping("/searchBedByRoomAndFloor")
+    public ResponseBean<List<Map<String, Object>>> getBeds(
+        @RequestParam String roomNumber,
+        @RequestParam Integer floor) {
+        
+        return bs.getBedsByRoomAndFloor(roomNumber, floor);
     }
 
     //    根据房间号获取可使用的床位
