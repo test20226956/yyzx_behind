@@ -10,8 +10,20 @@
             amount,
             end_time
         from t_nursing_service ns
+        join t_nursing_project np
+        on ns.nursing_project_id=np.nursing_project_id
+        WHERE customer_id=#{customerId}
+    </select>
+    <select id="findNursingServiceByName" resultType="com.neusoft.SP01.po.NursingServiceDailyDTO">
+        SELECT
+            nursing_service_id,
+            customer_id,
+            name,
+            amount,
+            end_time
+        from t_nursing_service ns
                  join t_nursing_project np
                       on ns.nursing_project_id=np.nursing_project_id
-        WHERE customer_id=#{customerId}
+        WHERE customer_id=#{customerId} and np.name like concat('%',#{name},'%')
     </select>
 </mapper>
