@@ -35,27 +35,32 @@ public class UserService {
     }
     
     public PageResponseBean<List<User>> getRegularUsers(int pageNum, int pageSize) {
-        // 参数校验
-        if (pageNum < 1) pageNum = 1;
-        if (pageSize < 1 || pageSize > 100) pageSize = 10;
-        
-        // 计算偏移量
-        int offset = (pageNum - 1) * pageSize;
-        
-        // 查询数据
-        List<User> users = ud.findUsersByTypeWithPage(offset, pageSize);
-        
-        // 检查查询结果是否为空
-        if (users == null || users.isEmpty()) {
-            return new PageResponseBean<>(500, "无数据", null);
+        try {
+            // 参数校验
+            if (pageNum < 1) pageNum = 1;
+            if (pageSize < 1 || pageSize > 100) pageSize = 10;
+            
+            // 计算偏移量
+            int offset = (pageNum - 1) * pageSize;
+            
+            // 查询数据
+            List<User> users = ud.findUsersByTypeWithPage(offset, pageSize);
+            
+            // 检查查询结果是否为空
+            if (users == null || users.isEmpty()) {
+                return new PageResponseBean<>(500, "无数据", null);
+            }
+            
+            // 查询总数
+            long total = ud.countUsersByType();
+            
+            // 构建响应
+            PageResponseBean<List<User>> response = new PageResponseBean<>(200, "查询成功", users);
+            response.setTotal(total);
+            return response;
+            
+        } catch (Exception e) {
+            return new PageResponseBean<>(500, "系统错误：" + e.getMessage(), null);
         }
-        
-        // 查询总数
-        long total = ud.countUsersByType();
-        
-        // 构建响应
-        PageResponseBean<List<User>> response = new PageResponseBean<>(200, "查询成功", users);
-        response.setTotal(total);
-        return response;
     }
 }
