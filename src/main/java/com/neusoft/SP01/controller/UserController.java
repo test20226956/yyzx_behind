@@ -1,5 +1,7 @@
 package com.neusoft.SP01.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +31,11 @@ public class UserController {
     }
 
     @GetMapping("/showUser")
-    public PageResponseBean<User> showUser(){
-        return null;
+    public PageResponseBean<List<User>> getRegularUsers(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize) {
+        
+        return us.getRegularUsers(pageNum, pageSize);
     }
 
     @GetMapping("/searchUser")

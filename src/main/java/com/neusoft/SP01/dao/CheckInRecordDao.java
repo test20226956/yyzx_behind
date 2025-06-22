@@ -47,4 +47,7 @@ public interface CheckInRecordDao {
     @Select("SELECT bed_record_id FROM t_bed_record " +
             "WHERE check_in_record_id = #{checkInRecordId} AND state = 1")
     Integer findActiveBedRecordId(@Param("checkInRecordId") Integer checkInRecordId);
+    
+    @Select("SELECT * FROM t_check_in_record WHERE customer_id = #{customerId} AND state = 1")
+    CheckInRecord findByCustomerId(@Param("customerId") Integer customerId);
 }
