@@ -2,6 +2,7 @@ package com.neusoft.SP01.controller;
 
 import java.util.List;
 
+import com.neusoft.SP01.po.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.neusoft.SP01.po.CheckOutRecord;
-import com.neusoft.SP01.po.CheckOutRecordWithName;
-import com.neusoft.SP01.po.Customer;
-import com.neusoft.SP01.po.PageResponseBean;
-import com.neusoft.SP01.po.ResponseBean;
 import com.neusoft.SP01.service.CheckOutRecordService;
 import com.neusoft.SP01.service.CustomerService;
 
@@ -57,16 +53,18 @@ public class CheckOutController {
     
    
 
-    @GetMapping("/showCust")
-    public PageResponseBean<Customer> showCust(String custId){
-        return null;
+    @GetMapping("/showCust")//退住申请显示老人的信息
+    public PageResponseBean<List<CustNursingManageDTO>> showCust(@RequestParam(defaultValue = "1")Integer pageNum,
+                                                                 @RequestParam(defaultValue = "4")Integer pageSize, Integer userId){
+        PageResponseBean<List<CustNursingManageDTO>> userCustManage = cs.findUserCustManage(pageNum, pageSize, userId);
+        return userCustManage;
     }
-
-    @GetMapping("/searchCust")
-    public PageResponseBean<Customer> searchCust(String userId, String cuatName){
-        return null;
+    @GetMapping("/searchCust")//客户管理模块根据老人姓名模糊搜索
+    public PageResponseBean<List<CustNursingManageDTO>> searchCust(@RequestParam(defaultValue = "1")Integer pageNum,
+                                                                   @RequestParam(defaultValue = "4")Integer pageSize, Integer userId,String name){
+        PageResponseBean<List<CustNursingManageDTO>> userCustManageByName = cs.findUserCustManageByName(pageNum, pageSize, userId, name);
+        return userCustManageByName;
     }
-
     @PostMapping("/addCheckOutRe")
     public ResponseBean<Integer> addCheckOutRe(CheckOutRecord checkOutRecord){
         return null;
