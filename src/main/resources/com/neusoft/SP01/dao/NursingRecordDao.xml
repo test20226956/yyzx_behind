@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.neusoft.SP01.dao.NursingRecordDao">
-    <select id="findByCustomerId" resultType="com.neusoft.SP01.po.CustDailyNursingDTO">
+    <select id="findByCustomerId" resultType="com.neusoft.SP01.po.CustNursingRecordDTO">
         SELECT
             nr.nursing_record_id,
-            np.name AS nursing_project_name,
-            nr.time AS nursing_time
+            np.name ,
+            nr.time
         FROM
             t_nursing_record nr
                 JOIN
@@ -15,7 +15,7 @@
         WHERE
             nr.customer_id = #{customerId}
         ORDER BY
-            nr.time DESC;
+            nr.time DESC
     </select>
     <select id="findByNameAndTime" resultType="com.neusoft.SP01.po.CustDailyNursingDTO">
         SELECT

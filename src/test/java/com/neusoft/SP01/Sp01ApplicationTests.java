@@ -46,7 +46,7 @@ class Sp01ApplicationTests {
 	}
 	@Test
 	void findByCustomerId(){
-		List<CustDailyNursingDTO> cnd = n.findByCustomerId(1);
+		List<CustNursingRecordDTO> cnd = n.findByCustomerId(1);
 		System.out.println(cnd);
 	}
 	@Test
@@ -58,6 +58,11 @@ class Sp01ApplicationTests {
 	void findNursingServiceByCustomerId(){
 		List<NursingServiceDailyDTO> n = nsd.findNursingServiceByCustomerId(1);
 		System.out.println(n);
+	}
+	@Test
+	void findNursingServiceByName(){
+		List<NursingServiceDailyDTO> y = nsd.findNursingServiceByName(1, "药");
+		System.out.println(y);
 	}
 	@Test
 	void findUserCustManageByName(){
