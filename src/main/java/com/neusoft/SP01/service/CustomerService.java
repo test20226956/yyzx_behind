@@ -1,5 +1,8 @@
 package com.neusoft.SP01.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.neusoft.SP01.po.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,12 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.neusoft.SP01.dao.BedRecordDao;
 import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.CustomerDao;
-import com.neusoft.SP01.po.BedRecord;
-import com.neusoft.SP01.po.CheckInRecord;
-import com.neusoft.SP01.po.CustCheckInDTO;
-import com.neusoft.SP01.po.Customer;
-import com.neusoft.SP01.po.PageResponseBean;
-import com.neusoft.SP01.po.ResponseBean;
 
 @Service
 @Transactional(rollbackFor = Exception.class) // 添加此注解
@@ -186,5 +183,71 @@ public class CustomerService {
 	        log.error("编辑客户信息失败，客户ID: {}", data != null ? data.getCustomerId() : "null", e);
 	        return new ResponseBean<>(500, "更新失败: " + e.getMessage(), null);
 	    }
+	}
+
+
+	/*==护工模块 显示该护工下的老人 对应请求路径"/user/showUserCust"==*/
+	public PageResponseBean<List<CustDailyNursingDTO>> findUserCust(Integer pageNum, Integer pageSize, Integer userId){
+		//设置分页参数
+		PageHelper.startPage(pageNum, pageSize);
+		//执行查询
+		List<CustDailyNursingDTO> cdnds = cd.findUserCust(userId);
+		// 3. 获取分页信息
+		Page<CustDailyNursingDTO> p =(Page<CustDailyNursingDTO>)cdnds;
+		// 4. 构建响应对象
+		PageResponseBean<List<CustDailyNursingDTO>> response = new PageResponseBean<>();
+		response.setStatus(200); // 成功状态码
+		response.setMsg("查询成功"); // 成功消息
+		response.setData(p.getResult()); // 当前页数据
+		response.setTotal(p.getTotal()); // 总记录数
+		return response;
+	}
+	//根据老人姓名模糊搜索
+	public PageResponseBean<List<CustDailyNursingDTO>> findUserCustByName(Integer pageNum, Integer pageSize, Integer userId,String name){
+		//设置分页参数
+		PageHelper.startPage(pageNum, pageSize);
+		//执行查询
+		List<CustDailyNursingDTO> cdnds = cd.findUserCustByName(userId,name);
+		// 3. 获取分页信息
+		Page<CustDailyNursingDTO> p =(Page<CustDailyNursingDTO>)cdnds;
+		// 4. 构建响应对象
+		PageResponseBean<List<CustDailyNursingDTO>> response = new PageResponseBean<>();
+		response.setStatus(200); // 成功状态码
+		response.setMsg("查询成功"); // 成功消息
+		response.setData(p.getResult()); // 当前页数据
+		response.setTotal(p.getTotal()); // 总记录数
+		return response;
+	}
+	//客户管理模块显示老人信息（其实是增加了身份证号，入住时间以及到期时间这三项内容）
+	public PageResponseBean<List<CustNursingManageDTO>> findUserCustManage(Integer pageNum, Integer pageSize, Integer userId){
+		//设置分页参数
+		PageHelper.startPage(pageNum, pageSize);
+		//执行查询
+		List<CustNursingManageDTO> cdnds = cd.findUserCustManage(userId);
+		// 3. 获取分页信息
+		Page<CustNursingManageDTO> p =(Page<CustNursingManageDTO>)cdnds;
+		// 4. 构建响应对象
+		PageResponseBean<List<CustNursingManageDTO>> response = new PageResponseBean<>();
+		response.setStatus(200); // 成功状态码
+		response.setMsg("查询成功"); // 成功消息
+		response.setData(p.getResult()); // 当前页数据
+		response.setTotal(p.getTotal()); // 总记录数
+		return response;
+	}
+	//客户管理模块根据老人姓名模糊搜索
+	public PageResponseBean<List<CustNursingManageDTO>> findUserCustManageByName(Integer pageNum, Integer pageSize, Integer userId,String name){
+		//设置分页参数
+		PageHelper.startPage(pageNum, pageSize);
+		//执行查询
+		List<CustNursingManageDTO> cdnds = cd.findUserCustManageByName(userId,name);
+		// 3. 获取分页信息
+		Page<CustNursingManageDTO> p =(Page<CustNursingManageDTO>)cdnds;
+		// 4. 构建响应对象
+		PageResponseBean<List<CustNursingManageDTO>> response = new PageResponseBean<>();
+		response.setStatus(200); // 成功状态码
+		response.setMsg("查询成功"); // 成功消息
+		response.setData(p.getResult()); // 当前页数据
+		response.setTotal(p.getTotal()); // 总记录数
+		return response;
 	}
 }

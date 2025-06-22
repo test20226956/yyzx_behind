@@ -46,7 +46,7 @@ public class OutRecordService {
         // 4. 构建响应对象
         PageResponseBean<List<CustOutRecordDTO>> response = new PageResponseBean<>();
         response.setStatus(200); // 成功状态码
-        response.setMsg("success"); // 成功消息
+        response.setMsg("查询成功"); // 成功消息
         response.setData(p.getResult()); // 当前页数据
         response.setTotal(p.getTotal()); // 总记录数
         return response;

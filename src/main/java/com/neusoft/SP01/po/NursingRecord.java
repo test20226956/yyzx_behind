@@ -3,7 +3,7 @@ package com.neusoft.SP01.po;
 public class NursingRecord {
 	private String time;
 	private Integer nursingRecordId;
-	private Integer nusrssingServiceId;
+	private Integer nursingServiceId;
 	private Integer customerId;
 	private Integer count;
 	private Integer userId;
@@ -19,11 +19,11 @@ public class NursingRecord {
 	public void setNursingRecordId(Integer nursingRecordId) {
 		this.nursingRecordId = nursingRecordId;
 	}
-	public Integer getNusrssingServiceId() {
-		return nusrssingServiceId;
+	public Integer getNursingServiceId() {
+		return nursingServiceId;
 	}
-	public void setNusrssingServiceId(Integer nusrssingServiceId) {
-		this.nusrssingServiceId = nusrssingServiceId;
+	public void setNursingServiceId(Integer nursingServiceId) {
+		this.nursingServiceId = nursingServiceId;
 	}
 	public Integer getCustomerId() {
 		return customerId;
