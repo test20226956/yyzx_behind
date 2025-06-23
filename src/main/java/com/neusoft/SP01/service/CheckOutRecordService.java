@@ -3,6 +3,8 @@ package com.neusoft.SP01.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,11 +13,10 @@ import com.neusoft.SP01.dao.BedDao;
 import com.neusoft.SP01.dao.BedRecordDao;
 import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.CheckOutRecordDao;
+import com.neusoft.SP01.po.CheckOutDetailDTO;
 import com.neusoft.SP01.po.CheckOutRecordWithName;
 import com.neusoft.SP01.po.PageResponseBean;
 import com.neusoft.SP01.po.ResponseBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 @Service
 @Transactional(rollbackFor = Exception.class) // 添加事务注解，任何异常都会回滚
 public class CheckOutRecordService {
@@ -146,6 +147,21 @@ public class CheckOutRecordService {
             log.error("退住审批失败，已回滚所有操作，退住记录ID：{}", checkOutRecordId, e);
             return new ResponseBean<>(500, "审批失败: " + e.getMessage(), null);
         }
+    }
+    
+    //退住详细信息
+    public ResponseBean<CheckOutDetailDTO> getCheckOutDetail(Integer checkOutRecordId) {
+        CheckOutDetailDTO detail = cord.getCheckOutDetailById(checkOutRecordId);
+        
+        if (detail == null) {
+            return new ResponseBean<>(500, "未找到有效的退住记录或入住信息");
+        }
+        
+        // 计算年龄（已在setIdentity中自动计算）
+        // 清除敏感信息（不返回身份证号给前端）
+        detail.setIdentity(null);
+        
+        return new ResponseBean<>(200,"查询成功",detail);
     }
     
 }

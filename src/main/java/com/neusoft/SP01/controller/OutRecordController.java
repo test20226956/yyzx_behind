@@ -46,7 +46,12 @@ public class OutRecordController {
         return ors.approveOut(outRecordId, state, adminId);
     }
 
-
+    //详情信息
+    @GetMapping("/getRecord")
+    public ResponseBean<OutDetailDTO> getOutDetail(
+    		@RequestParam Integer outRecordId) {
+        return ors.getOutDetail(outRecordId);
+    }
 
 
     //客户管理模块显示老人信息（其实是增加了身份证号，入住时间以及到期时间这三项内容）
