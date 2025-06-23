@@ -7,6 +7,39 @@ public class NursingRecord {
 	private Integer customerId;
 	private Integer count;
 	private Integer userId;
+	private Integer state;//状态 1->有效护理记录
+
+	public NursingRecord(String time, Integer nursingRecordId, Integer nursingServiceId, Integer customerId, Integer count, Integer userId, Integer state) {
+		this.time = time;
+		this.nursingRecordId = nursingRecordId;
+		this.nursingServiceId = nursingServiceId;
+		this.customerId = customerId;
+		this.count = count;
+		this.userId = userId;
+		this.state = state;
+	}
+
+	@Override
+	public String toString() {
+		return "NursingRecord{" +
+				"time='" + time + '\'' +
+				", nursingRecordId=" + nursingRecordId +
+				", nursingServiceId=" + nursingServiceId +
+				", customerId=" + customerId +
+				", count=" + count +
+				", userId=" + userId +
+				", state=" + state +
+				'}';
+	}
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
 	public String getTime() {
 		return time;
 	}

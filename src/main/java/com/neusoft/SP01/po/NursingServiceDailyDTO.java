@@ -8,7 +8,8 @@ public class NursingServiceDailyDTO {
     private Integer customerId;//老人id,这个其实前端也有，但是也加上吧
     private String name;//服务名称，其实就是项目名称
     private Integer amount;
-    private String endTime;//到期时间
+    private String state;//根据数量显示该服务状态
+    private String timeStatus;//到期时间
 
     @Override
     public String toString() {
@@ -17,16 +18,9 @@ public class NursingServiceDailyDTO {
                 ", customerId=" + customerId +
                 ", name='" + name + '\'' +
                 ", amount=" + amount +
-                ", endTime='" + endTime + '\'' +
+                ", state='" + state + '\'' +
+                ", timeStatus='" + timeStatus + '\'' +
                 '}';
-    }
-
-    public NursingServiceDailyDTO(Integer nursingServiceId, Integer customerId, String name, Integer amount, String endTime) {
-        this.nursingServiceId = nursingServiceId;
-        this.customerId = customerId;
-        this.name = name;
-        this.amount = amount;
-        this.endTime = endTime;
     }
 
     public Integer getNursingServiceId() {
@@ -61,12 +55,29 @@ public class NursingServiceDailyDTO {
         this.amount = amount;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public String getState() {
+        return state;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getTimeStatus() {
+        return timeStatus;
+    }
+
+    public void setTimeStatus(String timeStatus) {
+        this.timeStatus = timeStatus;
+    }
+
+    public NursingServiceDailyDTO(Integer nursingServiceId, Integer customerId, String name, Integer amount, String state, String timeStatus) {
+        this.nursingServiceId = nursingServiceId;
+        this.customerId = customerId;
+        this.name = name;
+        this.amount = amount;
+        this.state = state;
+        this.timeStatus = timeStatus;
     }
 
     public NursingServiceDailyDTO() {
