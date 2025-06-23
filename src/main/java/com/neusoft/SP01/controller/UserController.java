@@ -76,7 +76,7 @@ public class UserController {
     }
     
   //删除
-    @PostMapping("/delectUser")
+    @PostMapping("/deleteUser")
     public ResponseBean<String> deleteUser(@RequestParam Integer userId) {
         return us.deleteUser(userId);
     }

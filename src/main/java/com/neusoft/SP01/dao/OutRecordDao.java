@@ -8,8 +8,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.neusoft.SP01.po.CheckOutRecordWithName;
 import com.neusoft.SP01.po.CustOutRecordDTO;
+import com.neusoft.SP01.po.OutDetailDTO;
 import com.neusoft.SP01.po.OutRecord;
 import com.neusoft.SP01.po.OutRecordWithName;
 
@@ -21,9 +21,10 @@ public interface OutRecordDao {
     /*管理员模块*/
 	
 	/*分页查询外出申请记录*/
-	@Select("SELECT r.*, c.name AS customerName " +
+	@Select("SELECT r.*, c.name AS customerName ,c.gender,c.identity,u.user_name AS nurseName " +
             "FROM t_out_record r " +
             "LEFT JOIN t_customer c ON r.customer_id = c.customer_id " +
+            "LEFT JOIN t_user u ON r.nurse_id = u.user_id " +
             "ORDER BY r.apply_time DESC " +
             "LIMIT #{offset}, #{pageSize}")
     List<OutRecordWithName> showGoOut(@Param("offset") long offset, 
@@ -34,9 +35,10 @@ public interface OutRecordDao {
 	
 	/*分页多条件查询*/
 	@Select("<script>" +
-            "SELECT r.*, c.name AS customerName " +
+            "SELECT r.*, c.name AS customerName ,c.gender,c.identity,u.user_name AS nurseName " +
             "FROM t_out_record r " +
             "LEFT JOIN t_customer c ON r.customer_id = c.customer_id " +
+            "LEFT JOIN t_user u ON r.nurse_id = u.user_id " +
             "<where>" +
             "   <if test='customerName != null and customerName != \"\"'>" +
             "       AND c.name LIKE CONCAT('%', #{customerName}, '%')" +
@@ -80,7 +82,6 @@ public interface OutRecordDao {
             @Param("state") Integer state,
             @Param("applyTime") String applyTime);
     
-    
     /*审核*/
     @Update("UPDATE t_out_record " +
             "SET state = #{state}, " +
@@ -95,6 +96,28 @@ public interface OutRecordDao {
     /*根据退住记录ID获取客户ID*/
     @Select("SELECT customer_id FROM t_out_record WHERE out_record_id = #{outRecordId}")
     Integer findCustomerIdByOutId(@Param("outRecordId") Integer outRecordId);
+    
+  //查询详情 根据ID
+    @Select("SELECT cor.*, " +  // 包含t_check_out_record所有字段
+            "c.name AS customerName, " +
+            "c.gender, " +
+            "c.identity, " +
+            "r.building_number AS building, " +
+            "r.floor, " +
+            "r.room_number AS roomNumber, " +
+            "b.bed_number AS bedNumber, " +
+            "u.user_name AS nurseName " +
+            "FROM t_out_record cor " +
+            "JOIN t_customer c ON cor.customer_id = c.customer_id " +
+            "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
+            "JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id " +
+            "JOIN t_bed b ON br.bed_id = b.bed_id " +
+            "JOIN t_room r ON b.room_id = r.room_id " +
+            "JOIN t_user u ON u.user_id = cor.nurse_id " +
+            "WHERE cor.out_record_id = #{outRecordId} " +
+            "AND cir.state = 1 "+
+            "AND br.state=1 ")
+    OutDetailDTO getOutDetailById(@Param("outRecordId") Integer outRecordId);
 	
     
     /*

@@ -50,7 +50,11 @@ public class CheckOutController {
         return cors.approveCheckOut(checkOutRecordId, state, adminId);
     }
     
-    
+    @GetMapping("/getRecord")
+    public ResponseBean<CheckOutDetailDTO> getCheckOutDetail(
+    		@RequestParam Integer checkOutRecordId) {
+        return cors.getCheckOutDetail(checkOutRecordId);
+    }
    
 
     @GetMapping("/showCust")//退住申请显示老人的信息

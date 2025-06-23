@@ -15,13 +15,11 @@ import com.neusoft.SP01.dao.BedDao;
 import com.neusoft.SP01.dao.BedRecordDao;
 import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.OutRecordDao;
-import com.neusoft.SP01.po.CheckOutRecordWithName;
 import com.neusoft.SP01.po.CustOutRecordDTO;
+import com.neusoft.SP01.po.OutDetailDTO;
 import com.neusoft.SP01.po.OutRecordWithName;
 import com.neusoft.SP01.po.PageResponseBean;
 import com.neusoft.SP01.po.ResponseBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 @Transactional(rollbackFor = Exception.class) 
@@ -159,4 +157,18 @@ public class OutRecordService {
         }
     }
     
+  //退住详细信息
+    public ResponseBean<OutDetailDTO> getOutDetail(Integer outRecordId) {
+        OutDetailDTO detail = ord.getOutDetailById(outRecordId);
+        
+        if (detail == null) {
+            return new ResponseBean<>(500, "未找到有效的外出记录或入住信息");
+        }
+        
+        // 计算年龄（已在setIdentity中自动计算）
+        // 清除敏感信息（不返回身份证号给前端）
+        detail.setIdentity(null);
+        
+        return new ResponseBean<>(200,"查询成功",detail);
+    }
 }
