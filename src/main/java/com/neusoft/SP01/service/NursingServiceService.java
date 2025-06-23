@@ -25,10 +25,17 @@ public class NursingServiceService {
         Page<NursingServiceDailyDTO> p =(Page<NursingServiceDailyDTO>)cords;
         // 4. 构建响应对象
         PageResponseBean<List<NursingServiceDailyDTO>> response = new PageResponseBean<>();
-        response.setStatus(200); // 成功状态码
-        response.setMsg("查询成功"); // 成功消息
-        response.setData(p.getResult()); // 当前页数据
-        response.setTotal(p.getTotal()); // 总记录数
+        if(p.getTotal()!=0){
+            response.setStatus(200); // 成功状态码
+            response.setMsg("查询成功"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }else{
+            response.setStatus(500); // 成功状态码
+            response.setMsg("无数据"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }
         return response;
     }
     //对应原型护工 日常护理  按项目名字搜索用户的持有的护理服务
@@ -41,10 +48,17 @@ public class NursingServiceService {
         Page<NursingServiceDailyDTO> p =(Page<NursingServiceDailyDTO>)cords;
         // 4. 构建响应对象
         PageResponseBean<List<NursingServiceDailyDTO>> response = new PageResponseBean<>();
-        response.setStatus(200); // 成功状态码
-        response.setMsg("查询成功"); // 成功消息
-        response.setData(p.getResult()); // 当前页数据
-        response.setTotal(p.getTotal()); // 总记录数
+        if(p.getTotal()!=0){
+            response.setStatus(200); // 成功状态码
+            response.setMsg("查询成功"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }else{
+            response.setStatus(500); // 成功状态码
+            response.setMsg("无数据"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }
         return response;
     }
     
