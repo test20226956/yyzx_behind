@@ -57,9 +57,13 @@ public class OutRecordController {
         return userCustManage;
     }
 
-    @PostMapping("/addGoOutRe")
-    public ResponseBean<Integer> addGoOutRe(OutRecord outRecord){
-        return null;
+    @PostMapping("/addGoOutRe")//护工添加老人的外出申请
+    public ResponseBean<Integer> addGoOutRe(@RequestBody OutRecord outRecord){
+        if(ors.addOutRecord(outRecord)){
+            return new ResponseBean<>(null);
+        }else{
+            return new ResponseBean<>(500,"添加失败");
+        }
     }
 
     @GetMapping("/searchCust")//客户管理模块根据老人姓名模糊搜索
@@ -76,9 +80,13 @@ public class OutRecordController {
         return outRecordByCustomerId;
     }
 
-    @PostMapping("/custGoOutCome")
-    public ResponseBean<Integer> custGoOutCome(OutRecord outRecord){
-        return null;
+    @PostMapping("/custGoOutCome")//给老人添加回院时间
+    public ResponseBean<Integer> custGoOutCome(Integer outRecordId){
+        if(ors.AddActualReturnTime(outRecordId)){
+            return new ResponseBean<>(null);
+        }else{
+            return new ResponseBean<>(500,"添加失败");
+        }
     }
 
     @GetMapping("/searchCustGoOutRe")

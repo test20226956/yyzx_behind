@@ -22,9 +22,10 @@ public class NursingRecordService {
     private NursingServiceDao nsd;
     //添加老人护理记录
     @Transactional
-    public void addNursingRecord(NursingRecord nr){
+    public boolean addNursingRecord(NursingRecord nr){
         nrd.addNursingRecord(nr);// 插入护理记录
         nsd.updateNursingServiceAmount(nr.getCount(),nr.getNursingServiceId());//// 更新剩余服务次数
+        return true;
     }
     //展示老人所有的护理记录（护工 健康管家 护理记录）
     public PageResponseBean<List<CustNursingRecordDTO>> findByCustomerId(Integer pageNum, Integer pageSize, Integer customerId){
@@ -36,11 +37,23 @@ public class NursingRecordService {
         Page<CustNursingRecordDTO> p =(Page<CustNursingRecordDTO>)cords;
         // 4. 构建响应对象
         PageResponseBean<List<CustNursingRecordDTO>> response = new PageResponseBean<>();
-        response.setStatus(200); // 成功状态码
-        response.setMsg("查询成功"); // 成功消息
-        response.setData(p.getResult()); // 当前页数据
-        response.setTotal(p.getTotal()); // 总记录数
+        if(p.getTotal()!=0){
+            response.setStatus(200); // 成功状态码
+            response.setMsg("查询成功"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }else{
+            response.setStatus(500); // 成功状态码
+            response.setMsg("无数据"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }
         return response;
+    }
+    //逻辑删除老人的护理记录
+    public boolean deleteByIds(List<Integer> ids){
+        nrd.deleteByIds(ids);
+        return true;
     }
     
 }

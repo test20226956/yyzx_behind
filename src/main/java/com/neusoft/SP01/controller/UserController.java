@@ -3,7 +3,13 @@ package com.neusoft.SP01.controller;
 
 import java.util.List;
 
+import com.neusoft.SP01.po.*;
+import com.neusoft.SP01.service.CustomerService;
+import com.neusoft.SP01.service.NursingRecordService;
+import com.neusoft.SP01.service.NursingServiceService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +53,7 @@ public class UserController {
     public PageResponseBean<List<User>> getRegularUsers(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize) {
-        
+
         return us.getRegularUsers(pageNum, pageSize);
     }
     //搜索
@@ -58,23 +64,23 @@ public class UserController {
             @RequestParam(required = false) String employmentDate,
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize) {
-        
+
         return us.searchRegularUsers(
                 userName, account, employmentDate, pageNum, pageSize);
     }
-    
+
     //新增员工
     @PostMapping("/addUser")
     public ResponseBean<String> addUser(@RequestBody User user) {
         return us.addUser(user);
     }
-    
+
     //更新
     @PostMapping("/editUser")
     public ResponseBean<String> updateUser(@RequestBody User user) {
         return us.updateUser(user);
     }
-    
+
   //删除
     @PostMapping("/delectUser")
     public ResponseBean<String> deleteUser(@RequestParam Integer userId) {
@@ -131,9 +137,14 @@ public class UserController {
         return nursingServiceByName;
     }
 
-    @PostMapping("/addCareRecord")
-    public ResponseBean<Integer> addCareRecord(String custProRe, NursingRecord nursingRecord){
-        return null;
+    @PostMapping("/addCareRecord")//护工->添加客户护理记录
+    public ResponseBean<Integer> addCareRecord(@RequestBody NursingRecord nursingRecord){
+
+        if(nrs.addNursingRecord(nursingRecord)){
+            return new ResponseBean<>(null);
+        }else{
+            return new ResponseBean<>(500,"添加失败");
+        }
     }
 
     @GetMapping("/showCareRecord")//展示老人所有的护理记录（护工 健康管家 护理记录）
@@ -141,5 +152,13 @@ public class UserController {
                                                           @RequestParam(defaultValue = "4")Integer pageSize,Integer customerId){
         PageResponseBean<List<CustNursingRecordDTO>> cnrd = nrs.findByCustomerId(pageNum, pageSize, customerId);
         return cnrd;
+    }
+    @PostMapping("/deleteCareRecord")//护理记录移除（隐藏）
+    public ResponseBean<Integer> deleteCareRecord(@RequestParam("ids") List<Integer> ids){
+        if(nrs.deleteByIds(ids)){
+            return new ResponseBean<>(null);
+        }else{
+            return new ResponseBean<>(500,"删除失败");
+        }
     }
 }
