@@ -1,6 +1,10 @@
 package com.neusoft.SP01.po;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 public class User {
+	@TableId(value = "user_id", type = IdType.AUTO)
 	private Integer userId;
 	private String account;
 	private String userName;
@@ -9,6 +13,15 @@ public class User {
 	private String  email;
 	private String employmentDate;
 	private Integer type;
+	private Integer state;
+	
+	
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	public Integer getUserId() {
 		return userId;
 	}

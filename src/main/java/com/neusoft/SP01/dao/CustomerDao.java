@@ -32,7 +32,7 @@ public interface CustomerDao {
 	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel, " +
 	        
 	        "br.bed_record_id as br_bed_record_id, br.bed_id as br_bed_id, " +
-	        "br.check_in_id as br_check_in_id, br.state as br_state, " +
+	        "br.check_in_record_id as br_check_in_record_id, br.state as br_state, " +
 	        "br.start_time as br_start_time, br.end_time as br_end_time, " +
 	        
 	        "b.bed_id as b_bed_id, b.room_id as b_room_id, b.bed_number as b_bed_number, b.available as b_available, " +
@@ -42,7 +42,7 @@ public interface CustomerDao {
 	        "FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
 	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
-	        "JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_id AND br.state = 1 " +
+	        "JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
 	        "JOIN t_bed b ON br.bed_id = b.bed_id " +
 	        "JOIN t_room r ON b.room_id = r.room_id " +
 	        "WHERE c.type = '0' AND cir.state = 1 " +
@@ -79,7 +79,7 @@ public interface CustomerDao {
 	    // BedRecord映射
 	    @Result(property = "bedRecord.bedRecordId", column = "br_bed_record_id"),
 	    @Result(property = "bedRecord.bedId", column = "br_bed_id"),
-	    @Result(property = "bedRecord.checkInId", column = "br_check_in_id"),
+	    @Result(property = "bedRecord.checkInRecordId", column = "br_check_in_record_id"),
 	    @Result(property = "bedRecord.state", column = "br_state"),
 	    @Result(property = "bedRecord.startTime", column = "br_start_time"),
 	    @Result(property = "bedRecord.endTime", column = "br_end_time"),
@@ -118,7 +118,7 @@ public interface CustomerDao {
 	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel, " +
 	        
 	        "br.bed_record_id as br_bed_record_id, br.bed_id as br_bed_id, " +
-	        "br.check_in_id as br_check_in_id, br.state as br_state, " +
+	        "br.check_in_record_id as br_check_in_record_id, br.state as br_state, " +
 	        "br.start_time as br_start_time, br.end_time as br_end_time, " +
 	        
 	        "b.bed_id as b_bed_id, b.room_id as b_room_id, b.bed_number as b_bed_number, b.available as b_available, " +
@@ -128,7 +128,7 @@ public interface CustomerDao {
 	        "FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
 	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
-	        "JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_id AND br.state = 1 " +
+	        "JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
 	        "JOIN t_bed b ON br.bed_id = b.bed_id " +
 	        "JOIN t_room r ON b.room_id = r.room_id " +
 	        "WHERE c.type = '1' AND cir.state = 1 " +
@@ -165,7 +165,7 @@ public interface CustomerDao {
 	    // BedRecord映射
 	    @Result(property = "bedRecord.bedRecordId", column = "br_bed_record_id"),
 	    @Result(property = "bedRecord.bedId", column = "br_bed_id"),
-	    @Result(property = "bedRecord.checkInId", column = "br_check_in_id"),
+	    @Result(property = "bedRecord.checkInRecordId", column = "br_check_in_record_id"),
 	    @Result(property = "bedRecord.state", column = "br_state"),
 	    @Result(property = "bedRecord.startTime", column = "br_start_time"),
 	    @Result(property = "bedRecord.endTime", column = "br_end_time"),
@@ -204,7 +204,7 @@ public interface CustomerDao {
 	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel, " +
 	        
 	        "br.bed_record_id as br_bed_record_id, br.bed_id as br_bed_id, " +
-	        "br.check_in_id as br_check_in_id, br.state as br_state, " +
+	        "br.check_in_record_id as br_check_in_record_id, br.state as br_state, " +
 	        "br.start_time as br_start_time, br.end_time as br_end_time, " +
 	        
 	        "b.bed_id as b_bed_id, b.room_id as b_room_id, b.bed_number as b_bed_number, b.available as b_available, " +
@@ -214,7 +214,7 @@ public interface CustomerDao {
 	        "FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
 	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
-	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_id AND br.state = 1 " +
+	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
 	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
 	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
 	        "WHERE cir.state = 1 " +
@@ -261,7 +261,7 @@ public interface CustomerDao {
 	    // BedRecord映射
 	    @Result(property = "bedRecord.bedRecordId", column = "br_bed_record_id"),
 	    @Result(property = "bedRecord.bedId", column = "br_bed_id"),
-	    @Result(property = "bedRecord.checkInId", column = "br_check_in_id"),
+	    @Result(property = "bedRecord.checkInRecordId", column = "br_check_in_record_id"),
 	    @Result(property = "bedRecord.state", column = "br_state"),
 	    @Result(property = "bedRecord.startTime", column = "br_start_time"),
 	    @Result(property = "bedRecord.endTime", column = "br_end_time"),

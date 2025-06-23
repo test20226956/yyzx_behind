@@ -3,23 +3,27 @@ package com.neusoft.SP01.controller;
 
 import java.util.List;
 
-
-import com.neusoft.SP01.po.*;
-import com.neusoft.SP01.service.CustomerService;
-import com.neusoft.SP01.service.NursingRecordService;
-import com.neusoft.SP01.service.NursingServiceService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.neusoft.SP01.po.CustDailyNursingDTO;
+import com.neusoft.SP01.po.CustNursingRecordDTO;
+import com.neusoft.SP01.po.Customer;
+import com.neusoft.SP01.po.NursingRecord;
+import com.neusoft.SP01.po.NursingServiceDailyDTO;
+import com.neusoft.SP01.po.PageResponseBean;
+import com.neusoft.SP01.po.ResponseBean;
+import com.neusoft.SP01.po.User;
+import com.neusoft.SP01.service.CustomerService;
+import com.neusoft.SP01.service.NursingRecordService;
+import com.neusoft.SP01.service.NursingServiceService;
 import com.neusoft.SP01.service.UserService;
-
-import java.util.List;
 
 @CrossOrigin("*")
 @RequestMapping("/UserController")
@@ -33,12 +37,12 @@ public class UserController {
     private NursingServiceService nss;
     @Autowired
     private NursingRecordService nrs;
-
+    //登录
 	@GetMapping("/login")
     public ResponseBean<?> login(String account,String password) {
         return us.login(account, password);
     }
-
+	//展示
     @GetMapping("/showUser")
     public PageResponseBean<List<User>> getRegularUsers(
             @RequestParam(defaultValue = "1") Integer pageNum,
@@ -46,10 +50,35 @@ public class UserController {
         
         return us.getRegularUsers(pageNum, pageSize);
     }
-
+    //搜索
     @GetMapping("/searchUser")
-    public PageResponseBean<User> searchUser(String userName){
-        return null;
+    public PageResponseBean<List<User>> searchRegularUsers(
+            @RequestParam(required = false) String userName,
+            @RequestParam(required = false) String account,
+            @RequestParam(required = false) String employmentDate,
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        
+        return us.searchRegularUsers(
+                userName, account, employmentDate, pageNum, pageSize);
+    }
+    
+    //新增员工
+    @PostMapping("/addUser")
+    public ResponseBean<String> addUser(@RequestBody User user) {
+        return us.addUser(user);
+    }
+    
+    //更新
+    @PostMapping("/editUser")
+    public ResponseBean<String> updateUser(@RequestBody User user) {
+        return us.updateUser(user);
+    }
+    
+  //删除
+    @PostMapping("/delectUser")
+    public ResponseBean<String> deleteUser(@RequestParam Integer userId) {
+        return us.deleteUser(userId);
     }
 
     @GetMapping("/showUserCust")//这里应该新建一个DTO对应展示
@@ -87,15 +116,6 @@ public class UserController {
         return null;
     }
 
-    @PostMapping("/addUser")
-    public ResponseBean<Integer> addUser(User user){
-        return null;
-    }
-
-    @PostMapping("/editUser")
-    public ResponseBean<Integer> editUser(User user){
-        return null;
-    }
 
     @GetMapping("/showCustPro")/*======对应原型护工 日常护理 显示用户的护理服务=====*/
     public PageResponseBean<List<NursingServiceDailyDTO>> showCustPro(@RequestParam(defaultValue = "1")Integer pageNum,

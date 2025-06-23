@@ -28,13 +28,13 @@ public class CustomerController {
 	
 	// 搜索所有自理老人(分页)
     @GetMapping("/showSelfCust")
-    public PageResponseBean<?> showSelfCust(long pageNum,long pageSize){
+    public PageResponseBean<?> showSelfCust(@RequestParam(defaultValue = "1") long pageNum,@RequestParam(defaultValue = "10")long pageSize){
     	return cs.getSelfCareCustomersByPage(pageNum, pageSize);
     }
     
     // 搜索所有护理老人(分页)
     @GetMapping("/showCareCust")
-    public PageResponseBean<?>showCareCust(long pageNum,long pageSize){
+    public PageResponseBean<?>showCareCust(@RequestParam(defaultValue = "1") long pageNum,@RequestParam(defaultValue = "10") long pageSize){
         return cs.getCareCustomersByPage(pageNum,pageSize);
     }
     // 按条件搜索老人(分页)
