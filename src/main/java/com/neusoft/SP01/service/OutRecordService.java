@@ -3,6 +3,7 @@ package com.neusoft.SP01.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.neusoft.SP01.po.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,6 @@ import com.neusoft.SP01.dao.BedDao;
 import com.neusoft.SP01.dao.BedRecordDao;
 import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.OutRecordDao;
-import com.neusoft.SP01.po.CheckOutRecordWithName;
-import com.neusoft.SP01.po.CustOutRecordDTO;
-import com.neusoft.SP01.po.OutRecordWithName;
-import com.neusoft.SP01.po.PageResponseBean;
-import com.neusoft.SP01.po.ResponseBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,13 +41,31 @@ public class OutRecordService {
         Page<CustOutRecordDTO> p =(Page<CustOutRecordDTO>)cords;
         // 4. 构建响应对象
         PageResponseBean<List<CustOutRecordDTO>> response = new PageResponseBean<>();
-        response.setStatus(200); // 成功状态码
-        response.setMsg("查询成功"); // 成功消息
-        response.setData(p.getResult()); // 当前页数据
-        response.setTotal(p.getTotal()); // 总记录数
+        if(p.getTotal()!=0){
+            response.setStatus(200); // 成功状态码
+            response.setMsg("查询成功"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }else{
+            response.setStatus(500); // 成功状态码
+            response.setMsg("无数据"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }
         return response;
     }
-    
+    //护工添加老人的外出申请
+    public boolean addOutRecord(OutRecord or){
+        or.setApplyTime(LocalDate.now().toString());
+        ord.addOutRecord(or);
+        return true;
+    }
+    //给用户添加回院时间
+    public boolean AddActualReturnTime(Integer outRecordId){
+        String actualReturnTime = LocalDate.now().toString();
+        ord.AddActualReturnTime(outRecordId,actualReturnTime);
+        return true;
+    }
  // 展示所有退住申请（分页）
     public PageResponseBean<List<OutRecordWithName>> showGoOut(long pageNum, long pageSize) {
     	//计算偏移量

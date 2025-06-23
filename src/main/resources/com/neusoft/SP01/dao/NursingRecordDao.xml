@@ -13,7 +13,7 @@
                 JOIN
             t_nursing_project np ON ns.nursing_project_id = np.nursing_project_id
         WHERE
-            nr.customer_id = #{customerId}
+            nr.customer_id = #{customerId} and nr.state=1
         ORDER BY
             nr.time DESC
     </select>
@@ -29,7 +29,7 @@
                 JOIN
             t_nursing_project np ON ns.nursing_project_id = np.nursing_project_id
         <where>
-            nr.customer_id = #{customerId}
+            nr.customer_id = #{customerId} and nr.state=1
             <if test="name != null and name != ''">
                 AND np.name LIKE CONCAT('%', #{name}, '%')
             </if>
@@ -40,12 +40,14 @@
         ORDER BY
             nr.time DESC;
     </select>
-    <delete id="deleteByIds">
-        delete
-        from t_nursing_record where nursing_record_id in
+    <update id="deleteByIds">
+        update
+        t_nursing_record
+        set state=0
+        where nursing_record_id in
         <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
-    </delete>
+    </update>
 
 </mapper>

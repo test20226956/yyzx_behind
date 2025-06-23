@@ -4,26 +4,41 @@
 
     <select id="findNursingServiceByCustomerId" resultType="com.neusoft.SP01.po.NursingServiceDailyDTO">
         SELECT
-            nursing_service_id,
-            customer_id,
-            name,
-            amount,
-            end_time
-        from t_nursing_service ns
-        join t_nursing_project np
-        on ns.nursing_project_id=np.nursing_project_id
-        WHERE customer_id=#{customerId}
+            ns.nursing_service_id,
+            ns.customer_id,
+            np.NAME,
+            ns.amount,
+            CASE
+                WHEN ns.amount >= 0 THEN '数量正常'
+                ELSE '欠费'
+                END AS state,
+            CASE
+                WHEN ns.end_time &lt; CURRENT_TIMESTAMP THEN '到期'
+                ELSE '未到期'
+                END AS time_status
+        FROM
+            t_nursing_service ns
+                JOIN t_nursing_project np ON ns.nursing_project_id = np.nursing_project_id
+        WHERE
+            ns.customer_id = #{customerId}
     </select>
     <select id="findNursingServiceByName" resultType="com.neusoft.SP01.po.NursingServiceDailyDTO">
         SELECT
-            nursing_service_id,
-            customer_id,
-            name,
-            amount,
-            end_time
-        from t_nursing_service ns
-                 join t_nursing_project np
-                      on ns.nursing_project_id=np.nursing_project_id
+            ns.nursing_service_id,
+            ns.customer_id,
+            np.NAME,
+            ns.amount,
+            CASE
+                WHEN ns.amount >= 0 THEN '数量正常'
+                ELSE '欠费'
+                END AS state,
+            CASE
+                WHEN ns.end_time &lt; CURRENT_TIMESTAMP THEN '到期'
+                ELSE '未到期'
+                END AS time_status
+        FROM
+            t_nursing_service ns
+                JOIN t_nursing_project np ON ns.nursing_project_id = np.nursing_project_id
         WHERE customer_id=#{customerId} and np.name like concat('%',#{name},'%')
     </select>
 </mapper>

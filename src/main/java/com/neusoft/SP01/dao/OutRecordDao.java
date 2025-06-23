@@ -101,7 +101,7 @@ public interface OutRecordDao {
     护工模块下的客户管理外出记录
      */
     //添加用户的外出记录
-    @Insert("insert into yyzx_st.t_out_record values (null,#{customerId},#{applyTime},#{examineTime},#{state},#{adminId},#{reason},#{outTime},#{expectedReturnTime},#{nurseId},#{actualReturnTime})")
+    @Insert("insert into yyzx_st.t_out_record values (null,#{customerId},#{applyTime},#{examineTime},0,#{adminId},#{reason},#{outTime},#{expectedReturnTime},#{nurseId},null)")
     void addOutRecord(OutRecord or);
     //根据老人查找对应的外出申请(外出申请功能页面中点击老人的申请记录)（多表查询 t_out_record t_customer）
     List<CustOutRecordDTO> findOutRecordByCustomerId(Integer customerId);
