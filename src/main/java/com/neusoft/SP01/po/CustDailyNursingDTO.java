@@ -13,6 +13,8 @@ public class CustDailyNursingDTO {
     private String roomNumber;//房间号
     private String fName;//联系人姓名
     private String tel;//联系方式
+    private Integer nursingLevelId;//护理级别
+    private String bedNumber;//床号
 
     @Override
     public String toString() {
@@ -26,6 +28,8 @@ public class CustDailyNursingDTO {
                 ", roomNumber='" + roomNumber + '\'' +
                 ", fName='" + fName + '\'' +
                 ", tel='" + tel + '\'' +
+                ", nursingLevelId=" + nursingLevelId +
+                ", bedNumber=" + bedNumber +
                 '}';
     }
 
@@ -101,7 +105,23 @@ public class CustDailyNursingDTO {
         this.tel = tel;
     }
 
-    public CustDailyNursingDTO(Integer customerId, String name, Integer age, String gender, String bloodType, Integer floor, String roomNumber, String fName, String tel) {
+    public Integer getNursingLevelId() {
+        return nursingLevelId;
+    }
+
+    public void setNursingLevelId(Integer nursingLevelId) {
+        this.nursingLevelId = nursingLevelId;
+    }
+
+    public String getBedNumber() {
+        return bedNumber;
+    }
+
+    public void setBedNumber(String bedNumber) {
+        this.bedNumber = bedNumber;
+    }
+
+    public CustDailyNursingDTO(Integer customerId, String name, Integer age, String gender, String bloodType, Integer floor, String roomNumber, String fName, String tel, Integer nursingLevelId, String bedNumber) {
         this.customerId = customerId;
         this.name = name;
         this.age = age;
@@ -111,6 +131,8 @@ public class CustDailyNursingDTO {
         this.roomNumber = roomNumber;
         this.fName = fName;
         this.tel = tel;
+        this.nursingLevelId = nursingLevelId;
+        this.bedNumber = bedNumber;
     }
 
     public CustDailyNursingDTO() {

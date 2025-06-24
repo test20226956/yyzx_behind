@@ -28,8 +28,8 @@ public class NursingRecordService {
         return true;
     }
     //展示老人所有的护理记录（护工 健康管家 护理记录）
-    public PageResponseBean<List<CustNursingRecordDTO>> findByCustomerId(Integer pageNum, Integer pageSize, Integer customerId){
-        //设置分页参数
+    public List<CustNursingRecordDTO> findByCustomerId(Integer customerId){
+       /* //设置分页参数
         PageHelper.startPage(pageNum, pageSize);
         //执行查询
         List<CustNursingRecordDTO> cords = nrd.findByCustomerId(customerId);
@@ -48,7 +48,9 @@ public class NursingRecordService {
             response.setData(p.getResult()); // 当前页数据
             response.setTotal(p.getTotal()); // 总记录数
         }
-        return response;
+        return response;*/
+        List<CustNursingRecordDTO> cords = nrd.findByCustomerId(customerId);
+        return cords;
     }
     //逻辑删除老人的护理记录
     public boolean deleteByIds(List<Integer> ids){
