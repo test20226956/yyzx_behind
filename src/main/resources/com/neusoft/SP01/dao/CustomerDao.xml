@@ -7,11 +7,20 @@
             c.name,
             YEAR(CURDATE()) - SUBSTRING(c.identity, 7, 4) AS age,
             CASE c.gender WHEN 0 THEN '男' WHEN 1 THEN '女' ELSE '未知' END AS gender,
-    c.blood_type ,
-    r.floor ,
-    r.room_number ,
+    c.blood_type,
+    r.floor,
+    r.room_number,
     f.name AS fName,
-    f.tel
+    f.tel,
+    cir.nursing_level_id,
+    CASE
+        WHEN b.bed_number = 1 THEN '一床'
+        WHEN b.bed_number = 2 THEN '二床'
+        WHEN b.bed_number = 3 THEN '三床'
+        WHEN b.bed_number = 4 THEN '四床'
+        WHEN b.bed_number = 5 THEN '五床'
+        ELSE CONCAT(b.bed_number, '床')
+        END AS bed_number
 FROM
     t_customer c
 JOIN
@@ -24,8 +33,8 @@ JOIN
     t_room r ON b.room_id = r.room_id
 LEFT JOIN
     t_family f ON c.customer_id = f.customer_id
-where
-    user_id=#{userId}
+WHERE
+    user_id = #{user_id}
 ORDER BY
     c.customer_id
     </select>
@@ -39,7 +48,16 @@ ORDER BY
             r.floor ,
             r.room_number ,
             f.name AS fName,
-            f.tel
+            f.tel,
+            cir.nursing_level_id,
+            CASE
+                WHEN b.bed_number = 1 THEN '一床'
+                WHEN b.bed_number = 2 THEN '二床'
+                WHEN b.bed_number = 3 THEN '三床'
+                WHEN b.bed_number = 4 THEN '四床'
+                WHEN b.bed_number = 5 THEN '五床'
+                ELSE CONCAT(b.bed_number, '床')
+                END AS bed_number
 FROM
     t_customer c
 JOIN

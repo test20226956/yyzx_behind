@@ -11,21 +11,20 @@ public class CustNursingManageDTO extends CustDailyNursingDTO{
     public CustNursingManageDTO() {
     }
 
-    public CustNursingManageDTO(Integer customerId, String name, Integer age, String gender, String bloodType, Integer floor, String roomNumber, String fName, String tel, String identity, String checkInTime, String endTime) {
-        super(customerId, name, age, gender, bloodType, floor, roomNumber, fName, tel);
-        this.identity = identity;
-        this.checkInTime = checkInTime;
-        this.endTime = endTime;
-    }
-
     @Override
     public String toString() {
         return "CustNursingManageDTO{" +
-                super.toString() + // 调用父类toString()
-                ", identity='" + identity + '\'' +
+                "identity='" + identity + '\'' +
                 ", checkInTime='" + checkInTime + '\'' +
                 ", endTime='" + endTime + '\'' +
                 '}';
+    }
+
+    public CustNursingManageDTO(Integer customerId, String name, Integer age, String gender, String bloodType, Integer floor, String roomNumber, String fName, String tel, Integer nursingLevelId, String bedNumber, String identity, String checkInTime, String endTime) {
+        super(customerId, name, age, gender, bloodType, floor, roomNumber, fName, tel, nursingLevelId, bedNumber);
+        this.identity = identity;
+        this.checkInTime = checkInTime;
+        this.endTime = endTime;
     }
 
     public String getIdentity() {

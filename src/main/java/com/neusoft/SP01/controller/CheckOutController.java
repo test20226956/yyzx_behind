@@ -4,12 +4,7 @@ import java.util.List;
 
 import com.neusoft.SP01.po.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.neusoft.SP01.service.CheckOutRecordService;
 import com.neusoft.SP01.service.CustomerService;
@@ -69,14 +64,20 @@ public class CheckOutController {
         PageResponseBean<List<CustNursingManageDTO>> userCustManageByName = cs.findUserCustManageByName(pageNum, pageSize, userId, name);
         return userCustManageByName;
     }
-    @PostMapping("/addCheckOutRe")
-    public ResponseBean<Integer> addCheckOutRe(CheckOutRecord checkOutRecord){
-        return null;
+    @PostMapping("/addCheckOutRe")//为老人添加退住记录
+    public ResponseBean<Integer> addCheckOutRe(@RequestBody CheckOutRecord checkOutRecord){
+        if(cors.InsertCheckOutRecord(checkOutRecord)){
+            return new ResponseBean<>(null);
+        }else{
+            return new ResponseBean<>(500,"添加失败");
+        }
     }
 
-    @GetMapping("/showCustCheckOutRe")
-    public PageResponseBean<CheckOutRecord> showCustCheckOutRe(String userId){
-        return null;
+    @GetMapping("/showCustCheckOutRe")//展示老人所有的退住记录
+    public PageResponseBean<List<CustCheckOutDTO>> showCustCheckOutRe(@RequestParam(defaultValue = "1")Integer pageNum,
+                                                                      @RequestParam(defaultValue = "4")Integer pageSize,Integer customerId){
+        PageResponseBean<List<CustCheckOutDTO>> checkOutRecordByCustomerId = cors.findCheckOutRecordByCustomerId(pageNum,pageSize,customerId);
+        return checkOutRecordByCustomerId;
     }
 
     @GetMapping("/searchCustCheckOutRe")

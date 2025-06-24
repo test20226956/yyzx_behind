@@ -148,10 +148,13 @@ public class UserController {
     }
 
     @GetMapping("/showCareRecord")//展示老人所有的护理记录（护工 健康管家 护理记录）
-    public PageResponseBean<List<CustNursingRecordDTO>> shoeCareRecord(@RequestParam(defaultValue = "1")Integer pageNum,
-                                                          @RequestParam(defaultValue = "4")Integer pageSize,Integer customerId){
-        PageResponseBean<List<CustNursingRecordDTO>> cnrd = nrs.findByCustomerId(pageNum, pageSize, customerId);
-        return cnrd;
+    public ResponseBean<List<CustNursingRecordDTO>> shoeCareRecord(Integer customerId){
+        List<CustNursingRecordDTO> cnrd = nrs.findByCustomerId(customerId);
+        if(cnrd!=null){
+            return new ResponseBean<>(200,"查询成功",cnrd);
+        }else {
+            return new ResponseBean<>(500,"无数据");
+        }
     }
     @PostMapping("/deleteCareRecord")//护理记录移除（隐藏）
     public ResponseBean<Integer> deleteCareRecord(@RequestParam("ids") List<Integer> ids){
