@@ -58,18 +58,47 @@ public interface NursingLevelDao {
     
     //删除护理级别
     @Update("update t_nursing_level set state=0 where nursing_level_id=#{NursingLevelId}")
-    int deleteNursingLevel(Integer nursingLevelId);
+    int deleteNursingLevel(@Param("nursingLevelId") Integer nursingLevelId);
     
+    // 查询该级别下有的项目
+    @Select("SELECT p.* FROM t_nursing_project p " +
+            "JOIN t_nursing_level_project lp ON p.nursing_project_id = lp.nursing_project_id " +
+            "WHERE lp.nursing_level_id = #{nursingLevelId} " +
+            "AND lp.state = 1 " +
+            "AND p.state = 1")
+    List<NursingProject> showNursingPro(@Param("nursingLevelId") Integer nursingLevelId);
+    
+    //查询该级别下没有的项目 
+    @Select("SELECT * FROM t_nursing_project " +
+            "WHERE state = 1 " +
+            "AND nursing_project_id NOT IN (" +
+            "   SELECT nursing_project_id FROM t_nursing_level_project " +
+            "   WHERE nursing_level_id = #{nursingLevelId} AND state = 1" +
+            ")")
+    List<NursingProject> findAvailableProjectsForLevel(@Param("nursingLevelId") Integer nursingLevelId);
+    
+    //修改护理级别
+    @Update("UPDATE t_nursing_level " +
+            "SET name = #{name}, " +
+            "state = #{state} " +
+            "WHERE nursing_level_id = #{nursingLevelId}")
+    int updateNursingLevel(NursingLevel nursingLevel);
     // 按照id查询
     @Select("select *  from t_nursing_level where nursing_level_id=#{nursingLevelId}")
     NursingLevel selectById(Integer nursingLevelId);
+    
+ // 按照id查询
+    @Select("select *  from t_nursing_level where state=1")
+    List<NursingLevel> showOk();
+    
+    
+    /*---------------------------------------------------------*/
+    
+    
     // 按照级别名称查询(应该就返回一个查询到的护理级别吧？)
     @Select("select *  from yyzx_st.t_nursing_level where name=#{name}")
     NursingLevel findNursingLevelByName(String name);
-    //展示护理级别下所有的项目(应该要多表查询 联合护理项目 返回护理项目)
-    List<NursingProject> findNursingProjectInLevel(Integer id);
-    //展示护理级别下所有未包括的项目(应该要多表查询 联合护理项目 返回护理项目)
-    List<NursingProject> findNursingProjectNotInLevel(Integer id);
+
     //修改护理级别的状态
     @Update("update yyzx_st.t_nursing_level set state=#{state} where nursing_level_id=#{NursingLevelId}")
     void updateByState(NursingLevel nl);

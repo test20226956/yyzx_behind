@@ -1,49 +1,62 @@
 
 package com.neusoft.SP01.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.neusoft.SP01.po.NursingProject;
 import com.neusoft.SP01.po.PageResponseBean;
 import com.neusoft.SP01.po.ResponseBean;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import com.neusoft.SP01.service.NursingProjectService;
 
 @RestController
 @RequestMapping("/NursingProjectController")
 @CrossOrigin("*")
 public class NursingProjectController {
-
-    // 护理项目
-    // 展示所有护理项目 (默认是搜索启用的）
-    @GetMapping("/showNursingPro")
-    public PageResponseBean<List<NursingProject>> showNursingPro(Long cur, Long pageSize){
-        return null;
-    }
-
-    // 搜索项目 - 根据状态和名称搜索
-    @GetMapping("/shearchNursingPro")
-    public PageResponseBean<List<NursingProject>> searchNursingPro(NursingProject nursingPro, Long cur,Long pageSize){
-        return null;
+	
+	@Autowired
+	private NursingProjectService nps;
+	//显示及查询
+	@GetMapping("/searchNursingPro")
+    public PageResponseBean<List<NursingProject>> searchProjects(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer state,
+            @RequestParam(defaultValue = "1") Long pageNum,
+            @RequestParam(defaultValue = "10") Long pageSize) {
+        
+        return nps.searchProjects(name, state, pageNum, pageSize);
     }
 
     // 添加护理项目
     @PostMapping("/addNursingPro")
-    public ResponseBean<Integer> addNursingPro(NursingProject nursingPro){
-        return null;
+    public ResponseBean<Integer> addNursingProject(@RequestBody NursingProject nursingProject) {
+        return nps.addNursingProject(nursingProject);
     }
-
-    // 编辑项目 - 当启用变禁用时，级别下的这个项目要被隐藏
+    //编辑
     @PostMapping("/editNursingPro")
-    public ResponseBean<Integer> editNursingPro(NursingProject nursingPro){
-        return null;
+    public ResponseBean<String> updateProject(@RequestBody NursingProject nursingProject) {
+        return nps.updateNursingProject(nursingProject);
     }
-
-    // 删除现有项目
+    
+ // 删除现有项目
     @PostMapping("/deleteNursingPro")
-    public ResponseBean<Integer> deleteNursingPro(Integer proId){
-        return null;
+    public ResponseBean<Integer> deleteNursingPro(@RequestParam Integer nursingProjectId){
+    	return nps.deleteNursingPro(nursingProjectId);
     }
 
+    
+    /*------------------------------------------------------------*/
+    
+
+   
 
     //服务关注部分
 
@@ -53,11 +66,7 @@ public class NursingProjectController {
         return null;
     }
 
-    // 搜索项目（非分页）
-    @GetMapping("/searchNursingPro")
-    public ResponseBean<List<NursingProject>> searchNursingPro(String name){
-        return null;
-    }
+    
     
 
 

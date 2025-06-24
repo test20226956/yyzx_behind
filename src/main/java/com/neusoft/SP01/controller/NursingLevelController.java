@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.neusoft.SP01.po.NursingLevel;
+import com.neusoft.SP01.po.NursingLevelProjectsDTO;
 import com.neusoft.SP01.po.NursingProject;
 import com.neusoft.SP01.po.PageResponseBean;
 import com.neusoft.SP01.po.ResponseBean;
@@ -44,13 +45,44 @@ public class NursingLevelController {
     public ResponseBean<Integer> deleteNursingLevel(@RequestParam Integer nursingLevelId) {
         return nls.deleteNursingLevel(nursingLevelId);
     }
-    
-
-    //修改护理级别 —— 只修改状态
-    @PostMapping("/editNursingLevel")
-    public ResponseBean<Integer> editNursingLevel(NursingLevel nursingLevel) {
-        return null;
+    //展示已有的项目
+    @GetMapping("/showNursingPro")
+    public ResponseBean<List<NursingProject>> showNursingPro(@RequestParam Integer nursingLevelId){
+    	return nls.showNursingPro(nursingLevelId);
+    	
     }
+    //展示没有的项目
+    @GetMapping("/showUnNursingPro")
+    public ResponseBean<List<NursingProject>> getAvailableProjects(
+            @RequestParam Integer nursingLevelId) {
+        return nls.getAvailableProjects(nursingLevelId);
+    }
+    //编辑
+    @PostMapping("/editNursingLevel")
+    public ResponseBean<Integer> editNursingLevel(@RequestBody NursingLevel nursingLevel) {
+    	return nls.editNursingLevel(nursingLevel);
+    }
+    //改变
+    @PostMapping("/changeLevelProject")
+    public ResponseBean<String> updateProjects(
+            @RequestBody NursingLevelProjectsDTO request) {
+        return nls.updateLevelProjects(
+            request.getNursingLevelId(), 
+            request.getProjectIds()
+        );
+    }
+    
+  //展示可用的级别项目
+    @GetMapping("/showOk")
+    public ResponseBean<List<NursingLevel>> showOk() {
+        return nls.showOk();
+    }
+
+
+    
+    /*---------------------------------------------------------------*/
+    //修改护理级别 —— 只修改状态
+    
 
     
 
@@ -66,17 +98,7 @@ public class NursingLevelController {
         return null;
     }
 
-    //根据护理级别返回项目
-    @GetMapping("/showNursingPro")
-    public ResponseBean<List<NursingProject>> showNursingProByLv(Integer levelId){
-        return null;
-    }
-
-    //展示护理级别下所有未包括的项目
-    @GetMapping("/showUnNursingPro")
-    public ResponseBean<List<NursingProject>> showUnNursingPro(Integer levelId) {
-        return null;
-    }
+    
 
     //搜索级别下未添加的项目
     @GetMapping("/searchUnNursingPro")
