@@ -95,7 +95,10 @@ public class OutRecordController {
     }
 
     @GetMapping("/searchCustGoOutRe")
-    public PageResponseBean<OutRecord> searchCustGoOutRe(String custName){
-        return null;
+    public PageResponseBean<List<CustOutRecordDTO>> searchCustGoOutRe(@RequestParam(defaultValue = "1")Integer pageNum,
+                                                                      @RequestParam(defaultValue = "4")Integer pageSize, Integer customerId,String applyTime){
+        PageResponseBean<List<CustOutRecordDTO>> outRecordByTime = ors.findOutRecordByTime(pageNum, pageSize, customerId, applyTime);
+        return outRecordByTime;
+
     }
 }

@@ -62,6 +62,29 @@ public class OutRecordService {
         }
         return response;
     }
+    //根据申请时间查询老人外出申请记录
+    public PageResponseBean<List<CustOutRecordDTO>> findOutRecordByTime(Integer pageNum,Integer pageSize,Integer customerId,String applyTime){
+        //设置分页参数
+        PageHelper.startPage(pageNum, pageSize);
+        //执行查询
+        List<CustOutRecordDTO> cords = ord.findOutRecordByTime(customerId,applyTime);
+        // 3. 获取分页信息
+        Page<CustOutRecordDTO> p =(Page<CustOutRecordDTO>)cords;
+        // 4. 构建响应对象
+        PageResponseBean<List<CustOutRecordDTO>> response = new PageResponseBean<>();
+        if(p.getTotal()!=0){
+            response.setStatus(200); // 成功状态码
+            response.setMsg("查询成功"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }else{
+            response.setStatus(500); // 成功状态码
+            response.setMsg("无数据"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }
+        return response;
+    }
     //护工添加老人的外出申请
     public boolean addOutRecord(OutRecord or){
         or.setApplyTime(LocalDate.now().toString());

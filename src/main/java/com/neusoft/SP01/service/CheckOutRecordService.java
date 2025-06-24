@@ -3,6 +3,9 @@ package com.neusoft.SP01.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.neusoft.SP01.po.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ import com.neusoft.SP01.po.CheckOutDetailDTO;
 import com.neusoft.SP01.po.CheckOutRecordWithName;
 import com.neusoft.SP01.po.PageResponseBean;
 import com.neusoft.SP01.po.ResponseBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Service
 @Transactional(rollbackFor = Exception.class) // 添加事务注解，任何异常都会回滚
 public class CheckOutRecordService {
@@ -148,20 +153,48 @@ public class CheckOutRecordService {
             return new ResponseBean<>(500, "审批失败: " + e.getMessage(), null);
         }
     }
-    
+    /*=======护工系统客户管理展示用户所有的退住申请=========*/
+    public PageResponseBean<List<CustCheckOutDTO>> findCheckOutRecordByCustomerId(Integer pageNum, Integer pageSize, Integer customerId){
+        //设置分页参数
+        PageHelper.startPage(pageNum, pageSize);
+        //执行查询
+        List<CustCheckOutDTO> cords = cord.findCheckOutRecordByCustomerId(customerId);
+        // 3. 获取分页信息
+        Page<CustCheckOutDTO> p =(Page<CustCheckOutDTO>)cords;
+        // 4. 构建响应对象
+        PageResponseBean<List<CustCheckOutDTO>> response = new PageResponseBean<>();
+        if(p.getTotal()!=0){
+            response.setStatus(200); // 成功状态码
+            response.setMsg("查询成功"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }else{
+            response.setStatus(500); // 成功状态码
+            response.setMsg("无数据"); // 成功消息
+            response.setData(p.getResult()); // 当前页数据
+            response.setTotal(p.getTotal()); // 总记录数
+        }
+        return response;
+    }
+    //护工为老人申请退住（添加退住记录）
+    public boolean InsertCheckOutRecord(CheckOutRecord cor){
+        cord.InsertCheckOutRecord(cor);
+        return true;
+    }
+
     //退住详细信息
     public ResponseBean<CheckOutDetailDTO> getCheckOutDetail(Integer checkOutRecordId) {
         CheckOutDetailDTO detail = cord.getCheckOutDetailById(checkOutRecordId);
-        
+
         if (detail == null) {
             return new ResponseBean<>(500, "未找到有效的退住记录或入住信息");
         }
-        
+
         // 计算年龄（已在setIdentity中自动计算）
         // 清除敏感信息（不返回身份证号给前端）
         detail.setIdentity(null);
-        
+
         return new ResponseBean<>(200,"查询成功",detail);
     }
-    
+
 }
