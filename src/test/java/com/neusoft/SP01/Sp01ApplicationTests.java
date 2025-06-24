@@ -88,4 +88,9 @@ class Sp01ApplicationTests {
 		PageResponseBean<List<CustOutRecordDTO>> o = ors.findOutRecordByCustomerId(1,2,1);
 		System.out.println(o);
 	}
+	@Test
+	void findOutRecordByName(){
+		List<CustOutRecordDTO> c = ord.findOutRecordByTime(1, "2024-06-24");
+		System.out.println(c);
+	}
 }

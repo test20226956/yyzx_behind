@@ -134,6 +134,6 @@ public interface OutRecordDao {
 
 
     //根据申请时间查询老人的外出申请记录
-    List<CustOutRecordDTO> findOutRecordByName(Integer customerId,String applyTime);
+    List<CustOutRecordDTO> findOutRecordByTime(Integer customerId,String applyTime);
 
 }

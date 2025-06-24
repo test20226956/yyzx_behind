@@ -27,4 +27,30 @@
         WHERE
             c.customer_id = #{customerId}
     </select>
+    <select id="findOutRecordByTime" resultType="com.neusoft.SP01.po.CustOutRecordDTO">
+        SELECT
+            tor.out_record_id,
+            c.NAME,
+            tor.apply_time,
+            tor.expected_return_time,
+            tor.reason,
+            u.user_name check_name,
+            tor.examine_time,
+            CASE
+                tor.state
+                WHEN 0 THEN
+                    '已提交'
+                WHEN 1 THEN
+                    '通过'
+                WHEN 2 THEN
+                    '未通过'
+                END AS state,
+            tor.actual_return_time
+        FROM
+            t_out_record tor
+                JOIN t_customer c ON c.customer_id = tor.customer_id
+                JOIN t_user u ON u.user_id = tor.admin_id
+        WHERE
+            c.customer_id = #{customerId} and tor.apply_time <![CDATA[ <= ]]> #{applyTime}
+    </select>
 </mapper>
