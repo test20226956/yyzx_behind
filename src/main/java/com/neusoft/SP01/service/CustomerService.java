@@ -56,18 +56,18 @@ public class CustomerService {
         return response;
     }
 	/*查护理*/
-	public PageResponseBean<List<CustCheckInDTO>> getCareCustomersByPage(long pageNum, long pageSize) {
+	public PageResponseBean<List<CustCheckInNurseDTO>> getCareCustomersByPage(long pageNum, long pageSize) {
         // 计算偏移量
         long offset = (pageNum - 1) * pageSize;
         
         // 查询分页数据
-        List<CustCheckInDTO> list = cd.showCareCust(offset, pageSize);
+        List<CustCheckInNurseDTO> list = cd.showCareCust(offset, pageSize);
         
         // 查询总数
         long total = cd.countCareCustomers();
         
         // 构建分页响应
-        PageResponseBean<List<CustCheckInDTO>> response = new PageResponseBean<>();
+        PageResponseBean<List<CustCheckInNurseDTO>> response = new PageResponseBean<>();
         if (list == null || list.isEmpty()) {
 	        response.setStatus(500);
 	        response.setMsg("无数据");
@@ -82,6 +82,45 @@ public class CustomerService {
         
         return response;
     }
+	
+	/*全查(在护理下）*/
+	public PageResponseBean<List<CustCheckInNurseDTO>> searchCareCustomers(String name, String checkInTime, 
+	        long pageNum, long pageSize) {
+	    // 计算偏移量
+	    long offset = (pageNum - 1) * pageSize;
+	    
+	    // 查询分页数据
+	    List<CustCheckInNurseDTO> list = cd.searchCareCustomers(
+	        name, 
+	        checkInTime,
+	        offset, 
+	        pageSize
+	    );
+	    
+	    // 查询总数
+	    long total = cd.countSearchCareCustomers( 
+	        name, 
+	        checkInTime
+	    );
+	    
+	    // 构建分页响应
+	    PageResponseBean<List<CustCheckInNurseDTO>> response = new PageResponseBean<>();
+	    
+	    // 检查查询结果
+	    if (list == null || list.isEmpty()) {
+	        response.setStatus(500);
+	        response.setMsg("查不到符合条件的记录");
+	        response.setData(null);
+	        response.setTotal(0);
+	    } else {
+	        response.setStatus(200);
+	        response.setMsg("查询成功");
+	        response.setData(list);
+	        response.setTotal(total);
+	    }
+	    
+	    return response;
+	}
 	
 	/*全查*/
 	public PageResponseBean<List<CustCheckInDTO>> searchCustomers(String selfCare, String name, String checkInTime, 

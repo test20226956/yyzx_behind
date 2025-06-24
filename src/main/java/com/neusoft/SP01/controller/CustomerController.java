@@ -48,6 +48,18 @@ public class CustomerController {
         
         return cs.searchCustomers(type, name, checkInTime, pageNum, pageSize);
     }
+    
+ // 按条件搜索护理老人(分页)
+    @GetMapping("/searchCareCust")
+    public PageResponseBean<?> searchCareCustomers(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String checkInTime, // 改为String类型
+        @RequestParam(defaultValue = "1") long pageNum,
+        @RequestParam(defaultValue = "10") long pageSize) {
+        
+        return cs.searchCareCustomers(name, checkInTime, pageNum, pageSize);
+    }
+    
     @GetMapping("/searchCustByIdentity")
     public ResponseBean<?> searchCustByIdentity( String identity) {
         
