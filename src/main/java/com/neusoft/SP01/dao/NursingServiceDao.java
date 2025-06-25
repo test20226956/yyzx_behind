@@ -1,14 +1,16 @@
 package com.neusoft.SP01.dao;
 
-import com.neusoft.SP01.po.NursingProject;
-import com.neusoft.SP01.po.NursingService;
-import com.neusoft.SP01.po.NursingServiceDailyDTO;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
-import java.util.List;
+import com.neusoft.SP01.po.NursingProject;
+import com.neusoft.SP01.po.NursingService;
+import com.neusoft.SP01.po.NursingServiceDailyDTO;
 
 /**
  * 对应表t_nursing_service
@@ -30,6 +32,27 @@ public interface NursingServiceDao {
     //给用户添加护理项目（购买护理服务）
     @Insert("insert into yyzx_st.t_nursing_service values (null,#{customerId},#{nursingLevelId},#{nursingProjectId},#{amount},#{purchaseTime},#{endTime})")
     void addNursingService(NursingService ns);
+    
+    //删除护理服务
+    @Update("update t_nursing_service set state=0 where customer_id=#{customerId} and state=1")
+    int deleteNursingService(Integer customerId);
+    
+    //批量添加
+    @Insert({
+        "<script>",
+        "INSERT INTO t_nursing_service (",
+        "   customer_id, nursing_level_id, nursing_project_id,",
+        "   amount, purchase_time, end_time, state",
+        ") VALUES ",
+        "<foreach collection='list' item='item' separator=','>",
+        "   (",
+        "       #{item.customerId}, #{item.nursingLevelId}, #{item.nursingProjectId},",
+        "       #{item.amount}, #{item.purchaseTime}, #{item.endTime}, 1",
+        "   )",
+        "</foreach>",
+        "</script>"
+    })
+    int batchInsertNursingServices(@Param("list") List<NursingService> nursingServices);
 
 
     /*======对应原型护工 日常护理 显示用户的护理服务=====*/

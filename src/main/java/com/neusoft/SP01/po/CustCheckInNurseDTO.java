@@ -11,6 +11,7 @@ public class CustCheckInNurseDTO {
 	private Bed bed;
 	private Room room;
 	private NursingLevel nursingLevel;
+	private Integer age;
 	
 
 	public NursingLevel getNursingLevel() {
@@ -37,7 +38,7 @@ public class CustCheckInNurseDTO {
 		this.room = room;
 	}
 
-	private Integer age;
+	
 
 	public CheckInRecord getCheckInRecord() {
 		return checkInRecord;

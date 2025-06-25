@@ -84,7 +84,7 @@ public class CustomerService {
     }
 	
 	/*全查(在护理下）*/
-	public PageResponseBean<List<CustCheckInNurseDTO>> searchCareCustomers(String name, String checkInTime, 
+	public PageResponseBean<List<CustCheckInNurseDTO>> searchCareCustomers(String name, String checkInTime, Integer nursingLevelId,
 	        long pageNum, long pageSize) {
 	    // 计算偏移量
 	    long offset = (pageNum - 1) * pageSize;
@@ -93,6 +93,7 @@ public class CustomerService {
 	    List<CustCheckInNurseDTO> list = cd.searchCareCustomers(
 	        name, 
 	        checkInTime,
+	        nursingLevelId,
 	        offset, 
 	        pageSize
 	    );
@@ -100,7 +101,8 @@ public class CustomerService {
 	    // 查询总数
 	    long total = cd.countSearchCareCustomers( 
 	        name, 
-	        checkInTime
+	        checkInTime,
+	        nursingLevelId
 	    );
 	    
 	    // 构建分页响应
@@ -222,6 +224,75 @@ public class CustomerService {
 	        log.error("编辑客户信息失败，客户ID: {}", data != null ? data.getCustomerId() : "null", e);
 	        return new ResponseBean<>(500, "更新失败: " + e.getMessage(), null);
 	    }
+	}
+	
+	/*展示没有护工的护理老人*/
+	public PageResponseBean<List<CustCheckInNurseDTO>> showUnCust(long pageNum, long pageSize) {
+        // 计算偏移量
+        long offset = (pageNum - 1) * pageSize;
+        
+        // 查询分页数据
+        List<CustCheckInNurseDTO> list = cd.showUnCust(offset, pageSize);
+        
+        // 查询总数
+        long total = cd.countUnCustomers();
+        
+        // 构建分页响应
+        PageResponseBean<List<CustCheckInNurseDTO>> response = new PageResponseBean<>();
+        if (list == null || list.isEmpty()) {
+	        response.setStatus(500);
+	        response.setMsg("无数据");
+	        response.setData(null);
+	        response.setTotal(0);
+	    } else {
+	        response.setStatus(200);
+	        response.setMsg("查询成功");
+	        response.setData(list);
+	        response.setTotal(total);
+	    }
+        
+        return response;
+    }
+	
+	/*全查没有护工的(在护理下）*/
+	public PageResponseBean<List<CustCheckInNurseDTO>> searchUnCust(String name, String checkInTime, Integer nursingLevelId,
+	        long pageNum, long pageSize) {
+	    // 计算偏移量
+	    long offset = (pageNum - 1) * pageSize;
+	    
+	    // 查询分页数据
+	    List<CustCheckInNurseDTO> list = cd.searchUnCust(
+	        name, 
+	        checkInTime,
+	        nursingLevelId,
+	        offset, 
+	        pageSize
+	    );
+	    
+	    // 查询总数
+	    long total = cd.countSearchUnCust( 
+	        name, 
+	        checkInTime,
+	        nursingLevelId
+	    );
+	    
+	    // 构建分页响应
+	    PageResponseBean<List<CustCheckInNurseDTO>> response = new PageResponseBean<>();
+	    
+	    // 检查查询结果
+	    if (list == null || list.isEmpty()) {
+	        response.setStatus(500);
+	        response.setMsg("查不到符合条件的记录");
+	        response.setData(null);
+	        response.setTotal(0);
+	    } else {
+	        response.setStatus(200);
+	        response.setMsg("查询成功");
+	        response.setData(list);
+	        response.setTotal(total);
+	    }
+	    
+	    return response;
 	}
 
 

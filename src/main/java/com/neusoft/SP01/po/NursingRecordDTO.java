@@ -3,8 +3,18 @@ package com.neusoft.SP01.po;
 public class NursingRecordDTO{
     //和项目有关的部分
 	private  NursingProject nursingProject;
+	private NursingService nursingService;
+	
 //    private String projectName;
 //    private String description;
+
+	public NursingService getNursingService() {
+		return nursingService;
+	}
+
+	public void setNursingService(NursingService nursingService) {
+		this.nursingService = nursingService;
+	}
 
 	public NursingProject getNursingProject() {
 		return nursingProject;

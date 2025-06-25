@@ -1,5 +1,7 @@
 package com.neusoft.SP01.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.neusoft.SP01.po.CustCheckInDTO;
+import com.neusoft.SP01.po.CustCheckInNurseDTO;
 import com.neusoft.SP01.po.EditCustRequest;
 import com.neusoft.SP01.po.PageResponseBean;
 import com.neusoft.SP01.po.ResponseBean;
@@ -54,10 +57,11 @@ public class CustomerController {
     public PageResponseBean<?> searchCareCustomers(
         @RequestParam(required = false) String name,
         @RequestParam(required = false) String checkInTime, // 改为String类型
+        @RequestParam(required = false) Integer nursingLevelId,
         @RequestParam(defaultValue = "1") long pageNum,
         @RequestParam(defaultValue = "10") long pageSize) {
         
-        return cs.searchCareCustomers(name, checkInTime, pageNum, pageSize);
+        return cs.searchCareCustomers(name, checkInTime,nursingLevelId, pageNum, pageSize);
     }
     
     @GetMapping("/searchCustByIdentity")
@@ -81,5 +85,23 @@ public class CustomerController {
     @PostMapping("/editCust")
     public ResponseBean<Integer> editCust(@RequestBody EditCustRequest re){
         return cs.editCust(re.getData(),re.getEndTime());
+    }
+    
+  //展示没有护工的护理老人
+    @GetMapping("/showUnCust")
+    public PageResponseBean<List<CustCheckInNurseDTO>> showUnCust(@RequestParam(defaultValue = "1")Integer pageNum,@RequestParam(defaultValue = "10")Integer pageSize){
+        return cs.showUnCust(pageNum,pageSize);
+    }
+    
+ // 按条件搜索没有护工的护理老人(分页)
+    @GetMapping("/searchUnCust")
+    public PageResponseBean<?> searchUnCust(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String checkInTime, // 改为String类型
+        @RequestParam(required = false) Integer nursingLevelId,
+        @RequestParam(defaultValue = "1") long pageNum,
+        @RequestParam(defaultValue = "10") long pageSize) {
+        
+        return cs.searchUnCust(name, checkInTime,nursingLevelId, pageNum, pageSize);
     }
 }

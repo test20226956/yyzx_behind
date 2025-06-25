@@ -18,6 +18,7 @@ import com.neusoft.SP01.dao.FamilyDao;
 import com.neusoft.SP01.dao.RoomDao;
 import com.neusoft.SP01.po.Bed;
 import com.neusoft.SP01.po.BedRecord;
+import com.neusoft.SP01.po.CheckInRecord;
 import com.neusoft.SP01.po.CustCheckInDTO;
 import com.neusoft.SP01.po.ResponseBean;
 import com.neusoft.SP01.po.Room;
@@ -163,5 +164,40 @@ public class CheckInRecordService {
             return new ResponseBean<>(500, "删除失败: " + e.getMessage(), null);
         }
     }
+	//添加护工
+	public ResponseBean<Integer> addUserCust(Integer customerId,Integer userId){
+		try {
+	        // 1. 参数校验
+	        if (customerId == null) {
+	            return new ResponseBean<>(500, "客户ID不能为空", null);
+	        }
+	        int res=cird.addUserCust(customerId, userId);
+	        if (res == 0) {
+	            return new ResponseBean<>(500, "添加失败", null);
+	        }
+	        return new ResponseBean<>(200, "添加成功", null);  
+	    } catch (Exception e) {   
+	        return new ResponseBean<>(500, "系统错误: " + e.getMessage(), null);
+	    }
+		
+	}
+	
+	//给老人移除护工
+		public ResponseBean<Integer> deleteUserCust(Integer customerId,Integer userId){
+			try {
+		        // 1. 参数校验
+		        if (customerId == null) {
+		            return new ResponseBean<>(500, "客户ID不能为空", null);
+		        }
+		        int res=cird.deleteUserCust(customerId, userId);
+		        if (res == 0) {
+		            return new ResponseBean<>(500, "移除失败", null);
+		        }
+		        return new ResponseBean<>(200, "移除成功", null);  
+		    } catch (Exception e) {   
+		        return new ResponseBean<>(500, "系统错误: " + e.getMessage(), null);
+		    }
+			
+		}
 
 }
