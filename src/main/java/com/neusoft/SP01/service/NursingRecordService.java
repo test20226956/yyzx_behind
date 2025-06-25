@@ -52,6 +52,11 @@ public class NursingRecordService {
         List<CustNursingRecordDTO> cords = nrd.findByCustomerId(customerId);
         return cords;
     }
+    //搜索护理记录（原型中体现的名称和护理时间 动态sql）
+    public List<CustNursingRecordDTO> findByNameAndTime(Integer customerId,String name, String time){
+        List<CustNursingRecordDTO> byNameAndTime = nrd.findByNameAndTime(customerId, name, time);
+        return byNameAndTime;
+    }
     //逻辑删除老人的护理记录
     public boolean deleteByIds(List<Integer> ids){
         nrd.deleteByIds(ids);

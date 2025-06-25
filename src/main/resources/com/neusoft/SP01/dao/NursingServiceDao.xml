@@ -20,7 +20,7 @@
             t_nursing_service ns
                 JOIN t_nursing_project np ON ns.nursing_project_id = np.nursing_project_id
         WHERE
-            ns.customer_id = #{customerId}
+            ns.customer_id = #{customerId} and ns.state=1
     </select>
     <select id="findNursingServiceByName" resultType="com.neusoft.SP01.po.NursingServiceDailyDTO">
         SELECT
@@ -39,6 +39,6 @@
         FROM
             t_nursing_service ns
                 JOIN t_nursing_project np ON ns.nursing_project_id = np.nursing_project_id
-        WHERE customer_id=#{customerId} and np.name like concat('%',#{name},'%')
+        WHERE customer_id=#{customerId} and np.name like concat('%',#{name},'%') and ns.state=1
     </select>
 </mapper>
