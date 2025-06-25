@@ -150,7 +150,7 @@ public class UserController {
     @GetMapping("/showCareRecord")//展示老人所有的护理记录（护工 健康管家 护理记录）
     public ResponseBean<List<CustNursingRecordDTO>> shoeCareRecord(Integer customerId){
         List<CustNursingRecordDTO> cnrd = nrs.findByCustomerId(customerId);
-        if(cnrd!=null){
+        if(!cnrd.isEmpty()){
             return new ResponseBean<>(200,"查询成功",cnrd);
         }else {
             return new ResponseBean<>(500,"无数据");
@@ -162,6 +162,15 @@ public class UserController {
             return new ResponseBean<>(null);
         }else{
             return new ResponseBean<>(500,"删除失败");
+        }
+    }
+    @GetMapping("/searchCareRecord")//根据记录名称护理时间动态搜索老人的护理记录（护工 健康管家 护理记录）
+    public ResponseBean<List<CustNursingRecordDTO>> searchCareRecord(Integer customerId,String name, String time){
+        List<CustNursingRecordDTO> cnrd = nrs.findByNameAndTime(customerId,name,time);
+        if(!cnrd.isEmpty()){
+            return new ResponseBean<>(200,"查询成功",cnrd);
+        }else {
+            return new ResponseBean<>(500,"无数据");
         }
     }
 }

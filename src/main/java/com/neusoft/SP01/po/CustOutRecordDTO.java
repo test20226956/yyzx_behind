@@ -6,7 +6,7 @@ package com.neusoft.SP01.po;
 public class CustOutRecordDTO {
     private Integer outRecordId;
     private String name;//老人姓名
-    private String applyTime;//申请时间
+    private String outTime;//外出时间
     private String expectedReturnTime;//预计回院时间
     private String reason;//申请原因
     private String checkName;//审核人姓名
@@ -17,7 +17,7 @@ public class CustOutRecordDTO {
         return "CustOutRecordDTO{" +
                 "outRecordId=" + outRecordId +
                 ", name='" + name + '\'' +
-                ", applyTime='" + applyTime + '\'' +
+                ", outTime='" + outTime + '\'' +
                 ", expectedReturnTime='" + expectedReturnTime + '\'' +
                 ", reason='" + reason + '\'' +
                 ", checkName='" + checkName + '\'' +
@@ -43,12 +43,12 @@ public class CustOutRecordDTO {
         this.name = name;
     }
 
-    public String getApplyTime() {
-        return applyTime;
+    public String getOutTime() {
+        return outTime;
     }
 
-    public void setApplyTime(String applyTime) {
-        this.applyTime = applyTime;
+    public void setOutTime(String outTime) {
+        this.outTime = outTime;
     }
 
     public String getExpectedReturnTime() {
@@ -99,10 +99,10 @@ public class CustOutRecordDTO {
         this.actualReturnTime = actualReturnTime;
     }
 
-    public CustOutRecordDTO(Integer outRecordId, String name, String applyTime, String expectedReturnTime, String reason, String checkName, String examineTime, String state, String actualReturnTime) {
+    public CustOutRecordDTO(Integer outRecordId, String name, String outTime, String expectedReturnTime, String reason, String checkName, String examineTime, String state, String actualReturnTime) {
         this.outRecordId = outRecordId;
         this.name = name;
-        this.applyTime = applyTime;
+        this.outTime = outTime;
         this.expectedReturnTime = expectedReturnTime;
         this.reason = reason;
         this.checkName = checkName;

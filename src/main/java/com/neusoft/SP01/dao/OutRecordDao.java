@@ -131,9 +131,10 @@ public interface OutRecordDao {
     //给用户添加回院时间
     @Update("update yyzx_st.t_out_record set actual_return_time=#{actualReturnTime} where out_record_id=#{outRecordId}")
     void AddActualReturnTime(Integer outRecordId, String actualReturnTime);
-
+    @Select("select * from yyzx_st.t_out_record where out_record_id=#{outRecordId}")
+    OutRecord findOutRecordById(Integer outRecordId);
 
     //根据申请时间查询老人的外出申请记录
-    List<CustOutRecordDTO> findOutRecordByTime(Integer customerId,String applyTime);
+    List<CustOutRecordDTO> findOutRecordByTime(Integer customerId,String outTime);
 
 }

@@ -17,11 +17,11 @@
         ORDER BY
             nr.time DESC
     </select>
-    <select id="findByNameAndTime" resultType="com.neusoft.SP01.po.CustDailyNursingDTO">
+    <select id="findByNameAndTime" resultType="com.neusoft.SP01.po.CustNursingRecordDTO">
         SELECT
             nr.nursing_record_id,
-            np.name AS nursing_project_name,
-            nr.time AS nursing_time
+            np.name ,
+            nr.time
         FROM
             t_nursing_record nr
                 JOIN
@@ -34,11 +34,11 @@
                 AND np.name LIKE CONCAT('%', #{name}, '%')
             </if>
             <if test="time != null">
-                AND nr.time <![CDATA[ <= ]]> #{time}  <!-- 查询指定时间之前的记录 -->
+                AND nr.time <![CDATA[ >= ]]> #{time}  <!-- 查询指定时间之前的记录 -->
             </if>
         </where>
         ORDER BY
-            nr.time DESC;
+            nr.time DESC
     </select>
     <update id="deleteByIds">
         update

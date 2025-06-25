@@ -154,8 +154,8 @@ public class CheckOutRecordService {
         }
     }
     /*=======护工系统客户管理展示用户所有的退住申请=========*/
-    public PageResponseBean<List<CustCheckOutDTO>> findCheckOutRecordByCustomerId(Integer pageNum, Integer pageSize, Integer customerId){
-        //设置分页参数
+    public List<CustCheckOutDTO> findCheckOutRecordByCustomerId(Integer pageNum, Integer pageSize, Integer customerId){
+       /* //设置分页参数
         PageHelper.startPage(pageNum, pageSize);
         //执行查询
         List<CustCheckOutDTO> cords = cord.findCheckOutRecordByCustomerId(customerId);
@@ -174,7 +174,9 @@ public class CheckOutRecordService {
             response.setData(p.getResult()); // 当前页数据
             response.setTotal(p.getTotal()); // 总记录数
         }
-        return response;
+        return response;*/
+        List<CustCheckOutDTO> cords = cord.findCheckOutRecordByCustomerId(customerId);
+        return cords;
     }
     //护工为老人申请退住（添加退住记录）
     public boolean InsertCheckOutRecord(CheckOutRecord cor){

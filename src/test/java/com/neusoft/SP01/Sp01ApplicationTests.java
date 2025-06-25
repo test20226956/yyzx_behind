@@ -51,8 +51,9 @@ class Sp01ApplicationTests {
 	}
 	@Test
 	void findByNameAndTime(){
-		List<CustDailyNursingDTO> l = n.findByNameAndTime(1, "李", null);
+		List<CustNursingRecordDTO> l = n.findByNameAndTime(1, null, "2024-10-20");
 		System.out.println(l);
+
 	}
 	@Test
 	void findNursingServiceByCustomerId(){
