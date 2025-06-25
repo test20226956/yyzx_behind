@@ -1,19 +1,42 @@
 package com.neusoft.SP01.controller;
 
-import com.neusoft.SP01.po.*;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.neusoft.SP01.po.NursingService;
+import com.neusoft.SP01.po.NursingServiceDTO;
+import com.neusoft.SP01.po.PageResponseBean;
+import com.neusoft.SP01.po.ResponseBean;
+import com.neusoft.SP01.service.NursingServiceService;
 
 @RestController
 @RequestMapping("/NursingServiceController")
 @CrossOrigin("*")
 public class NursingServiceController {
+	@Autowired
+	private NursingServiceService nss;
     //设置护理级别功能
     //1.展示用户的护理服务
     @GetMapping("/showCustPro")
     public PageResponseBean<List<NursingServiceDTO>> showCustPro(Integer custId, Long cur, Long pageSize) {
         return null;
+    }
+    //移除护理级别联级
+    @PostMapping("/deleteNursingLevel")
+    public ResponseBean<Integer> deleteNursingLevel(Integer customerId) {
+        return nss.deleteNursingLevel(customerId);
+    }
+    
+    @PostMapping("/batchAdd")
+    public ResponseBean<Integer> batchAddNursingServices(@RequestBody List<NursingService> nursingServices) {
+        return nss.batchAddNursingServices(nursingServices);
     }
 
     //2.为了给用户设置级别，要先获取都有什么级别，放到下拉框中

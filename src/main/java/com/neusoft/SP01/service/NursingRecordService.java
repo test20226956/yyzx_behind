@@ -58,4 +58,54 @@ public class NursingRecordService {
         return true;
     }
     
+    public PageResponseBean<List<NursingRecordDTO>> showNursingRecord(Integer customerId, String time,String projectName,long pageNum, long pageSize) {
+        // 计算偏移量
+        long offset = (long) (pageNum - 1) * pageSize;
+        
+        // 查询当前页数据
+        List<NursingRecordDTO> records = nrd.showNursingRecord(
+            customerId,time,projectName,offset, pageSize);
+        
+        // 查询总记录数
+        long total = nrd.countSearchRecords(customerId,time,projectName);
+     // 构建分页响应
+	    PageResponseBean<List<NursingRecordDTO>> response = new PageResponseBean<>();
+	 // 检查查询结果
+	    if (records == null || records.isEmpty()) {
+	        response.setStatus(500);
+	        response.setMsg("查不到符合条件的记录");
+	        response.setData(null);
+	        response.setTotal(0);
+	    } else {
+	        response.setStatus(200);
+	        response.setMsg("查询成功");
+	        response.setData(records);
+	        response.setTotal(total);
+	    }
+	    
+	    return response;
+        
+    }
+    
+    public ResponseBean<Integer> deleteNursingRecord(Integer nursingRecordId) {
+        
+    	Integer res=nrd.deleteNursingRecord(nursingRecordId);
+        
+        
+     // 构建分页响应
+	    ResponseBean<Integer> response = new ResponseBean<>();
+	 // 检查查询结果
+	    if (res <=0) {
+	        response.setStatus(500);
+	        response.setMsg("删除失败");
+	        response.setData(null);
+	        
+	    } else {
+	        response.setStatus(200);
+	        response.setMsg("删除成功");
+	    }
+	    
+	    return response;
+        
+    }
 }

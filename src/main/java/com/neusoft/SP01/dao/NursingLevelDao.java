@@ -57,7 +57,7 @@ public interface NursingLevelDao {
     int insert(NursingLevel nursingLevel);
     
     //删除护理级别
-    @Update("update t_nursing_level set state=0 where nursing_level_id=#{NursingLevelId}")
+    @Update("update t_nursing_level set state=0 where nursing_level_id=#{nursingLevelId}")
     int deleteNursingLevel(@Param("nursingLevelId") Integer nursingLevelId);
     
     // 查询该级别下有的项目

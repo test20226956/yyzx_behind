@@ -50,4 +50,28 @@ public interface CheckInRecordDao {
     
     @Select("SELECT * FROM t_check_in_record WHERE customer_id = #{customerId} AND state = 1")
     CheckInRecord findByCustomerId(@Param("customerId") Integer customerId);
+    
+  //删除护理级别
+    @Update("UPDATE t_check_in_record " +
+            "SET nursing_level_id = NULL " +
+            "WHERE customer_id = #{customerId} AND state = 1")
+    int clearNursingLevelByCustomerId(@Param("customerId") Integer customerId);
+    
+  //添加护理级别
+    @Update("UPDATE t_check_in_record " +
+            "SET nursing_level_id =#{nursingLevelId} " +
+            "WHERE customer_id = #{customerId} AND state = 1")
+    int addNursingLevel(@Param("customerId") Integer customerId,@Param("nursingLevelId") Integer nursingLevelId);
+    
+  //给老人添加护工
+    @Update("UPDATE t_check_in_record " +
+            "SET user_id =#{userId} " +
+            "WHERE customer_id = #{customerId} AND state = 1")
+    int addUserCust(@Param("customerId") Integer customerId,@Param("userId") Integer userId);
+    
+  //给老人删除护工
+    @Update("UPDATE t_check_in_record " +
+            "SET user_id=NULL " +
+            "WHERE customer_id = #{customerId} AND state = 1 AND user_id =#{userId}")
+    int deleteUserCust(@Param("customerId") Integer customerId,@Param("userId") Integer userId);
 }

@@ -1,5 +1,6 @@
 package com.neusoft.SP01.dao;
 
+import com.neusoft.SP01.po.CustCheckInNurseDTO;
 import com.neusoft.SP01.po.User;
 import org.apache.ibatis.annotations.*;
 
@@ -112,4 +113,7 @@ public interface UserDao {
     /*检查用户是否存在且未删除*/
     @Select("SELECT COUNT(*) FROM t_user WHERE user_id = #{userId} AND state = 1")
     boolean existsActiveUser(@Param("userId") Integer userId);
+    
+    
+    
 }

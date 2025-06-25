@@ -78,7 +78,18 @@ public class NursingLevelController {
         return nls.showOk();
     }
 
-
+  //添加护理级别
+    @PostMapping("/addCustNursingLevel")
+    public ResponseBean<Integer> addNursingLevel(@RequestParam Integer customerId,@RequestParam Integer nursingLevelId) {
+    	return nls.addNursingLevel(customerId,nursingLevelId);
+    }
+    
+  //删除护理级别下的项目
+    @PostMapping("/deleteNursingPro")
+    public ResponseBean<Integer> deleteNursingPro(@RequestParam Integer nursingLevelId, @RequestParam Integer nursingProjectId) {
+    	return nls.deleteNursingPro(nursingLevelId,nursingProjectId);
+    }
+    
     
     /*---------------------------------------------------------------*/
     //修改护理级别 —— 只修改状态
@@ -86,11 +97,7 @@ public class NursingLevelController {
 
     
 
-    //删除护理级别下的项目
-    @PostMapping("/deleteNursingPro")
-    public ResponseBean<Integer> deleteNursingPro(Integer levelId, Integer proId) {
-        return null;
-    }
+    
 
     //给护理级别添加项目
     @PostMapping("/addNursingPro")

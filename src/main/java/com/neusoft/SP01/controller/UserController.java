@@ -3,13 +3,7 @@ package com.neusoft.SP01.controller;
 
 import java.util.List;
 
-import com.neusoft.SP01.po.*;
-import com.neusoft.SP01.service.CustomerService;
-import com.neusoft.SP01.service.NursingRecordService;
-import com.neusoft.SP01.service.NursingServiceService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.neusoft.SP01.po.CustDailyNursingDTO;
 import com.neusoft.SP01.po.CustNursingRecordDTO;
-import com.neusoft.SP01.po.Customer;
 import com.neusoft.SP01.po.NursingRecord;
 import com.neusoft.SP01.po.NursingServiceDailyDTO;
 import com.neusoft.SP01.po.PageResponseBean;
 import com.neusoft.SP01.po.ResponseBean;
 import com.neusoft.SP01.po.User;
+import com.neusoft.SP01.service.CheckInRecordService;
 import com.neusoft.SP01.service.CustomerService;
 import com.neusoft.SP01.service.NursingRecordService;
 import com.neusoft.SP01.service.NursingServiceService;
@@ -39,6 +33,8 @@ public class UserController {
     private UserService us;
     @Autowired
     private CustomerService cs;
+    @Autowired
+    private CheckInRecordService cirs;
     @Autowired
     private NursingServiceService nss;
     @Autowired
@@ -94,16 +90,7 @@ public class UserController {
         return userCust;
 
     }
-
-    @GetMapping("/showUnCust")
-    public PageResponseBean<Customer> showUnCust(String userId){
-        return null;
-    }
-
-    @GetMapping("/searchUnCust")
-    public PageResponseBean<Customer> searchUnCust(String custName){
-        return null;
-    }
+    
 
     @GetMapping("/searchUserCust")//根据老人姓名模糊搜索
     public PageResponseBean<List<CustDailyNursingDTO>> searchUserCust(@RequestParam(defaultValue = "1")Integer pageNum,
@@ -111,15 +98,15 @@ public class UserController {
         PageResponseBean<List<CustDailyNursingDTO>> userCustByName = cs.findUserCustByName(pageNum, pageSize, userId, name);
         return userCustByName;
     }
-
+    //给老人添加护工
     @PostMapping("/addUserCust")
-    public ResponseBean<Integer> addUserCust(String userId, String custId){
-        return null;
+    public ResponseBean<Integer> addUserCust(Integer customerId, Integer userId){
+        return cirs.addUserCust(customerId,userId);
     }
-
+    //给老人移除护工
     @PostMapping("/deleteUserCust")
-    public ResponseBean<Integer> deleteUserCust(String userId, String custId){
-        return null;
+    public ResponseBean<Integer> deleteUserCust(Integer customerId, Integer userId){
+    	return cirs.deleteUserCust(customerId,userId);
     }
 
 

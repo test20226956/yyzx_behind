@@ -11,6 +11,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.NursingLevelDao;
 import com.neusoft.SP01.dao.NursingLevelProjectDao;
 import com.neusoft.SP01.po.NursingLevel;
@@ -25,6 +26,8 @@ public class NursingLevelService {
     private NursingLevelDao nld;
 	@Autowired
     private NursingLevelProjectDao nlpd;
+	@Autowired
+    private CheckInRecordDao cird;
 	
 	public PageResponseBean<List<NursingLevel>> searchLevels(
             String name, 
@@ -244,6 +247,50 @@ public class NursingLevelService {
 	                return new ResponseBean<>(500, "查询失败", null);
 	            }
 	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return new ResponseBean<>(500, "系统错误：" + e.getMessage(), null);
+	        }
+	    }
+		//添加护理级别
+		
+		public ResponseBean<Integer> addNursingLevel(Integer customerId, Integer nursingLevelId) {
+	        try {
+	            // 执行更新操作
+	            int result = cird.addNursingLevel(customerId, nursingLevelId);
+	            
+	            if (result > 0) {
+	                // 更新成功
+	                return new ResponseBean<>(200,"添加成功",result);
+	            } else {
+	                // 更新失败，可能没有找到匹配的记录
+	                return new ResponseBean<>(500, "添加失败");
+	            }
+	        } catch (Exception e) {
+	            // 捕获并处理异常
+	            return new ResponseBean<>(500, "系统错误: " + e.getMessage());
+	        }
+	    }
+		
+		//删除护理级别下的项目
+		public ResponseBean<Integer> deleteNursingPro(Integer nursingLevelId,Integer nursingProjectId) {
+	        try {
+	            // 1. 检查护理级别是否存在
+	            NursingLevel level = nld.selectById(nursingLevelId);
+	            if (level == null) {
+	                return new ResponseBean<>(500, "未找到指定的护理级别", null);
+	            }
+	            
+	            // 2. 先删除关联的护理项目（设置state=0）
+	            int affectedProjects = nlpd.disableRelation(nursingLevelId,nursingProjectId);
+	            
+	            
+	            if (affectedProjects > 0) {
+	                return new ResponseBean<>(200, "删除成功", affectedProjects);
+	            } else {
+	                return new ResponseBean<>(500, "删除操作未影响任何记录", 0);
+	            }
+	        } catch (Exception e) {
+	            // 事务会自动回滚
 	            e.printStackTrace();
 	            return new ResponseBean<>(500, "系统错误：" + e.getMessage(), null);
 	        }
