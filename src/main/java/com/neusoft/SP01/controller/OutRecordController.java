@@ -87,17 +87,20 @@ public class OutRecordController {
 
     @PostMapping("/custGoOutCome")//给老人添加回院时间
     public ResponseBean<Integer> custGoOutCome(Integer outRecordId){
-        if(ors.AddActualReturnTime(outRecordId)){
-            return new ResponseBean<>(null);
-        }else{
-            return new ResponseBean<>(500,"添加失败");
+        int result = ors.AddActualReturnTime(outRecordId);
+        if(result == -1){
+            return new ResponseBean<>(500,"外出审批未通过，不可添加回院时间");
+        }else if(result == 0){
+            return new ResponseBean<>(500,"已有实际回院时间，不可添加");
+        }else {
+            return new ResponseBean<>(200,"添加成功");
         }
     }
 
     @GetMapping("/searchCustGoOutRe")
     public PageResponseBean<List<CustOutRecordDTO>> searchCustGoOutRe(@RequestParam(defaultValue = "1")Integer pageNum,
-                                                                      @RequestParam(defaultValue = "4")Integer pageSize, Integer customerId,String applyTime){
-        PageResponseBean<List<CustOutRecordDTO>> outRecordByTime = ors.findOutRecordByTime(pageNum, pageSize, customerId, applyTime);
+                                                                      @RequestParam(defaultValue = "4")Integer pageSize, Integer customerId,String outTime){
+        PageResponseBean<List<CustOutRecordDTO>> outRecordByTime = ors.findOutRecordByTime(pageNum, pageSize, customerId, outTime);
         return outRecordByTime;
 
     }

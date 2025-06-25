@@ -74,10 +74,14 @@ public class CheckOutController {
     }
 
     @GetMapping("/showCustCheckOutRe")//展示老人所有的退住记录
-    public PageResponseBean<List<CustCheckOutDTO>> showCustCheckOutRe(@RequestParam(defaultValue = "1")Integer pageNum,
+    public ResponseBean<List<CustCheckOutDTO>> showCustCheckOutRe(@RequestParam(defaultValue = "1")Integer pageNum,
                                                                       @RequestParam(defaultValue = "4")Integer pageSize,Integer customerId){
-        PageResponseBean<List<CustCheckOutDTO>> checkOutRecordByCustomerId = cors.findCheckOutRecordByCustomerId(pageNum,pageSize,customerId);
-        return checkOutRecordByCustomerId;
+        List<CustCheckOutDTO> checkOutRecordByCustomerId = cors.findCheckOutRecordByCustomerId(pageNum,pageSize,customerId);
+        if(checkOutRecordByCustomerId.isEmpty()){
+            return new ResponseBean<>(500,"无数据");
+        }else{
+            return new ResponseBean<>(200,"查询成功",checkOutRecordByCustomerId);
+        }
     }
 
     @GetMapping("/searchCustCheckOutRe")

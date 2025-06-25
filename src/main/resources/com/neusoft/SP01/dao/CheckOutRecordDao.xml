@@ -30,7 +30,7 @@
         FROM
             t_check_out_record cor
                 JOIN t_customer c ON c.customer_id = cor.customer_id
-                JOIN t_user u ON u.user_id = cor.admin_id
+                LEFT JOIN t_user u ON u.user_id = cor.admin_id
         WHERE
             c.customer_id = #{customerId}
     </select>

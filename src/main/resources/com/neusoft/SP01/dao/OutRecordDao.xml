@@ -5,7 +5,7 @@
         SELECT
             tor.out_record_id,
             c.NAME,
-            tor.apply_time,
+            tor.out_time,
             tor.expected_return_time,
             tor.reason,
             u.user_name check_name,
@@ -23,15 +23,16 @@
         FROM
             t_out_record tor
                 JOIN t_customer c ON c.customer_id = tor.customer_id
-                JOIN t_user u ON u.user_id = tor.admin_id
+                LEFT JOIN t_user u ON u.user_id = tor.admin_id
         WHERE
             c.customer_id = #{customerId}
+        ORDER BY tor.out_time DESC
     </select>
     <select id="findOutRecordByTime" resultType="com.neusoft.SP01.po.CustOutRecordDTO">
         SELECT
             tor.out_record_id,
             c.NAME,
-            tor.apply_time,
+            tor.out_time,
             tor.expected_return_time,
             tor.reason,
             u.user_name check_name,
@@ -49,8 +50,8 @@
         FROM
             t_out_record tor
                 JOIN t_customer c ON c.customer_id = tor.customer_id
-                JOIN t_user u ON u.user_id = tor.admin_id
+                LEFT JOIN t_user u ON u.user_id = tor.admin_id
         WHERE
-            c.customer_id = #{customerId} and tor.apply_time <![CDATA[ <= ]]> #{applyTime}
+            c.customer_id = #{customerId} and tor.out_time <![CDATA[ >= ]]> #{outTime}
     </select>
 </mapper>

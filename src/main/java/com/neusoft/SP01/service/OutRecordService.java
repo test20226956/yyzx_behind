@@ -63,11 +63,11 @@ public class OutRecordService {
         return response;
     }
     //根据申请时间查询老人外出申请记录
-    public PageResponseBean<List<CustOutRecordDTO>> findOutRecordByTime(Integer pageNum,Integer pageSize,Integer customerId,String applyTime){
+    public PageResponseBean<List<CustOutRecordDTO>> findOutRecordByTime(Integer pageNum,Integer pageSize,Integer customerId,String outTime){
         //设置分页参数
         PageHelper.startPage(pageNum, pageSize);
         //执行查询
-        List<CustOutRecordDTO> cords = ord.findOutRecordByTime(customerId,applyTime);
+        List<CustOutRecordDTO> cords = ord.findOutRecordByTime(customerId,outTime);
         // 3. 获取分页信息
         Page<CustOutRecordDTO> p =(Page<CustOutRecordDTO>)cords;
         // 4. 构建响应对象
@@ -92,10 +92,18 @@ public class OutRecordService {
         return true;
     }
     //给用户添加回院时间
-    public boolean AddActualReturnTime(Integer outRecordId){
-        String actualReturnTime = LocalDate.now().toString();
-        ord.AddActualReturnTime(outRecordId,actualReturnTime);
-        return true;
+    public int AddActualReturnTime(Integer outRecordId){
+        OutRecord outRecordById = ord.findOutRecordById(outRecordId);
+        if(outRecordById.getState()!=1){//老人外出审批未通过，不可添加回院时间
+            return -1;
+        }else if(outRecordById.getActualReturnTime()==null){
+            //审批通过了但是还没有回院时间才可以添加回院时间
+            String actualReturnTime = LocalDate.now().toString();
+            ord.AddActualReturnTime(outRecordId,actualReturnTime);
+            return 1;
+        }else{
+            return 0;//老人外出审批通过但是已经有了回院时间
+        }
     }
  // 展示所有退住申请（分页）
     public PageResponseBean<List<OutRecordWithName>> showGoOut(long pageNum, long pageSize) {
