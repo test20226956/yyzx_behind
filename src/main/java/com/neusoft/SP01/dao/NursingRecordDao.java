@@ -21,7 +21,7 @@ public interface NursingRecordDao {
     //删除老人的护理记录(批量删除->逻辑删除)
     void deleteByIds(@Param("ids") List<Integer> ids);
     //搜索护理记录（原型中体现的 名称（record->service->project）和护理时间 多表查 动态sql）
-    List<CustDailyNursingDTO> findByNameAndTime(Integer customerId,String name, String time);
+    List<CustNursingRecordDTO> findByNameAndTime(Integer customerId,@Param("name")String name, @Param("time")String time);
 
     //添加老人护理记录
     @Insert("insert into yyzx_st.t_nursing_record values (null,#{nursingServiceId},#{customerId},#{time},#{count},#{userId},1)")
