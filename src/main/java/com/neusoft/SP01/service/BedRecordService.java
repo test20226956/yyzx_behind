@@ -225,8 +225,8 @@ public class BedRecordService {
         
         try {
         	// 7. 更新旧床位状态为空闲
-        	bd.updateBedStatus(oldRecord.getBedId(), 0);
-            if (bd.updateBedStatus(oldRecord.getBedId(), 0) == 0) {
+        	bd.updateBedStatus1(oldRecord.getBedId(), 0);
+            if (bd.updateBedStatus1(oldRecord.getBedId(), 0) == 0) {
                 throw new RuntimeException("更新旧床位状态失败");
             }
             // 6. 更新旧床位记录 - 使用前端传入的endDate
@@ -250,7 +250,7 @@ public class BedRecordService {
             }
             
             // 9. 更新新床位状态为有人
-            if (bd.updateBedStatus(newBedId, 1) == 0) {
+            if (bd.updateBedStatus1(newBedId, 1) == 0) {
                 throw new RuntimeException("更新新床位状态失败");
             }
             
