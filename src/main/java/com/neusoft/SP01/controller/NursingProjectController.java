@@ -51,20 +51,22 @@ public class NursingProjectController {
     public ResponseBean<Integer> deleteNursingPro(@RequestParam Integer nursingProjectId){
     	return nps.deleteNursingPro(nursingProjectId);
     }
-
-    
-    /*------------------------------------------------------------*/
-    
-
-   
-
-    //服务关注部分
-
-    // 显示用户未购买的护理项目
+    //显示没有的
     @GetMapping("/showUnNursingPro")
-    public ResponseBean<List<NursingProject>> showUnNursingPro(Integer custId){
-        return null;
+    public ResponseBean<List<NursingProject>> getUnpurchasedProjects(
+            @RequestParam Integer customerId) {
+        return nps.getUnpurchasedProjects(customerId);
     }
+    //查询
+    @GetMapping("/searchUnNursingPro")
+    public ResponseBean<List<NursingProject>> getUnpurchasedProjects(
+            @RequestParam Integer customerId,
+            @RequestParam(required = false) String name) { // 项目名称参数改为可选
+    
+        return nps.getUnpurchasedProjects(customerId, name);
+    }
+
+
 
     
     

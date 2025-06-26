@@ -20,6 +20,11 @@ public interface BedDao {
 	// 更新床位状态
     @Update("UPDATE t_bed SET available = 1 WHERE bed_id = #{bedId}")
     int updateBedStatus(@Param("bedId") Integer bedId);
+    /*更新床位状态*/
+    @Update("UPDATE t_bed SET available = #{available} WHERE bed_id = #{bedId}")
+    int updateBedStatus1(
+            @Param("bedId") Integer bedId,
+            @Param("available") Integer available);
     
  // 更新床位状态为空闲
     @Update("UPDATE t_bed SET available = 0 WHERE bed_id = #{bedId}")
@@ -91,11 +96,7 @@ public interface BedDao {
     @Select("SELECT available FROM t_bed WHERE bed_id = #{bedId}")
     Integer getBedStatus(@Param("bedId") Integer bedId);
 
-    /*更新床位状态*/
-    @Update("UPDATE t_bed SET available = #{available} WHERE bed_id = #{bedId}")
-    int updateBedStatus(
-            @Param("bedId") Integer bedId,
-            @Param("available") Integer available);
+    
     
     /*根据位置信息查找床ID*/
     @Select("SELECT b.bed_id FROM t_bed b " +

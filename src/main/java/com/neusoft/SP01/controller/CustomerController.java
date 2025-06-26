@@ -19,7 +19,7 @@ import com.neusoft.SP01.po.ResponseBean;
 import com.neusoft.SP01.service.CheckInRecordService;
 import com.neusoft.SP01.service.CustomerService;
 
-@CrossOrigin("/*")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/CustomerController")
 public class CustomerController {
