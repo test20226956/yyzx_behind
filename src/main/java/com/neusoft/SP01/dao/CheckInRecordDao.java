@@ -74,4 +74,5 @@ public interface CheckInRecordDao {
             "SET user_id=NULL " +
             "WHERE customer_id = #{customerId} AND state = 1 AND user_id =#{userId}")
     int deleteUserCust(@Param("customerId") Integer customerId,@Param("userId") Integer userId);
+    
 }

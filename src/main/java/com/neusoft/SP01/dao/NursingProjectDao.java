@@ -65,5 +65,58 @@ public interface NursingProjectDao {
     //删除项目
     @Update("update t_nursing_project set state=-1 where nursing_project_id=#{nursingProjectId}")
     int deleteNursingProject(Integer nursingProjectId);
+    
+    //查客户没有的项目
+    @Select("<script>" +
+            "SELECT DISTINCT np.nursing_project_id, np.name as name, np.description, np.price " +
+            "FROM t_nursing_project np " +
+            "JOIN t_nursing_level_project nlp ON np.nursing_project_id = nlp.nursing_project_id " +
+            "WHERE nlp.nursing_level_id = #{nursingLevelId} " +
+            "AND nlp.state = 1 " +
+            "AND np.state = 1 " +
+            "AND np.nursing_project_id NOT IN (" +
+            "   SELECT ns.nursing_project_id " +
+            "   FROM t_nursing_service ns " +
+            "   WHERE ns.customer_id = #{customerId} " +
+            "   AND ns.state =1" +
+            ") " +
+            "</script>")
+    @Results({
+        @Result(property = "nursingProjectId", column = "nursing_project_id"),
+        @Result(property = "name", column = "name"),
+        @Result(property = "description", column = "description"),
+        @Result(property = "price", column = "price")
+    })
+    List<NursingProject> findUnpurchasedProjects(
+            @Param("customerId") Integer customerId,
+            @Param("nursingLevelId") Integer nursingLevelId);
+    //搜索客户没有的项目
+    @Select("<script>" +
+            "SELECT DISTINCT np.nursing_project_id, np.name, np.description, np.price " +
+            "FROM t_nursing_project np " +
+            "JOIN t_nursing_level_project nlp ON np.nursing_project_id = nlp.nursing_project_id " +
+            "WHERE nlp.nursing_level_id = #{nursingLevelId} " +
+            "AND nlp.state = 1 " +
+            "AND np.state = 1 " +
+            "AND np.nursing_project_id NOT IN (" +
+            "   SELECT ns.nursing_project_id " +
+            "   FROM t_nursing_service ns " +
+            "   WHERE ns.customer_id = #{customerId} " +
+            "   AND ns.state = 1" +
+            ")" +
+            "<if test='name != null and name != &quot;&quot;'>" +  // 修改此处
+            "   AND np.name LIKE CONCAT('%', #{name}, '%')" +
+            "</if>" +
+            "</script>")
+    @Results({
+        @Result(property = "nursingProjectId", column = "nursing_project_id"),
+        @Result(property = "name", column = "name"),
+        @Result(property = "description", column = "description"),
+        @Result(property = "price", column = "price")
+    })
+    List<NursingProject> findUnpurchasedProjects(
+            @Param("customerId") Integer customerId,
+            @Param("nursingLevelId") Integer nursingLevelId,
+            @Param("name") String name);
 
 }

@@ -33,7 +33,7 @@ public interface BedRecordDao {
     
  // 获取当前有效的床位记录
     @Select("SELECT * FROM t_bed_record WHERE check_in_record_id=#{checkInRecordId} AND state=1")
-    BedRecord findActiveBedRecord(@Param("checkInId") Integer checkInRecordId);
+    BedRecord findActiveBedRecord(@Param("checkInRecordId") Integer checkInRecordId);
     
     // 更新床位记录的结束时间
     @Update("UPDATE t_bed_record SET end_time=#{endTime} WHERE bed_record_id=#{bedRecordId}")

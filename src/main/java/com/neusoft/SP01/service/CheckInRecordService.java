@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.neusoft.SP01.dao.BedDao;
 import com.neusoft.SP01.dao.BedRecordDao;
@@ -18,8 +19,8 @@ import com.neusoft.SP01.dao.FamilyDao;
 import com.neusoft.SP01.dao.RoomDao;
 import com.neusoft.SP01.po.Bed;
 import com.neusoft.SP01.po.BedRecord;
-import com.neusoft.SP01.po.CheckInRecord;
 import com.neusoft.SP01.po.CustCheckInDTO;
+import com.neusoft.SP01.po.Customer;
 import com.neusoft.SP01.po.ResponseBean;
 import com.neusoft.SP01.po.Room;
 
@@ -42,13 +43,49 @@ public class CheckInRecordService {
 	
 	private static final Logger log = LoggerFactory.getLogger(CheckInRecordService.class);
 	
+	//添加
 	public ResponseBean<String> addCustCheckIn(CustCheckInDTO data) {
         try {
             // 1. 参数校验
             if (data == null || data.getCustomer() == null || 
                 data.getCheckInRecord() == null || data.getRoom() == null || 
                 data.getBed() == null) {
+            	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
                 return new ResponseBean<>(500, "参数不完整", null);
+            }
+            
+         // 2. 检查老人是否已存在
+            Customer existingCustomer = null;
+            if (data.getCustomer() != null && data.getCustomer().getIdentity() != null) {
+                existingCustomer = cd.searchCustByIdentity(data.getCustomer().getIdentity());
+                
+                // 检查是否已入住
+                if (existingCustomer != null && cird.findByCustomerId(existingCustomer.getCustomerId()) != null) {
+                	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
+                    return new ResponseBean<>(500, "该老人已入住", null);
+                }
+            }
+            
+            // 3. 处理老人信息
+            Integer customerId;
+            if (existingCustomer != null) {
+                // 使用已存在的老人信息
+                customerId = existingCustomer.getCustomerId();
+                // 可选：更新老人信息（如果需要）
+                data.getCustomer().setCustomerId(customerId);
+                cd.updateCustomer(data.getCustomer());
+            } else {
+                // 添加新老人信息
+                if (data.getCustomer() == null) {
+                	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
+                    return new ResponseBean<>(500, "需要提供老人信息", null);
+                }
+                cd.insertCustomer(data.getCustomer());
+                customerId = data.getCustomer().getCustomerId();
+                if (customerId == null) {
+                	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
+                    throw new RuntimeException("添加老人信息失败");
+                }
             }
             
             // 2. 验证并获取完整的房间信息
@@ -57,6 +94,7 @@ public class CheckInRecordService {
                 data.getRoom().getRoomNumber());
             
             if (roomInfo == null) {
+            	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
                 return new ResponseBean<>(500, "未找到指定的房间", null);
             }
             
@@ -66,20 +104,15 @@ public class CheckInRecordService {
                 data.getBed().getBedNumber());
             
             if (bedInfo == null) {
+            	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
                 return new ResponseBean<>(500, "未找到指定的床位", null);
             }
             
             if (bedInfo.getAvailable() != 0) {
+            	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
                 return new ResponseBean<>(500, "该床位已被占用", null);
             }
-            
-            // 4. 添加老人信息
-            cd.insertCustomer(data.getCustomer());
-            Integer customerId = data.getCustomer().getCustomerId();
-            if (customerId == null) {
-                throw new RuntimeException("添加老人信息失败");
-            }
-            
+
             // 5. 添加家属信息（如果有）
             if (data.getFamily() != null) {
                 data.getFamily().setCustomerId(customerId);
@@ -103,6 +136,7 @@ public class CheckInRecordService {
             cird.insertCheckInRecord(data.getCheckInRecord());
             Integer checkInRecordId = data.getCheckInRecord().getCheckInRecordId();
             if (checkInRecordId == null) {
+            	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
                 throw new RuntimeException("添加入住记录失败");
             }
             
@@ -126,6 +160,7 @@ public class CheckInRecordService {
             
         } catch (Exception e) {
             log.error("添加老人入住信息失败，已回滚所有操作", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
             return new ResponseBean<>(500, "添加失败: " + e.getMessage(), null);
         }
     }

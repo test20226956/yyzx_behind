@@ -12,7 +12,7 @@ import com.neusoft.SP01.po.ResponseBean;
 import com.neusoft.SP01.po.Room;
 import com.neusoft.SP01.service.RoomService;
 
-@CrossOrigin("/*")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/RoomController")
 public class RoomController {

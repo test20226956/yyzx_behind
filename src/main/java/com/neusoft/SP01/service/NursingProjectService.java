@@ -1,13 +1,17 @@
 package com.neusoft.SP01.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.NursingLevelProjectDao;
 import com.neusoft.SP01.dao.NursingProjectDao;
+import com.neusoft.SP01.po.CheckInRecord;
 import com.neusoft.SP01.po.NursingProject;
 import com.neusoft.SP01.po.PageResponseBean;
 import com.neusoft.SP01.po.ResponseBean;
@@ -20,6 +24,8 @@ public class NursingProjectService {
     private NursingLevelProjectDao nlpd;
 	@Autowired
     private NursingProjectDao npd;
+	@Autowired
+    private CheckInRecordDao cird;
 	
 	//显示搜索
 	public PageResponseBean<List<NursingProject>> searchProjects(
@@ -153,6 +159,65 @@ public class NursingProjectService {
 
         } catch (Exception e) {
             // @Transactional会自动回滚所有操作
+            return new ResponseBean<>(500, "系统错误: " + e.getMessage());
+        }
+    }
+    
+    //显示客户未有的
+    public ResponseBean<List<NursingProject>> getUnpurchasedProjects(Integer customerId) {
+        try {
+            // 1. 验证参数
+            if (customerId == null || customerId <= 0) {
+                return new ResponseBean<>(500, "客户ID不能为空");
+            }
+            
+            // 2. 获取客户当前有效的入住记录
+            CheckInRecord activeRecord = cird.findActiveCheckInRecord(customerId);
+            if (activeRecord == null) {
+                return new ResponseBean<>(500, "客户没有有效的入住记录");
+            }
+            
+            // 3. 查询未购买项目
+            List<NursingProject> result = npd.findUnpurchasedProjects(
+                customerId, activeRecord.getNursingLevelId());
+            
+            if (result.isEmpty()) {
+                return new ResponseBean<>(500, "查询失败");
+            }
+            
+            return new ResponseBean<>(200, "查询成功", result);
+        } catch (Exception e) {
+            return new ResponseBean<>(500, "系统错误: " + e.getMessage());
+        }
+    }
+    
+    //在未有的下面查询
+    public ResponseBean<List<NursingProject>> getUnpurchasedProjects(
+            Integer customerId, 
+            String name) {
+        try {
+            // 1. 参数校验
+            if (customerId == null || customerId <= 0) {
+                return new ResponseBean<>(500, "客户ID不能为空");
+            }
+            
+            // 2. 获取客户当前有效的入住记录
+            CheckInRecord activeRecord = cird.findActiveCheckInRecord(customerId);
+            if (activeRecord == null) {
+                return new ResponseBean<>(500, "客户没有有效的入住记录");
+            }
+            
+            // 3. 查询未购买项目（支持模糊搜索）
+            List<NursingProject> result = npd.findUnpurchasedProjects(
+                customerId, 
+                activeRecord.getNursingLevelId(),
+                name); // 传入项目名称参数
+            if(result==null) {
+            	return new ResponseBean<>(500, "查询失败");
+            }
+            
+            return new ResponseBean<>(200, "查询成功", result);
+        } catch (Exception e) {
             return new ResponseBean<>(500, "系统错误: " + e.getMessage());
         }
     }
