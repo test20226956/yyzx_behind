@@ -141,6 +141,10 @@ public interface CustomerDietDao {
     //编辑客户膳食配置
     @Update("update t_customer_diet set flavor=#{flavor}, restraint=#{restraint},comment=#{comment} where customer_diet_id=#{customerDietId}")
     Integer editCustDiet(CustomerDiet customerdiet);
+    
+  //退住改为无效
+    @Update("update t_customer_diet set state=0 where customer_id=#{customerId} AND state=1")
+    Integer deleteCustDiet(Integer customerId);
 
     
 }

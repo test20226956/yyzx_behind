@@ -5,6 +5,14 @@ public class Meal {
 	private String name;
 	private String img;
 	private Integer type;
+	private Integer state;
+	
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	public Integer getMealId() {
 		return mealId;
 	}

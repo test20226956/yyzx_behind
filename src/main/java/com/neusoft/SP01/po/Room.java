@@ -6,6 +6,14 @@ public class Room {
 	private Integer buildingNumber;
 	private Integer floor;
 	private Integer bedCount;
+	private String loc;
+	
+	public String getLoc() {
+		return loc;
+	}
+	public void setLoc(String loc) {
+		this.loc = loc;
+	}
 	public Integer getRoomId() {
 		return roomId;
 	}

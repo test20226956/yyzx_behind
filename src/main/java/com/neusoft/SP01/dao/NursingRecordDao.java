@@ -118,4 +118,8 @@ public interface NursingRecordDao {
    //删除护理记录
    @Update("update t_nursing_record set state=0 where nursing_record_id=#{nursingRecordId}")
    Integer deleteNursingRecord(Integer nursingRecordId);
+   
+ //根据ID护理记录
+   @Update("update t_nursing_record set state=0 where customer_id=#{customerId} AND state=1")
+   Integer deleteOutNursingRecord(Integer customerId);
 }

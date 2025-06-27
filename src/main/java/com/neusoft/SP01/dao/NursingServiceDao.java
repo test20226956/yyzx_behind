@@ -114,6 +114,12 @@ public interface NursingServiceDao {
             "#{amount}, #{purchaseTime}, #{endTime}, 1)")
     @Options(useGeneratedKeys = true, keyProperty = "nursingServiceId")
     int insertNewService(NursingService nursingService);
+    
+ // 更新无效记录状态为0
+    @Update("UPDATE t_nursing_service SET state = 0 " +
+            "WHERE customer_id = #{customerId} " +
+            "AND state IN (-1,1)")
+    Integer detectService(@Param("customerId") Integer customerId);
 
 
     /*======对应原型护工 日常护理 显示用户的护理服务=====*/

@@ -6,6 +6,14 @@ public class Family {
 	private String name;
 	private String relation;
 	private String tel;
+	private Integer state;
+	
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	public Family() {
 		super();
 	}

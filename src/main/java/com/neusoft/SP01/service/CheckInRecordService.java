@@ -17,6 +17,8 @@ import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.CustomerDao;
 import com.neusoft.SP01.dao.CustomerDietDao;
 import com.neusoft.SP01.dao.FamilyDao;
+import com.neusoft.SP01.dao.NursingRecordDao;
+import com.neusoft.SP01.dao.NursingServiceDao;
 import com.neusoft.SP01.dao.RoomDao;
 import com.neusoft.SP01.po.Bed;
 import com.neusoft.SP01.po.BedRecord;
@@ -43,6 +45,10 @@ public class CheckInRecordService {
     private RoomDao rd;
 	@Autowired
     private CustomerDietDao cdd;
+	@Autowired
+    private NursingRecordDao nrd;
+	@Autowired
+    private NursingServiceDao nsd;
 	
 	private static final Logger log = LoggerFactory.getLogger(CheckInRecordService.class);
 	
@@ -188,8 +194,36 @@ public class CheckInRecordService {
                 brd.hideBedRecord(activeBedRecord.getBedRecordId());
             }
             
+         // 删除膳食配置 - 如果没有记录也不报错
+            try {
+                cdd.deleteCustDiet(customerId);
+            } catch (Exception e) {
+                log.warn("删除客户ID[{}]的膳食配置时出现警告: {}", customerId, e.getMessage());
+            }
+            
+            // 删除护理记录 - 如果没有记录也不报错
+            try {
+                nrd.deleteOutNursingRecord(customerId);
+            } catch (Exception e) {
+                log.warn("删除客户ID[{}]的护理记录时出现警告: {}", customerId, e.getMessage());
+            }
+            //删除家人
+            try {
+                fd.deleteFamily(customerId);
+            } catch (Exception e) {
+                log.warn("删除客户ID[{}]的护理记录时出现警告: {}", customerId, e.getMessage());
+            }
+            
+            // 删除护理服务 - 如果没有记录也不报错
+            try {
+                nsd.detectService(customerId);
+            } catch (Exception e) {
+                log.warn("删除客户ID[{}]的护理服务时出现警告: {}", customerId, e.getMessage());
+            }
+            
             // 5. 隐藏入住记录
             int updated=cird.hideCheckInRecord(customerId);
+            
             
            
             if (updated == 0) {
