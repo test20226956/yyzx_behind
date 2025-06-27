@@ -114,7 +114,7 @@ public interface NursingProjectDao {
         @Result(property = "description", column = "description"),
         @Result(property = "price", column = "price")
     })
-    List<NursingProject> findUnpurchasedProjects(
+    List<NursingProject> searchUnpurchasedProjects(
             @Param("customerId") Integer customerId,
             @Param("nursingLevelId") Integer nursingLevelId,
             @Param("name") String name);

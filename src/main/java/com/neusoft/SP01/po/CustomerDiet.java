@@ -3,9 +3,17 @@ package com.neusoft.SP01.po;
 public class CustomerDiet {
 	private Integer customerDietId;
 	private Integer customerId;
-	private String flaver;
+	private String flavor;
 	private String restraint;
 	private String comment;
+	private Integer state;
+	
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	public Integer getCustomerDietId() {
 		return customerDietId;
 	}
@@ -18,11 +26,11 @@ public class CustomerDiet {
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
 	}
-	public String getFlaver() {
-		return flaver;
+	public String getFlavor() {
+		return flavor;
 	}
-	public void setFlaver(String flaver) {
-		this.flaver = flaver;
+	public void setFlavor(String flavor) {
+		this.flavor = flavor;
 	}
 	public String getRestraint() {
 		return restraint;

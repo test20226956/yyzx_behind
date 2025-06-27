@@ -63,7 +63,7 @@ public class NursingProjectController {
             @RequestParam Integer customerId,
             @RequestParam(required = false) String name) { // 项目名称参数改为可选
     
-        return nps.getUnpurchasedProjects(customerId, name);
+        return nps.searchUnpurchasedProjects(customerId, name);
     }
 
 

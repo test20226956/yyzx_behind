@@ -64,6 +64,17 @@ public class CustomerController {
         return cs.searchCareCustomers(name, checkInTime,nursingLevelId, pageNum, pageSize);
     }
     
+    // 按条件搜索没级别的护理老人(分页)
+    @GetMapping("/searchNoLevelCareCust")
+    public PageResponseBean<?> searchNoLevelCareCustomers(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String checkInTime,
+        @RequestParam(defaultValue = "1") long pageNum,
+        @RequestParam(defaultValue = "10") long pageSize) {
+        
+        return cs.searchNoLevelCareCustomers(name, checkInTime, pageNum, pageSize);
+    }
+    
     @GetMapping("/searchCustByIdentity")
     public ResponseBean<?> searchCustByIdentity( String identity) {
         

@@ -8,6 +8,13 @@ public class NursingService {
 	private Integer amount;
 	private String purchaseTime;
 	private String endTime;
+	private Integer state;
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	public Integer getNursingServiceId() {
 		return nursingServiceId;
 	}
