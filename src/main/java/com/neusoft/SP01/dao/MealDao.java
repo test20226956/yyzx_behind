@@ -11,19 +11,44 @@ import java.util.List;
 @Mapper
 public interface MealDao {
 
-    //获取全部食物信息
-    @Select("select * from yyzx_st.t_meal")
+    
     List<Meal> findAllMeals();
-    //根据食物名称查找食物(模糊)
-    @Select("select * from yyzx_st.t_meal where name like concat('%',#{name},'%')")
-    List<Meal> findMealsByName(String name);
+    //查找食物
+    @Select("<script>" +
+            "SELECT * FROM t_meal " +
+            "WHERE 1=1 " +
+            "<if test='name != null and name != \"\"'>" +
+            "   AND name LIKE CONCAT('%', #{name}, '%') " +
+            "</if>" +
+            "<if test='type != null'>" +
+            "   AND type = #{type} " +
+            "</if>" +
+            " LIMIT #{offset}, #{pageSize}" +
+            "</script>")
+    List<Meal> findMealsByPage(@Param("name") String name, 
+                             @Param("type") Integer type,
+                             @Param("offset") long offset,
+                             @Param("pageSize") long pageSize);
+    @Select("<script>" +
+            "SELECT COUNT(*) FROM t_meal " +
+            "WHERE 1=1 " +
+            "<if test='name != null and name != \"\"'>" +
+            "   AND name LIKE CONCAT('%', #{name}, '%') " +
+            "</if>" +
+            "<if test='type != null'>" +
+            "   AND type = #{type} " +
+            "</if>" +
+            "</script>")
+    long countMeals(@Param("name") String name, @Param("type") Integer type);
+    
     //添加食物
-    @Insert("insert into yyzx_st.t_meal values (null,#{name},#{img},#{type})")
-    void addMeal(Meal meal);
+    @Insert("insert into t_meal (name,type) values (#{name},#{type})")
+    Integer addMeal(Meal meal);
+    
     //修改食物信息
-    @Update("update yyzx_st.t_meal set name=#{name},img=#{img},type=#{type} where meal_id=#{meal_id}")
-    void updateMeal(Meal meal);
+    @Update("update t_meal set name=#{name},type=#{type} where meal_id=#{mealId}")
+    Integer updateMeal(Meal meal);
     //删除存在的食物
-    @Delete("delete from yyzx_st.t_meal where meal_id =#{mealId}")
-    void deleteMeal(Integer mealId);
+    @Delete("delete from t_meal where meal_id =#{mealId}")
+    Integer deleteMeal(Integer mealId);
 }
