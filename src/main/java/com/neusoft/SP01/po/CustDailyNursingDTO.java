@@ -14,7 +14,7 @@ public class CustDailyNursingDTO {
     private String fName;//联系人姓名
     private String tel;//联系方式
     private Integer nursingLevelId;//护理级别
-    private String bedNumber;//床号
+    private Integer bedNumber;//床号
 
     @Override
     public String toString() {
@@ -113,15 +113,15 @@ public class CustDailyNursingDTO {
         this.nursingLevelId = nursingLevelId;
     }
 
-    public String getBedNumber() {
+    public Integer getBedNumber() {
         return bedNumber;
     }
 
-    public void setBedNumber(String bedNumber) {
+    public void setBedNumber(Integer bedNumber) {
         this.bedNumber = bedNumber;
     }
 
-    public CustDailyNursingDTO(Integer customerId, String name, Integer age, String gender, String bloodType, Integer floor, String roomNumber, String fName, String tel, Integer nursingLevelId, String bedNumber) {
+    public CustDailyNursingDTO(Integer customerId, String name, Integer age, String gender, String bloodType, Integer floor, String roomNumber, String fName, String tel, Integer nursingLevelId, Integer bedNumber) {
         this.customerId = customerId;
         this.name = name;
         this.age = age;
