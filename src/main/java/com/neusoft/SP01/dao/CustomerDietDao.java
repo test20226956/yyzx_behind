@@ -139,7 +139,7 @@ public interface CustomerDietDao {
                              @Param("checkInTime") String checkInTime);
     
     //编辑客户膳食配置
-    @Update("update t_customer_diet set flavor=#{flavor}, restraint=#{restraint},comment=#{comment} where customer_id=#{customerId}")
+    @Update("update t_customer_diet set flavor=#{flavor}, restraint=#{restraint},comment=#{comment} where customer_diet_id=#{customerDietId}")
     Integer editCustDiet(CustomerDiet customerdiet);
 
     

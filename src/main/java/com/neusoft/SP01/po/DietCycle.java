@@ -5,6 +5,14 @@ public class DietCycle {
 	private String date;
 	private Integer mealId;
 	private Integer type;
+	private Integer state;
+	
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	public Integer getDietCycleId() {
 		return dietCycleId;
 	}
