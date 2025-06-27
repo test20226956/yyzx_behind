@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.neusoft.SP01.dao.DietCycleDao;
 import com.neusoft.SP01.dao.MealDao;
 import com.neusoft.SP01.po.Meal;
 import com.neusoft.SP01.po.PageResponseBean;
@@ -14,6 +15,8 @@ import com.neusoft.SP01.po.ResponseBean;
 public class MealService {
 	@Autowired
 	private MealDao md;
+	@Autowired
+	private DietCycleDao dcd;
 	
 	public ResponseBean<Integer> addFood(Meal meal){
 		try {
@@ -81,6 +84,7 @@ public class MealService {
             int affectedRows = md.updateMeal(meal);
 
             if (affectedRows > 0) {
+            	
                 return new ResponseBean<>(200,"修改成功",affectedRows);
             } else {
                 return new ResponseBean<>(500, "修改失败");
@@ -92,26 +96,29 @@ public class MealService {
         }
 	}
 	
-	public ResponseBean<Integer> deleteFood(Integer mealId){
-		try {
-            // 参数校验
-            if ( mealId == null) {
-                return new ResponseBean<>(500, "ID不能为空");
-            }
+	public ResponseBean<Integer> deleteFood(Integer mealId) {
+	    try {
+	        // 参数校验
+	        if (mealId == null) {
+	            return new ResponseBean<>(500, "ID不能为空");  // 400表示客户端错误
+	        }
+	        // 执行删除操作
+	        int affectedRows = md.deleteMeal(mealId);
+	        if (affectedRows == 0) {
+	            return new ResponseBean<>(500, "删除失败");  // 404表示资源不存在
+	        }
+	        // 尝试更新关联的膳食周期（无论成功与否都不影响主操作）
+	        try {
+	            dcd.updateDietCycleByMealId(mealId);
+	        } catch (Exception e) {
+	        }
 
-            // 执行更新操作
-            int affectedRows = md.deleteMeal(mealId);
-
-            if (affectedRows > 0) {
-                return new ResponseBean<>(200,"删除成功",affectedRows);
-            } else {
-                return new ResponseBean<>(500, "删除失败");
-            }
-        } catch (Exception e) {
-            // 记录错误日志
-            e.printStackTrace();
-            return new ResponseBean<>(500, "系统错误: " + e.getMessage());
-        }
+	        return new ResponseBean<>(200, "删除成功", affectedRows);
+	        
+	    } catch (Exception e) {
+	        
+	        return new ResponseBean<>(500, "系统错误: " + e.getMessage());
+	    }
 	}
     
 }

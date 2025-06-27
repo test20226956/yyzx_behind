@@ -16,7 +16,7 @@ public interface MealDao {
     //查找食物
     @Select("<script>" +
             "SELECT * FROM t_meal " +
-            "WHERE 1=1 " +
+            "WHERE state=1 " +
             "<if test='name != null and name != \"\"'>" +
             "   AND name LIKE CONCAT('%', #{name}, '%') " +
             "</if>" +
@@ -31,7 +31,7 @@ public interface MealDao {
                              @Param("pageSize") long pageSize);
     @Select("<script>" +
             "SELECT COUNT(*) FROM t_meal " +
-            "WHERE 1=1 " +
+            "WHERE state=1 " +
             "<if test='name != null and name != \"\"'>" +
             "   AND name LIKE CONCAT('%', #{name}, '%') " +
             "</if>" +
@@ -42,13 +42,13 @@ public interface MealDao {
     long countMeals(@Param("name") String name, @Param("type") Integer type);
     
     //添加食物
-    @Insert("insert into t_meal (name,type) values (#{name},#{type})")
+    @Insert("insert into t_meal (name,type,state) values (#{name},#{type},1)")
     Integer addMeal(Meal meal);
     
     //修改食物信息
     @Update("update t_meal set name=#{name},type=#{type} where meal_id=#{mealId}")
     Integer updateMeal(Meal meal);
     //删除存在的食物
-    @Delete("delete from t_meal where meal_id =#{mealId}")
+    @Update("update t_meal set state=0 where meal_id =#{mealId}")
     Integer deleteMeal(Integer mealId);
 }

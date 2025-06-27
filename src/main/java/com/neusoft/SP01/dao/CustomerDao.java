@@ -30,7 +30,7 @@ public interface CustomerDao {
 	        "c.blood_type as c_blood_type, c.tel as c_tel, " +
 	        
 	        "f.family_id as f_family_id, f.customer_id as f_customer_id, " +
-	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel, " +
+	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel,f.state as f_state, " +
 	        
 	        "br.bed_record_id as br_bed_record_id, br.bed_id as br_bed_id, " +
 	        "br.check_in_record_id as br_check_in_record_id, br.state as br_state, " +
@@ -42,7 +42,7 @@ public interface CustomerDao {
 	        "TIMESTAMPDIFF(YEAR, STR_TO_DATE(SUBSTRING(c.identity, 7, 8), '%Y%m%d'), CURDATE()) as age " +
 	        "FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state=1" +
 	        "JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
 	        "JOIN t_bed b ON br.bed_id = b.bed_id " +
 	        "JOIN t_room r ON b.room_id = r.room_id " +
@@ -76,6 +76,7 @@ public interface CustomerDao {
 	    @Result(property = "family.name", column = "f_name"),
 	    @Result(property = "family.relation", column = "f_relation"),
 	    @Result(property = "family.tel", column = "f_tel"),
+	    @Result(property = "family.state", column = "f_state"),
 	    
 	    // BedRecord映射
 	    @Result(property = "bedRecord.bedRecordId", column = "br_bed_record_id"),
@@ -116,7 +117,7 @@ public interface CustomerDao {
 	        "c.blood_type as c_blood_type, c.tel as c_tel, " +
 	        
 	        "f.family_id as f_family_id, f.customer_id as f_customer_id, " +
-	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel, " +
+	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel,f.state as f_state, " +
 	        
 	        "br.bed_record_id as br_bed_record_id, br.bed_id as br_bed_id, " +
 	        "br.check_in_record_id as br_check_in_record_id, br.state as br_state, " +
@@ -129,7 +130,7 @@ public interface CustomerDao {
 	        "TIMESTAMPDIFF(YEAR, STR_TO_DATE(SUBSTRING(c.identity, 7, 8), '%Y%m%d'), CURDATE()) as age " +
 	        "FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state=1 " +
 	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
 	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
 	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
@@ -164,6 +165,7 @@ public interface CustomerDao {
 	    @Result(property = "family.name", column = "f_name"),
 	    @Result(property = "family.relation", column = "f_relation"),
 	    @Result(property = "family.tel", column = "f_tel"),
+	    @Result(property = "family.state", column = "f_state"),
 	    
 	    // BedRecord映射
 	    @Result(property = "bedRecord.bedRecordId", column = "br_bed_record_id"),
@@ -209,7 +211,7 @@ public interface CustomerDao {
 	        "c.blood_type as c_blood_type, c.tel as c_tel, " +
 	        
 	        "f.family_id as f_family_id, f.customer_id as f_customer_id, " +
-	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel, " +
+	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel,f.state as f_state, " +
 	        
 	        "br.bed_record_id as br_bed_record_id, br.bed_id as br_bed_id, " +
 	        "br.check_in_record_id as br_check_in_record_id, br.state as br_state, " +
@@ -221,7 +223,7 @@ public interface CustomerDao {
 	        "TIMESTAMPDIFF(YEAR, STR_TO_DATE(SUBSTRING(c.identity, 7, 8), '%Y%m%d'), CURDATE()) as age " +
 	        "FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state=1 " +
 	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
 	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
 	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
@@ -265,6 +267,7 @@ public interface CustomerDao {
 	    @Result(property = "family.name", column = "f_name"),
 	    @Result(property = "family.relation", column = "f_relation"),
 	    @Result(property = "family.tel", column = "f_tel"),
+	    @Result(property = "family.state", column = "f_state"),
 	    
 	    // BedRecord映射
 	    @Result(property = "bedRecord.bedRecordId", column = "br_bed_record_id"),
@@ -322,7 +325,7 @@ public interface CustomerDao {
 	        "c.blood_type as c_blood_type, c.tel as c_tel, " +
 	        
 	        "f.family_id as f_family_id, f.customer_id as f_customer_id, " +
-	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel, " +
+	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel,f.state as f_state, " +
 	        
 	        "br.bed_record_id as br_bed_record_id, br.bed_id as br_bed_id, " +
 	        "br.check_in_record_id as br_check_in_record_id, br.state as br_state, " +
@@ -335,7 +338,7 @@ public interface CustomerDao {
 	        "TIMESTAMPDIFF(YEAR, STR_TO_DATE(SUBSTRING(c.identity, 7, 8), '%Y%m%d'), CURDATE()) as age " +
 	        "FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state=1 " +
 	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
 	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
 	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
@@ -380,6 +383,7 @@ public interface CustomerDao {
 	    @Result(property = "family.name", column = "f_name"),
 	    @Result(property = "family.relation", column = "f_relation"),
 	    @Result(property = "family.tel", column = "f_tel"),
+	    @Result(property = "family.state", column = "f_state"),
 	    
 	    // BedRecord映射
 	    @Result(property = "bedRecord.bedRecordId", column = "br_bed_record_id"),
@@ -443,7 +447,7 @@ public interface CustomerDao {
 	        "c.blood_type as c_blood_type, c.tel as c_tel, " +
 	        
 	        "f.family_id as f_family_id, f.customer_id as f_customer_id, " +
-	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel, " +
+	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel,f.state as f_state, " +
 	        
 	        "br.bed_record_id as br_bed_record_id, br.bed_id as br_bed_id, " +
 	        "br.check_in_record_id as br_check_in_record_id, br.state as br_state, " +
@@ -456,7 +460,7 @@ public interface CustomerDao {
 	        "TIMESTAMPDIFF(YEAR, STR_TO_DATE(SUBSTRING(c.identity, 7, 8), '%Y%m%d'), CURDATE()) as age " +
 	        "FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state=1 " +
 	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
 	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
 	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
@@ -498,6 +502,7 @@ public interface CustomerDao {
 	    @Result(property = "family.name", column = "f_name"),
 	    @Result(property = "family.relation", column = "f_relation"),
 	    @Result(property = "family.tel", column = "f_tel"),
+	    @Result(property = "family.state", column = "f_state"),
 	    
 	    // BedRecord映射
 	    @Result(property = "bedRecord.bedRecordId", column = "br_bed_record_id"),
@@ -578,7 +583,7 @@ public interface CustomerDao {
   	        "c.blood_type as c_blood_type, c.tel as c_tel, " +
   	        
   	        "f.family_id as f_family_id, f.customer_id as f_customer_id, " +
-  	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel, " +
+  	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel,f.state as f_state, " +
   	        
   	        "br.bed_record_id as br_bed_record_id, br.bed_id as br_bed_id, " +
   	        "br.check_in_record_id as br_check_in_record_id, br.state as br_state, " +
@@ -591,7 +596,7 @@ public interface CustomerDao {
   	        "TIMESTAMPDIFF(YEAR, STR_TO_DATE(SUBSTRING(c.identity, 7, 8), '%Y%m%d'), CURDATE()) as age " +
   	        "FROM t_customer c " +
   	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-  	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
+  	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state=1 " +
   	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
   	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
   	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
@@ -626,6 +631,7 @@ public interface CustomerDao {
   	    @Result(property = "family.name", column = "f_name"),
   	    @Result(property = "family.relation", column = "f_relation"),
   	    @Result(property = "family.tel", column = "f_tel"),
+  	  @Result(property = "family.state", column = "f_state"),
   	    
   	    // BedRecord映射
   	    @Result(property = "bedRecord.bedRecordId", column = "br_bed_record_id"),
@@ -671,7 +677,7 @@ public interface CustomerDao {
 	        "c.blood_type as c_blood_type, c.tel as c_tel, " +
 	        
 	        "f.family_id as f_family_id, f.customer_id as f_customer_id, " +
-	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel, " +
+	        "f.name as f_name, f.relation as f_relation, f.tel as f_tel,f.state as f_state, " +
 	        
 	        "br.bed_record_id as br_bed_record_id, br.bed_id as br_bed_id, " +
 	        "br.check_in_record_id as br_check_in_record_id, br.state as br_state, " +
@@ -684,7 +690,7 @@ public interface CustomerDao {
 	        "TIMESTAMPDIFF(YEAR, STR_TO_DATE(SUBSTRING(c.identity, 7, 8), '%Y%m%d'), CURDATE()) as age " +
 	        "FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state=1 " +
 	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
 	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
 	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
@@ -729,6 +735,7 @@ public interface CustomerDao {
 	    @Result(property = "family.name", column = "f_name"),
 	    @Result(property = "family.relation", column = "f_relation"),
 	    @Result(property = "family.tel", column = "f_tel"),
+	    @Result(property = "family.state", column = "f_state"),
 	    
 	    // BedRecord映射
 	    @Result(property = "bedRecord.bedRecordId", column = "br_bed_record_id"),

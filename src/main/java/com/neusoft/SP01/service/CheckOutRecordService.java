@@ -3,9 +3,6 @@ package com.neusoft.SP01.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.neusoft.SP01.po.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +13,16 @@ import com.neusoft.SP01.dao.BedDao;
 import com.neusoft.SP01.dao.BedRecordDao;
 import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.CheckOutRecordDao;
+import com.neusoft.SP01.dao.CustomerDietDao;
+import com.neusoft.SP01.dao.FamilyDao;
+import com.neusoft.SP01.dao.NursingRecordDao;
+import com.neusoft.SP01.dao.NursingServiceDao;
 import com.neusoft.SP01.po.CheckOutDetailDTO;
+import com.neusoft.SP01.po.CheckOutRecord;
 import com.neusoft.SP01.po.CheckOutRecordWithName;
+import com.neusoft.SP01.po.CustCheckOutDTO;
 import com.neusoft.SP01.po.PageResponseBean;
 import com.neusoft.SP01.po.ResponseBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 @Service
 @Transactional(rollbackFor = Exception.class) // 添加事务注解，任何异常都会回滚
 public class CheckOutRecordService {
@@ -34,6 +35,14 @@ public class CheckOutRecordService {
     private BedRecordDao brd;
 	@Autowired
     private BedDao bd;
+	@Autowired
+    private CustomerDietDao cdd;
+	@Autowired
+    private NursingRecordDao nrd;
+	@Autowired
+    private NursingServiceDao nsd;
+	@Autowired
+    private FamilyDao fd;
 	private static final Logger log = LoggerFactory.getLogger(CheckOutRecordService.class);
 
     // 展示所有退住申请（分页）
@@ -94,7 +103,7 @@ public class CheckOutRecordService {
         return response;
     }
     
-    
+    /*
     public ResponseBean<Integer> approveCheckOut(Integer checkOutRecordId, Integer state, Integer adminId) {
         try {
             // 1. 参数校验
@@ -120,6 +129,7 @@ public class CheckOutRecordService {
                     throw new RuntimeException("未找到关联客户");
                 }
                 
+                
                 // 4.2 获取当前有效入住记录
                 Integer checkInRecordId = cird.findActiveCheckInId(customerId);
                 if (checkInRecordId != null) {
@@ -144,6 +154,24 @@ public class CheckOutRecordService {
                 }else {
                 	throw new RuntimeException("未找到相关入住记录");
                 }
+                
+              //删除膳食配置
+                Integer diet=cdd.deleteCustDiet(customerId);
+                if(diet==null) {
+                	throw new RuntimeException("未找到相关膳食配置记录");
+                }
+                //删除护理记录
+                Integer nursingRecord=nrd.deleteOutNursingRecord(customerId);
+                if(nursingRecord==null) {
+                	throw new RuntimeException("未找到相关护理记录");
+                }
+                
+              //删除护理服务
+                Integer nursingService=nrd.deleteOutNursingRecord(customerId);
+                if(nursingService==null) {
+                	throw new RuntimeException("未找到相关护理服务");
+                }
+                
             }
             
             return new ResponseBean<>(200, "审批成功", result);
@@ -151,6 +179,94 @@ public class CheckOutRecordService {
         } catch (Exception e) {
             log.error("退住审批失败，已回滚所有操作，退住记录ID：{}", checkOutRecordId, e);
             return new ResponseBean<>(500, "审批失败: " + e.getMessage(), null);
+        }
+    }*/
+    //审批
+    public ResponseBean<Integer> approveCheckOut(Integer checkOutRecordId, Integer state, Integer adminId) {
+        try {
+            // 1. 参数校验 - 使用明确的异常类型
+            if (checkOutRecordId == null || state == null || adminId == null) {
+                throw new IllegalArgumentException("参数不完整");
+            }
+            
+            // 2. 获取当前日期
+            String currentDate = LocalDate.now().toString();
+            
+            // 3. 执行审批操作
+            int result = cord.approveCheckOut(checkOutRecordId, state, adminId, currentDate);
+            
+            if (result == 0) {
+                throw new RuntimeException("未找到该退住申请");
+            }
+            
+            // 4. 如果审批通过(state=1)，处理级联状态
+            if (state == 1) {
+                processApprovedCheckOut(checkOutRecordId, currentDate);
+            }
+            
+            return new ResponseBean<>(200, "审批成功", result);
+            
+        } catch (Exception e) {
+            log.error("退住审批失败，已回滚所有操作，退住记录ID：{}", checkOutRecordId, e);
+            return new ResponseBean<>(500, "审批失败: " + e.getMessage(), null);
+        }
+    }
+    protected void processApprovedCheckOut(Integer checkOutRecordId, String currentDate) {
+        // 4.1 获取客户ID
+        Integer customerId = cord.findCustomerIdByCheckOutId(checkOutRecordId);
+        if (customerId == null) {
+            throw new RuntimeException("未找到关联客户");
+        }
+        
+        // 4.2 获取当前有效入住记录
+        Integer checkInRecordId = cird.findActiveCheckInId(customerId);
+        if (checkInRecordId == null) {
+            throw new RuntimeException("未找到相关入住记录");
+        }
+        
+        // 4.3 更新入住记录状态为0(退住)
+        cird.updateCheckInToInactive(checkInRecordId);
+        // 更新入住记录的结束时间
+        cird.updateEndTime(checkInRecordId, currentDate);
+        
+        // 4.4 获取关联床位记录
+        Integer bedRecordId = cird.findActiveBedRecordId(checkInRecordId);
+        if (bedRecordId == null) {
+            throw new RuntimeException("未找到相关床位记录");
+        }
+        
+        // 4.5 更新床位记录状态为0(可用)
+        brd.hideBedRecord(bedRecordId);
+        // 更新床位记录的结束时间
+        brd.updateBedEndTime(bedRecordId, currentDate);
+        
+        // 4.6 更新实际床位状态为可用
+        bd.updatePhysicalBedStatus(bedRecordId);
+        
+        // 删除膳食配置 - 如果没有记录也不报错
+        try {
+            cdd.deleteCustDiet(customerId);
+        } catch (Exception e) {
+            log.warn("删除客户ID[{}]的膳食配置时出现警告: {}", customerId, e.getMessage());
+        }
+        
+        // 删除护理记录 - 如果没有记录也不报错
+        try {
+            nrd.deleteOutNursingRecord(customerId);
+        } catch (Exception e) {
+            log.warn("删除客户ID[{}]的护理记录时出现警告: {}", customerId, e.getMessage());
+        }
+        
+        // 删除护理服务 - 如果没有记录也不报错
+        try {
+            nsd.detectService(customerId);
+        } catch (Exception e) {
+            log.warn("删除客户ID[{}]的护理服务时出现警告: {}", customerId, e.getMessage());
+        }
+        try {
+            fd.deleteFamily(customerId);
+        } catch (Exception e) {
+            log.warn("删除客户ID[{}]的护理记录时出现警告: {}", customerId, e.getMessage());
         }
     }
     /*=======护工系统客户管理展示用户所有的退住申请=========*/

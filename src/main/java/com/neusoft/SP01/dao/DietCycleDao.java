@@ -35,43 +35,19 @@ public interface DietCycleDao {
     List<DietCycleDetail> selectDietCycleWithMealByDate(@Param("date") String date);
     
     /*根据ID查询膳食周期安排*/
-    @Select("SELECT * FROM diet_cycle WHERE diet_cycle_id = #{dietCycleId}")
-    DietCycle findDietCycleById(@Param("dietCycleId") Integer dietCycleId);
-    
-    
-    
-    
-
-    
-    
-    /*根据日期查询膳食安排*/
-    @Select("SELECT * FROM diet_cycle WHERE date = #{date}")
-    List<DietCycle> findDietCyclesByDate(@Param("date") String date);
-    
-    /*根据日期范围查询膳食安排*/
-    @Select("SELECT * FROM diet_cycle WHERE date BETWEEN #{startDate} AND #{endDate}")
-    List<DietCycle> findDietCyclesByDateRange(String startDate,String endDate);
-    
-    /*根据餐次类型查询膳食安排*/
-    @Select("SELECT * FROM diet_cycle WHERE type = #{type}")
-    List<DietCycle> findDietCyclesByType(Integer type);
-    
-    /*查询特定日期的特定餐次膳食安排*/
-    @Select("SELECT * FROM diet_cycle WHERE date = #{date} AND type = #{type}")
-    DietCycle findDietCycleByDateAndType(String date,Integer type);
-    
-    /*查询包含特定食物的膳食周期安排*/
     @Select("SELECT * FROM diet_cycle WHERE meal_id = #{mealId}")
-    List<DietCycle> findDietCyclesByMeal(@Param("mealId") Integer mealId);
+    DietCycle findDietCycleByMealId(@Param("mealId") Integer mealId);
+    
+    @Update("UPDATE t_diet_cycle SET state=0 WHERE meal_id = #{mealId}")
+    Integer updateDietCycleByMealId(@Param("mealId") Integer mealId);
+    
+    
+    
+    
 
     
-    /*查询膳食周期详情(关联食物信息)*/
-    @Select("SELECT")
-    DietCycleDetail findDietCycleDetailById(Integer dietCycleId);
     
-    /*查询日期范围内的膳食周期详情列表*/
-    @Select("SELECT ")
-    List<DietCycleDetail> findDietCycleDetailsByDateRange(String startDate,String endDate);
+   
 
 
     
