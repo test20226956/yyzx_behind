@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.neusoft.SP01.dao.BedDao;
 import com.neusoft.SP01.dao.BedRecordDao;
@@ -227,12 +228,14 @@ public class BedRecordService {
         	// 7. 更新旧床位状态为空闲
         	bd.updateBedStatus1(oldRecord.getBedId(), 0);
             if (bd.updateBedStatus1(oldRecord.getBedId(), 0) == 0) {
+            	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
                 throw new RuntimeException("更新旧床位状态失败");
             }
             // 6. 更新旧床位记录 - 使用前端传入的endDate
             oldRecord.setEndTime(currentDate);  // 使用当前时间
             oldRecord.setState(0); // 设置为失效
             if (brd.updateBedRecord(oldRecord) == 0) {
+            	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
                 throw new RuntimeException("更新旧床位记录失败");
             }
             
@@ -246,12 +249,16 @@ public class BedRecordService {
             newRecord.setStartTime(currentDate);
             newRecord.setEndTime(endTime);  // 使用前端传入的结束时间
             if (brd.insertBedRecord1(newRecord) == 0) {
+            	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
                 throw new RuntimeException("创建新床位记录失败");
             }
             
             // 9. 更新新床位状态为有人
             if (bd.updateBedStatus1(newBedId, 1) == 0) {
+            	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
                 throw new RuntimeException("更新新床位状态失败");
+            }else {
+            	bd.updateBedStatus1(newBedId, 1);
             }
             
             return new ResponseBean<>(200, "床位调换成功", null);

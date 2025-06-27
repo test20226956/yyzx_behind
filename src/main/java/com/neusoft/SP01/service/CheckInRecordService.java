@@ -15,6 +15,7 @@ import com.neusoft.SP01.dao.BedDao;
 import com.neusoft.SP01.dao.BedRecordDao;
 import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.CustomerDao;
+import com.neusoft.SP01.dao.CustomerDietDao;
 import com.neusoft.SP01.dao.FamilyDao;
 import com.neusoft.SP01.dao.RoomDao;
 import com.neusoft.SP01.po.Bed;
@@ -40,6 +41,8 @@ public class CheckInRecordService {
     private CheckInRecordDao cird;
 	@Autowired
     private RoomDao rd;
+	@Autowired
+    private CustomerDietDao cdd;
 	
 	private static final Logger log = LoggerFactory.getLogger(CheckInRecordService.class);
 	
@@ -155,6 +158,8 @@ public class CheckInRecordService {
             
             // 10. 更新床位状态为已占用
             bd.updateBedStatus(bedInfo.getBedId());
+            //11.添加一条客户膳食
+            cdd.addCustomerDiet(customerId);
             
             return new ResponseBean<>(200, "添加成功", null);
             
@@ -188,6 +193,7 @@ public class CheckInRecordService {
             
            
             if (updated == 0) {
+            	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
                 return new ResponseBean<>(500, "未找到该客户", null);
             }
             
@@ -196,6 +202,7 @@ public class CheckInRecordService {
             
         } catch (Exception e) {
             log.error("删除客户信息失败，客户ID: {}", customerId, e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
             return new ResponseBean<>(500, "删除失败: " + e.getMessage(), null);
         }
     }

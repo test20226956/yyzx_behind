@@ -192,7 +192,7 @@ public class NursingProjectService {
     }
     
     //在未有的下面查询
-    public ResponseBean<List<NursingProject>> getUnpurchasedProjects(
+    public ResponseBean<List<NursingProject>> searchUnpurchasedProjects(
             Integer customerId, 
             String name) {
         try {
@@ -208,7 +208,7 @@ public class NursingProjectService {
             }
             
             // 3. 查询未购买项目（支持模糊搜索）
-            List<NursingProject> result = npd.findUnpurchasedProjects(
+            List<NursingProject> result = npd.searchUnpurchasedProjects(
                 customerId, 
                 activeRecord.getNursingLevelId(),
                 name); // 传入项目名称参数
