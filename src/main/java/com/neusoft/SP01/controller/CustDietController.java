@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,8 +36,8 @@ public class CustDietController {
 
     //    修改客户膳食配置
     @PostMapping("/editCustDiet")
-    public ResponseBean<Integer> editCustDiet(CustomerDiet data){
-        return null;
+    public ResponseBean<Integer> editCustDiet(@RequestBody CustomerDiet customerDiet){
+    	return cds.editCustDiet(customerDiet);
     }
 
 }
