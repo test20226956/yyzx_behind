@@ -13,14 +13,7 @@
     f.name AS fName,
     f.tel,
     cir.nursing_level_id,
-    CASE
-        WHEN b.bed_number = 1 THEN '一床'
-        WHEN b.bed_number = 2 THEN '二床'
-        WHEN b.bed_number = 3 THEN '三床'
-        WHEN b.bed_number = 4 THEN '四床'
-        WHEN b.bed_number = 5 THEN '五床'
-        ELSE CONCAT(b.bed_number, '床')
-        END AS bed_number
+    b.bed_number
 FROM
     t_customer c
 JOIN
@@ -50,14 +43,7 @@ ORDER BY
             f.name AS fName,
             f.tel,
             cir.nursing_level_id,
-            CASE
-                WHEN b.bed_number = 1 THEN '一床'
-                WHEN b.bed_number = 2 THEN '二床'
-                WHEN b.bed_number = 3 THEN '三床'
-                WHEN b.bed_number = 4 THEN '四床'
-                WHEN b.bed_number = 5 THEN '五床'
-                ELSE CONCAT(b.bed_number, '床')
-                END AS bed_number
+            b.bed_number
 FROM
     t_customer c
 JOIN
@@ -87,14 +73,7 @@ c.customer_id
             f.name AS fName,
             f.tel,
             cir.nursing_level_id,
-            CASE
-                WHEN b.bed_number = 1 THEN '一床'
-                WHEN b.bed_number = 2 THEN '二床'
-                WHEN b.bed_number = 3 THEN '三床'
-                WHEN b.bed_number = 4 THEN '四床'
-                WHEN b.bed_number = 5 THEN '五床'
-                ELSE CONCAT(b.bed_number, '床')
-            END AS bed_number,
+            b.bed_number,
             cir.check_in_time,
             cir.end_time
 FROM
@@ -128,14 +107,7 @@ c.customer_id
             f.name AS fName,
             f.tel,
             cir.nursing_level_id,
-            CASE
-                WHEN b.bed_number = 1 THEN '一床'
-                WHEN b.bed_number = 2 THEN '二床'
-                WHEN b.bed_number = 3 THEN '三床'
-                WHEN b.bed_number = 4 THEN '四床'
-                WHEN b.bed_number = 5 THEN '五床'
-                ELSE CONCAT(b.bed_number, '床')
-             END AS bed_number,
+            b.bed_number,
             cir.check_in_time,
             cir.end_time
 FROM
