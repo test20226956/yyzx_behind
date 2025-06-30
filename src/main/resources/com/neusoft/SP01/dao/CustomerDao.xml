@@ -25,7 +25,7 @@ JOIN
 JOIN
     t_room r ON b.room_id = r.room_id
 LEFT JOIN
-    t_family f ON c.customer_id = f.customer_id
+    t_family f ON c.customer_id = f.customer_id and f.state=1
 WHERE
     user_id = #{user_id}
 ORDER BY
@@ -55,7 +55,7 @@ t_bed b ON br.bed_id = b.bed_id
 JOIN
 t_room r ON b.room_id = r.room_id
 LEFT JOIN
-t_family f ON c.customer_id = f.customer_id
+t_family f ON c.customer_id = f.customer_id and f.state=1
 ORDER BY
 c.customer_id
     </select>
@@ -87,7 +87,7 @@ JOIN
 JOIN
     t_room r ON b.room_id = r.room_id
 LEFT JOIN
-    t_family f ON c.customer_id = f.customer_id
+    t_family f ON c.customer_id = f.customer_id and f.state=1
 where
     user_id=#{userId}
 ORDER BY
@@ -121,7 +121,7 @@ JOIN
 JOIN
     t_room r ON b.room_id = r.room_id
 LEFT JOIN
-    t_family f ON c.customer_id = f.customer_id
+    t_family f ON c.customer_id = f.customer_id and f.state=1
 where
     user_id=#{userId} and c.name like concat('%',#{name},'%')
 ORDER BY
