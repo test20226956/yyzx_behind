@@ -99,11 +99,12 @@ public interface NursingRecordDao {
             "FROM t_nursing_record nr " +
             "LEFT JOIN t_nursing_service ns ON nr.nursing_service_id = ns.nursing_service_id " +
             "LEFT JOIN t_nursing_project np ON ns.nursing_project_id = np.nursing_project_id " +
+            "LEFT JOIN t_user u ON nr.user_id = u.user_id " +
             "WHERE nr.state = 1 " +
             "<if test='customerId != null'>" +
             "  AND nr.customer_id = #{customerId} " +
             "</if>" +
-            "<if test='time != null'>" +
+            "<if test='time != null and time != \"\"'>" +
             "  AND nr.time >= #{time} " +
             "</if>" +
             "<if test='projectName != null and projectName != \"\"'>" +

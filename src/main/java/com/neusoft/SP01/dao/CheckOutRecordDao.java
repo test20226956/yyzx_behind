@@ -27,8 +27,10 @@ public interface CheckOutRecordDao {
     List<CheckOutRecordWithName> showCheckOut(@Param("offset") long offset, 
                                             @Param("pageSize") long pageSize);
 	/*查询退住申请总记录数*/
-	@Select("SELECT COUNT(*) FROM t_check_out_record")
-    long countCheckOut();
+	@Select("SELECT COUNT(*) FROM t_check_out_record r " +
+	        "LEFT JOIN t_customer c ON r.customer_id = c.customer_id " +
+	        "LEFT JOIN t_user u ON r.nurse_id = u.user_id")
+	long countCheckOut();
 	
 	/*分页多条件查询*/
 	@Select("<script>" +
@@ -62,6 +64,7 @@ public interface CheckOutRecordDao {
             "SELECT COUNT(*) " +
             "FROM t_check_out_record r " +
             "LEFT JOIN t_customer c ON r.customer_id = c.customer_id " +
+            "LEFT JOIN t_user u ON r.nurse_id = u.user_id " +
             "<where>" +
             "   <if test='customerName != null and customerName != \"\"'>" +
             "       AND c.name LIKE CONCAT('%', #{customerName}, '%')" +

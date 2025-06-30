@@ -30,8 +30,10 @@ public interface OutRecordDao {
     List<OutRecordWithName> showGoOut(@Param("offset") long offset, 
                                             @Param("pageSize") long pageSize);
 	/*查询外出退住申请总记录数*/
-	@Select("SELECT COUNT(*) FROM t_out_record")
-    long countGoOut();
+	@Select("SELECT COUNT(*) FROM t_out_record r " +
+	        "LEFT JOIN t_customer c ON r.customer_id = c.customer_id " +
+	        "LEFT JOIN t_user u ON r.nurse_id = u.user_id")
+	long countGoOut();
 	
 	/*分页多条件查询*/
 	@Select("<script>" +
@@ -65,6 +67,7 @@ public interface OutRecordDao {
             "SELECT COUNT(*) " +
             "FROM t_out_record r " +
             "LEFT JOIN t_customer c ON r.customer_id = c.customer_id " +
+            "LEFT JOIN t_user u ON r.nurse_id = u.user_id " +
             "<where>" +
             "   <if test='customerName != null and customerName != \"\"'>" +
             "       AND c.name LIKE CONCAT('%', #{customerName}, '%')" +

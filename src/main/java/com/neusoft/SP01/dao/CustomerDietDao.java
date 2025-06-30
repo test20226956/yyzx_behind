@@ -127,6 +127,11 @@ public interface CustomerDietDao {
     @Select("<script>" +
             "SELECT COUNT(*) FROM t_customer c " +
             "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
+            "LEFT JOIN t_family f ON c.customer_id = f.customer_id " +
+            "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
+            "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
+            "LEFT JOIN t_room r ON b.room_id = r.room_id " +
+            "LEFT JOIN t_customer_diet cd ON c.customer_id = cd.customer_id AND cd.state = 1 " +
             "WHERE cir.state = 1 " +
             "<if test='name != null and name != \"\"'>" +
             "   AND c.name LIKE CONCAT('%', #{name}, '%') " +
