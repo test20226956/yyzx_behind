@@ -1,7 +1,7 @@
 package com.neusoft.SP01.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
-import com.neusoft.SP01.Util.JwtUtils;
+import com.neusoft.SP01.util.JwtUtils;
 import com.neusoft.SP01.po.ResponseBean;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

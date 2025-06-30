@@ -1,4 +1,4 @@
-package com.neusoft.SP01.Util;
+package com.neusoft.SP01.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -17,7 +17,7 @@ public class JwtUtils {
     //	定义令牌过期时间的单位
     private static final int calendarField= Calendar.SECOND;
     //	定义令牌的过期时间
-    private static final int calendarInterval=300;
+    private static final int calendarInterval=1200;
 
     //	创建令牌的方法
     public static String createToken(String mobileJson){
