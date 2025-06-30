@@ -54,7 +54,7 @@ public class BedRecordService {
             
             // 检查查询结果是否为空
             if (rawData == null || rawData.isEmpty()) {
-                return new PageResponseBean<>(500, "无数据", null);
+                return new PageResponseBean<>(500, "无符合条件的数据", null);
             }
             
             // 转换为DTO列表

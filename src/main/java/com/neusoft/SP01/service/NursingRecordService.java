@@ -78,7 +78,7 @@ public class NursingRecordService {
 	 // 检查查询结果
 	    if (records == null || records.isEmpty()) {
 	        response.setStatus(500);
-	        response.setMsg("查不到符合条件的记录");
+	        response.setMsg("无符合条件的数据");
 	        response.setData(null);
 	        response.setTotal(0);
 	    } else {

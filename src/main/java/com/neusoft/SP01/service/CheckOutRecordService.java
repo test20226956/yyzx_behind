@@ -60,7 +60,7 @@ public class CheckOutRecordService {
         PageResponseBean<List<CheckOutRecordWithName>> response = new PageResponseBean<>();
         if (list == null || list.isEmpty()) {
 	        response.setStatus(500);
-	        response.setMsg("无数据");
+	        response.setMsg("无符合条件的数据");
 	        response.setData(null);
 	        response.setTotal(0);
 	    } else {
@@ -90,7 +90,7 @@ public class CheckOutRecordService {
         PageResponseBean<List<CheckOutRecordWithName>> response = new PageResponseBean<>();
         if (list == null || list.isEmpty()) {
 	        response.setStatus(500);
-	        response.setMsg("无数据");
+	        response.setMsg("无符合条件的数据");
 	        response.setData(null);
 	        response.setTotal(0);
 	    } else {

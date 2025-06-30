@@ -42,7 +42,7 @@ public interface CustomerDao {
 	        "TIMESTAMPDIFF(YEAR, STR_TO_DATE(SUBSTRING(c.identity, 7, 8), '%Y%m%d'), CURDATE()) as age " +
 	        "FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state=1" +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state=1 " +
 	        "JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
 	        "JOIN t_bed b ON br.bed_id = b.bed_id " +
 	        "JOIN t_room r ON b.room_id = r.room_id " +
@@ -102,9 +102,13 @@ public interface CustomerDao {
     List<CustCheckInDTO> showSelfCust(@Param("offset")long offset, @Param("pageSize")long pageSize);
 	/*计算总数*/
 	@Select("SELECT COUNT(*) FROM t_customer c " +
-            "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-            "WHERE c.type = '0' AND cir.state = 1")
-    long countSelfCareCustomers();
+	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state = 1 " +
+	        "JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
+	        "JOIN t_bed b ON br.bed_id = b.bed_id " +
+	        "JOIN t_room r ON b.room_id = r.room_id " +
+	        "WHERE c.type = '0' AND cir.state = 1")
+	long countSelfCareCustomers();
 	
 	
 	/*查询所有护理老人客户列表*/
@@ -195,8 +199,12 @@ public interface CustomerDao {
 	})
 	List<CustCheckInNurseDTO> showCareCust(long offset,long pageSize);
 	@Select("SELECT COUNT(*) FROM t_customer c " +
-            "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-            "WHERE c.type = '1' AND cir.state = 1")
+	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state = 1 " +
+	        "JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
+	        "JOIN t_bed b ON br.bed_id = b.bed_id " +
+	        "JOIN t_room r ON b.room_id = r.room_id " +
+	        "WHERE c.type = '1' AND cir.state = 1")
     long countCareCustomers();
 	
 	
@@ -299,6 +307,10 @@ public interface CustomerDao {
 	@Select("<script>" +
 	        "SELECT COUNT(*) FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state = 1 " +
+	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
+	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
+	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
 	        "WHERE cir.state = 1 " +
 	        "<if test='selfCare != null'>" +
 	        "   AND c.type = #{selfCare} " +
@@ -420,20 +432,25 @@ public interface CustomerDao {
 	@Select("<script>" +
 	        "SELECT COUNT(*) FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-	        "WHERE cir.state = 1 AND c.type=1" +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state = 1 " +
+	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
+	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
+	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
+	        "LEFT JOIN t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id " +
+	        "WHERE cir.state = 1 AND c.type = 1 " +
 	        "<if test='name != null and name != \"\"'>" +
 	        "   AND c.name LIKE CONCAT('%', #{name}, '%') " +
 	        "</if>" +
 	        "<if test='checkInTime != null and checkInTime != \"\"'>" +
 	        "   AND cir.check_in_time >= #{checkInTime} " +
 	        "</if>" +
-	        "<if test='nursingLevelId != null and nursingLevelId != \"\"'>" +
-	        "   AND cir.nursing_level_id= #{nursingLevelId} " +
+	        "<if test='nursingLevelId != null'>" +
+	        "   AND cir.nursing_level_id = #{nursingLevelId} " +
 	        "</if>" +
 	        "</script>")
 	long countSearchCareCustomers(@Param("name") String name, 
-	                         @Param("checkInTime") String checkInTime,
-	                         @Param("nursingLevelId") Integer nursingLevelId);
+	                           @Param("checkInTime") String checkInTime,
+	                           @Param("nursingLevelId") Integer nursingLevelId);
 	
 
 	/*多条件组合查询没有护理级别的护理客户信息*/
@@ -538,7 +555,12 @@ public interface CustomerDao {
 	@Select("<script>" +
 	        "SELECT COUNT(*) FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-	        "WHERE cir.state = 1 AND c.type=1 AND cir.nursing_level_id IS NULL" +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state = 1 " +
+	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
+	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
+	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
+	        "LEFT JOIN t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id " +
+	        "WHERE cir.state = 1 AND c.type = 1 AND cir.nursing_level_id IS NULL " +
 	        "<if test='name != null and name != \"\"'>" +
 	        "   AND c.name LIKE CONCAT('%', #{name}, '%') " +
 	        "</if>" +
@@ -547,7 +569,7 @@ public interface CustomerDao {
 	        "</if>" +
 	        "</script>")
 	long countSearchNoLevelCareCustomers(@Param("name") String name, 
-	                         @Param("checkInTime") String checkInTime);
+	                                   @Param("checkInTime") String checkInTime);
 	
 	
 	/*根据身份证号查老人信息*/
@@ -661,9 +683,14 @@ public interface CustomerDao {
   	})
   	List<CustCheckInNurseDTO> showUnCust(long offset,long pageSize);
   	@Select("SELECT COUNT(*) FROM t_customer c " +
-              "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-              "WHERE c.type = '1' AND cir.state = 1 AND cir.user_id IS NULL")
-      long countUnCustomers();
+  	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
+  	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state = 1 " +
+  	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
+  	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
+  	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
+  	        "LEFT JOIN t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id " +
+  	        "WHERE c.type = '1' AND cir.state = 1 AND cir.user_id IS NULL")
+  	long countUnCustomers();
   	
   	
   	/*多条件组合查询没有护工的护理客户信息*/
@@ -772,20 +799,25 @@ public interface CustomerDao {
 	@Select("<script>" +
 	        "SELECT COUNT(*) FROM t_customer c " +
 	        "JOIN t_check_in_record cir ON c.customer_id = cir.customer_id " +
-	        "WHERE cir.state = 1 AND c.type=1 AND cir.user_id IS NULL " +
+	        "LEFT JOIN t_family f ON c.customer_id = f.customer_id AND f.state = 1 " +
+	        "LEFT JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 " +
+	        "LEFT JOIN t_bed b ON br.bed_id = b.bed_id " +
+	        "LEFT JOIN t_room r ON b.room_id = r.room_id " +
+	        "LEFT JOIN t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id " +
+	        "WHERE cir.state = 1 AND c.type = 1 AND cir.user_id IS NULL " +
 	        "<if test='name != null and name != \"\"'>" +
 	        "   AND c.name LIKE CONCAT('%', #{name}, '%') " +
 	        "</if>" +
 	        "<if test='checkInTime != null and checkInTime != \"\"'>" +
 	        "   AND cir.check_in_time >= #{checkInTime} " +
 	        "</if>" +
-	        "<if test='nursingLevelId != null and nursingLevelId != \"\"'>" +
-	        "   AND cir.nursing_level_id= #{nursingLevelId} " +
+	        "<if test='nursingLevelId != null'>" +
+	        "   AND cir.nursing_level_id = #{nursingLevelId} " +
 	        "</if>" +
 	        "</script>")
 	long countSearchUnCust(@Param("name") String name, 
-	                         @Param("checkInTime") String checkInTime,
-	                         @Param("nursingLevelId") Integer nursingLevelId);
+	                     @Param("checkInTime") String checkInTime,
+	                     @Param("nursingLevelId") Integer nursingLevelId);
 
 
 

@@ -28,7 +28,7 @@ public interface DietCycleDao {
     Integer updateDietCycle(DietCycle dietCycle);
     
     /*根据日期查询膳食安排*/
-    @Select("SELECT dc.*, m.name AS mealName, m.img AS mealImg, m.type AS mealType " +
+    @Select("SELECT dc.*, m.name AS mealName, m.img AS mealImg, m.type AS mealType,m.state AS mealState " +
             "FROM t_diet_cycle dc " +
             "LEFT JOIN t_meal m ON dc.meal_id = m.meal_id " +
             "WHERE dc.date = #{date} ")  
