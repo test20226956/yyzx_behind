@@ -345,10 +345,17 @@ public class CustomerService {
 		Page<CustDailyNursingDTO> p =(Page<CustDailyNursingDTO>)cdnds;
 		// 4. 构建响应对象
 		PageResponseBean<List<CustDailyNursingDTO>> response = new PageResponseBean<>();
-		response.setStatus(200); // 成功状态码
-		response.setMsg("查询成功"); // 成功消息
-		response.setData(p.getResult()); // 当前页数据
-		response.setTotal(p.getTotal()); // 总记录数
+		if(p.getTotal()!=0){
+			response.setStatus(200); // 成功状态码
+			response.setMsg("查询成功"); // 成功消息
+			response.setData(p.getResult()); // 当前页数据
+			response.setTotal(p.getTotal()); // 总记录数
+		}else{
+			response.setStatus(500); // 成功状态码
+			response.setMsg("无客户，请联系管理员设置服务对象"); // 成功消息
+			response.setData(p.getResult()); // 当前页数据
+			response.setTotal(p.getTotal()); // 总记录数
+		}
 		return response;
 	}
 	//根据老人姓名模糊搜索
@@ -361,10 +368,17 @@ public class CustomerService {
 		Page<CustDailyNursingDTO> p =(Page<CustDailyNursingDTO>)cdnds;
 		// 4. 构建响应对象
 		PageResponseBean<List<CustDailyNursingDTO>> response = new PageResponseBean<>();
-		response.setStatus(200); // 成功状态码
-		response.setMsg("查询成功"); // 成功消息
-		response.setData(p.getResult()); // 当前页数据
-		response.setTotal(p.getTotal()); // 总记录数
+		if(p.getTotal()!=0){
+			response.setStatus(200); // 成功状态码
+			response.setMsg("查询成功"); // 成功消息
+			response.setData(p.getResult()); // 当前页数据
+			response.setTotal(p.getTotal()); // 总记录数
+		}else{
+			response.setStatus(500); // 成功状态码
+			response.setMsg("无符合条件的数据"); // 成功消息
+			response.setData(p.getResult()); // 当前页数据
+			response.setTotal(p.getTotal()); // 总记录数
+		}
 		return response;
 	}
 	//客户管理模块显示老人信息（其实是增加了身份证号，入住时间以及到期时间这三项内容）
@@ -377,10 +391,17 @@ public class CustomerService {
 		Page<CustNursingManageDTO> p =(Page<CustNursingManageDTO>)cdnds;
 		// 4. 构建响应对象
 		PageResponseBean<List<CustNursingManageDTO>> response = new PageResponseBean<>();
-		response.setStatus(200); // 成功状态码
-		response.setMsg("查询成功"); // 成功消息
-		response.setData(p.getResult()); // 当前页数据
-		response.setTotal(p.getTotal()); // 总记录数
+		if(p.getTotal()!=0){
+			response.setStatus(200); // 成功状态码
+			response.setMsg("查询成功"); // 成功消息
+			response.setData(p.getResult()); // 当前页数据
+			response.setTotal(p.getTotal()); // 总记录数
+		}else{
+			response.setStatus(500); // 成功状态码
+			response.setMsg("无客户，请联系管理员设置服务对象"); // 成功消息
+			response.setData(p.getResult()); // 当前页数据
+			response.setTotal(p.getTotal()); // 总记录数
+		}
 		return response;
 	}
 	//客户管理模块根据老人姓名模糊搜索
@@ -393,10 +414,17 @@ public class CustomerService {
 		Page<CustNursingManageDTO> p =(Page<CustNursingManageDTO>)cdnds;
 		// 4. 构建响应对象
 		PageResponseBean<List<CustNursingManageDTO>> response = new PageResponseBean<>();
-		response.setStatus(200); // 成功状态码
-		response.setMsg("查询成功"); // 成功消息
-		response.setData(p.getResult()); // 当前页数据
-		response.setTotal(p.getTotal()); // 总记录数
+		if(p.getTotal()!=0){
+			response.setStatus(200); // 成功状态码
+			response.setMsg("查询成功"); // 成功消息
+			response.setData(p.getResult()); // 当前页数据
+			response.setTotal(p.getTotal()); // 总记录数
+		}else{
+			response.setStatus(500); // 成功状态码
+			response.setMsg("无符合条件的数据"); // 成功消息
+			response.setData(p.getResult()); // 当前页数据
+			response.setTotal(p.getTotal()); // 总记录数
+		}
 		return response;
 	}
 }

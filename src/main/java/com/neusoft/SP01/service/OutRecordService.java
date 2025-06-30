@@ -56,7 +56,7 @@ public class OutRecordService {
             response.setTotal(p.getTotal()); // 总记录数
         }else{
             response.setStatus(500); // 成功状态码
-            response.setMsg("无符合条件的数据"); // 成功消息
+            response.setMsg("该老人暂无外出申请记录"); // 成功消息
             response.setData(p.getResult()); // 当前页数据
             response.setTotal(p.getTotal()); // 总记录数
         }
@@ -92,6 +92,7 @@ public class OutRecordService {
         return true;
     }
     //给用户添加回院时间
+    @Transactional
     public int AddActualReturnTime(Integer outRecordId){
         OutRecord outRecordById = ord.findOutRecordById(outRecordId);
         if(outRecordById.getState()!=1){//老人外出审批未通过，不可添加回院时间
@@ -100,6 +101,19 @@ public class OutRecordService {
             //审批通过了但是还没有回院时间才可以添加回院时间
             String actualReturnTime = LocalDate.now().toString();
             ord.AddActualReturnTime(outRecordId,actualReturnTime);
+            // 4.2 获取当前有效入住记录
+            Integer checkInRecordId = cird.findActiveCheckInId(outRecordById.getCustomerId());
+            if (checkInRecordId != null) {
+                // 4.4 获取关联床位记录
+                Integer bedRecordId = cird.findActiveBedRecordId(checkInRecordId);
+                if (bedRecordId != null) {
+
+                    // 4.6 更新实际床位状态为有人
+                    bd.updatePhysicalBedStatus3(bedRecordId);
+                }
+            }else {
+                throw new RuntimeException("未找到相关入住记录");
+            }
             return 1;
         }else{
             return 0;//老人外出审批通过但是已经有了回院时间

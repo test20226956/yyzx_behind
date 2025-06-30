@@ -44,7 +44,7 @@ public class NursingServiceService {
             response.setTotal(p.getTotal()); // 总记录数
         }else{
             response.setStatus(500); // 成功状态码
-            response.setMsg("无符合条件的数据"); // 成功消息
+            response.setMsg("该老人暂无护理服务"); // 成功消息
             response.setData(p.getResult()); // 当前页数据
             response.setTotal(p.getTotal()); // 总记录数
         }

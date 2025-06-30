@@ -141,7 +141,7 @@ public class UserController {
         if(!cnrd.isEmpty()){
             return new ResponseBean<>(200,"查询成功",cnrd);
         }else {
-            return new ResponseBean<>(500,"无数据");
+            return new ResponseBean<>(500,"该老人暂无护理记录");
         }
     }
     @PostMapping("/deleteCareRecord")//护理记录移除（隐藏）
@@ -158,7 +158,7 @@ public class UserController {
         if(!cnrd.isEmpty()){
             return new ResponseBean<>(200,"查询成功",cnrd);
         }else {
-            return new ResponseBean<>(500,"无数据");
+            return new ResponseBean<>(500,"无符合条件的数据");
         }
     }
 }

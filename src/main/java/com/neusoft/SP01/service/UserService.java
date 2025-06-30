@@ -5,9 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.neusoft.SP01.Util.JwtUtils;
+import com.neusoft.SP01.util.JwtUtils;
 import com.neusoft.SP01.po.ResponseBeanJWT;
-import com.neusoft.SP01.redisdao.RedisDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,7 @@ public class UserService {
         ObjectMapper objectMapper = new ObjectMapper();
         String s = objectMapper.writeValueAsString(user);
         String jwt = JwtUtils.createToken(s);//jwt包含了当前登录的用户信息
-        redisTemplate.opsForValue().set(user.getUserId().toString(),jwt,300, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(user.getUserId().toString(),jwt,20, TimeUnit.MINUTES);
         return new ResponseBeanJWT(200, "登录成功",user,jwt);
     }
     

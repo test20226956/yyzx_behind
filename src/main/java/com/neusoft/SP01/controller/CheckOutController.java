@@ -78,7 +78,7 @@ public class CheckOutController {
                                                                       @RequestParam(defaultValue = "4")Integer pageSize,Integer customerId){
         List<CustCheckOutDTO> checkOutRecordByCustomerId = cors.findCheckOutRecordByCustomerId(pageNum,pageSize,customerId);
         if(checkOutRecordByCustomerId.isEmpty()){
-            return new ResponseBean<>(500,"无数据");
+            return new ResponseBean<>(500,"该老人暂无退住申请记录");
         }else{
             return new ResponseBean<>(200,"查询成功",checkOutRecordByCustomerId);
         }
