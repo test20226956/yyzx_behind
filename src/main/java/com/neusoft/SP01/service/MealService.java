@@ -55,7 +55,7 @@ public class MealService {
             PageResponseBean<List<Meal>> response = new PageResponseBean<>();
             if (meals == null || meals.isEmpty()) {
     	        response.setStatus(500);
-    	        response.setMsg("无数据");
+    	        response.setMsg("无符合条件的数据");
     	        response.setData(null);
     	        response.setTotal(0);
     	    } else {

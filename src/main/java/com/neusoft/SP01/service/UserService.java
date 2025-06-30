@@ -48,7 +48,7 @@ public class UserService {
             
             // 检查查询结果是否为空
             if (users == null || users.isEmpty()) {
-                return new PageResponseBean<>(500, "无数据", null);
+                return new PageResponseBean<>(500, "无符合条件的数据", null);
             }
             
             // 查询总数
@@ -88,7 +88,7 @@ public class UserService {
             
             // 检查结果
             if (users.isEmpty()) {
-                return new PageResponseBean<>(500, "无数据", null);
+                return new PageResponseBean<>(500, "无符合条件的数据", null);
             }
             
             // 查询总数
