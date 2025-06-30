@@ -41,7 +41,7 @@ public class UserController {
     @Autowired
     private NursingRecordService nrs;
     //登录
-	@GetMapping("/login")
+	@PostMapping("/login")
     public ResponseBean<?> login(String account,String password) throws JsonProcessingException {
         return us.login(account, password);
     }

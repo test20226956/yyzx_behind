@@ -9,6 +9,7 @@ import com.neusoft.SP01.Util.JwtUtils;
 import com.neusoft.SP01.po.ResponseBeanJWT;
 import com.neusoft.SP01.redisdao.RedisDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.neusoft.SP01.dao.UserDao;
@@ -22,7 +23,7 @@ public class UserService {
     @Autowired
     private UserDao ud;
     @Autowired
-    private RedisDao rd;
+    RedisTemplate redisTemplate;
     
     /*用户登录验证*/
     public ResponseBean<User> login(String account, String password) throws JsonProcessingException {
@@ -42,7 +43,7 @@ public class UserService {
         ObjectMapper objectMapper = new ObjectMapper();
         String s = objectMapper.writeValueAsString(user);
         String jwt = JwtUtils.createToken(s);//jwt包含了当前登录的用户信息
-        rd.set(user.getUserId().toString(),jwt,2, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(user.getUserId().toString(),jwt,300, TimeUnit.SECONDS);
         return new ResponseBeanJWT(200, "登录成功",user,jwt);
     }
     
