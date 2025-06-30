@@ -3,6 +3,7 @@ package com.neusoft.SP01.controller;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,7 @@ public class UserController {
     private NursingRecordService nrs;
     //登录
 	@GetMapping("/login")
-    public ResponseBean<?> login(String account,String password) {
+    public ResponseBean<?> login(String account,String password) throws JsonProcessingException {
         return us.login(account, password);
     }
 	//展示
