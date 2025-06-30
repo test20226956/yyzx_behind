@@ -50,7 +50,7 @@ public class NursingLevelService {
             
             // 4. 处理空结果
             if (levels.isEmpty()) {
-                return new PageResponseBean<>(500, "无数据", null);
+                return new PageResponseBean<>(500, "无符合条件的数据", null);
             }
             
             // 5. 获取总数

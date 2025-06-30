@@ -43,7 +43,7 @@ public class CustomerService {
         PageResponseBean<List<CustCheckInDTO>> response = new PageResponseBean<>();
         if (list == null || list.isEmpty()) {
 	        response.setStatus(500);
-	        response.setMsg("无数据");
+	        response.setMsg("无符合条件的数据");
 	        response.setData(null);
 	        response.setTotal(0);
 	    } else {
@@ -70,7 +70,7 @@ public class CustomerService {
         PageResponseBean<List<CustCheckInNurseDTO>> response = new PageResponseBean<>();
         if (list == null || list.isEmpty()) {
 	        response.setStatus(500);
-	        response.setMsg("无数据");
+	        response.setMsg("无符合条件的数据");
 	        response.setData(null);
 	        response.setTotal(0);
 	    } else {
@@ -111,7 +111,7 @@ public class CustomerService {
 	    // 检查查询结果
 	    if (list == null || list.isEmpty()) {
 	        response.setStatus(500);
-	        response.setMsg("查不到符合条件的记录");
+	        response.setMsg("无符合条件的数据");
 	        response.setData(null);
 	        response.setTotal(0);
 	    } else {
@@ -150,7 +150,7 @@ public class CustomerService {
 	    // 检查查询结果
 	    if (list == null || list.isEmpty()) {
 	        response.setStatus(500);
-	        response.setMsg("查不到符合条件的记录");
+	        response.setMsg("无符合条件的数据");
 	        response.setData(null);
 	        response.setTotal(0);
 	    } else {
@@ -191,7 +191,7 @@ public class CustomerService {
 	    // 检查查询结果
 	    if (list == null || list.isEmpty()) {
 	        response.setStatus(500);
-	        response.setMsg("查不到符合条件的记录");
+	        response.setMsg("无符合条件的数据");
 	        response.setData(null);
 	        response.setTotal(0);
 	    } else {
@@ -280,7 +280,7 @@ public class CustomerService {
         PageResponseBean<List<CustCheckInNurseDTO>> response = new PageResponseBean<>();
         if (list == null || list.isEmpty()) {
 	        response.setStatus(500);
-	        response.setMsg("无数据");
+	        response.setMsg("无符合条件的数据");
 	        response.setData(null);
 	        response.setTotal(0);
 	    } else {
@@ -321,7 +321,7 @@ public class CustomerService {
 	    // 检查查询结果
 	    if (list == null || list.isEmpty()) {
 	        response.setStatus(500);
-	        response.setMsg("查不到符合条件的记录");
+	        response.setMsg("无符合条件的数据");
 	        response.setData(null);
 	        response.setTotal(0);
 	    } else {
