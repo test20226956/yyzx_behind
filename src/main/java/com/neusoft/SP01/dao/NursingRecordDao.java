@@ -123,7 +123,7 @@ public interface NursingRecordDao {
  //根据ID护理记录
    @Update("update t_nursing_record set state=0 where customer_id=#{customerId} AND state=1")
    Integer deleteOutNursingRecord(Integer customerId);
-   
+
    //计数护理业务
    @Select("<script>" +
            "SELECT DATE(n.time) AS date, COUNT(*) AS nursingNum " +
@@ -140,4 +140,7 @@ public interface NursingRecordDao {
    List<DailyNursingCount> countRecentDailyNursing(
            @Param("days") Integer days,
            @Param("nursingLevelId") Integer nursingLevelId);
+
+    //客户端->展示老人相应护理项目下的护理记录
+    List<CustNursingRecordDTO> findByNursingServiceId(Integer nursingServiceId);
 }

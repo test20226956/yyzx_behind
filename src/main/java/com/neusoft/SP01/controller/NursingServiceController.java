@@ -2,6 +2,8 @@ package com.neusoft.SP01.controller;
 
 import java.util.List;
 
+import com.neusoft.SP01.po.CustNursingRecordDTO;
+import com.neusoft.SP01.service.NursingRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,8 @@ import com.neusoft.SP01.service.NursingServiceService;
 public class NursingServiceController {
 	@Autowired
 	private NursingServiceService nss;
+    @Autowired
+    private NursingRecordService nrs;
     //设置护理级别功能
     //1.展示用户的护理服务
     @GetMapping("/showNursingPro")
@@ -68,6 +72,17 @@ public class NursingServiceController {
     @PostMapping("/addNursingProForCust")
     public ResponseBean<Integer> addNursingProForCust(Integer custId, List<Integer> proIds) {
         return null;
+    }
+
+    /*========================客户端护理查看=======================*/
+    @GetMapping("/clientShowCustRec")//展示老人对应护理项目下的护理记录
+    public ResponseBean<List<CustNursingRecordDTO>> clientShowCustRec(Integer nursingServiceId){
+        List<CustNursingRecordDTO> byNursingServiceId = nrs.findByNursingServiceId(nursingServiceId);
+        if(byNursingServiceId.isEmpty()){
+            return new ResponseBean<>(500,"该护理服务暂无护理项目");
+        }else {
+            return new ResponseBean<>(200,"查询成功",byNursingServiceId);
+        }
     }
 
 }
