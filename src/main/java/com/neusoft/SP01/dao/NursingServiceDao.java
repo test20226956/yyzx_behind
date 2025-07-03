@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Update;
 import com.neusoft.SP01.po.NursingService;
 import com.neusoft.SP01.po.NursingServiceDTO;
 import com.neusoft.SP01.po.NursingServiceDailyDTO;
+import com.neusoft.SP01.po.PopularNursingProject;
 
 /**
  * 对应表t_nursing_service
@@ -120,6 +121,16 @@ public interface NursingServiceDao {
             "WHERE customer_id = #{customerId} " +
             "AND state IN (-1,1)")
     Integer detectService(@Param("customerId") Integer customerId);
+    
+    //统计热门项目
+    @Select("SELECT p.name AS nursingPro, COUNT(*) AS count " +
+            "FROM t_nursing_service s " +
+            "JOIN t_nursing_project p ON s.nursing_project_id = p.nursing_project_id " +
+            "WHERE s.purchase_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) " +
+            "GROUP BY s.nursing_project_id " +
+            "ORDER BY count DESC " +
+            "LIMIT #{limit}")
+    List<PopularNursingProject> findPopularProjectsLast7Days(@Param("limit") Integer limit);
 
 
     /*======对应原型护工 日常护理 显示用户的护理服务=====*/

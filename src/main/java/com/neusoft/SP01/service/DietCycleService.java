@@ -37,7 +37,7 @@ public class DietCycleService {
         } catch (Exception e) {
             // 记录错误日志
             e.printStackTrace();
-            return new ResponseBean<>(500, "系统错误: " + e.getMessage());
+            return new ResponseBean<>(500, "系统错误");
         }
 	}
 	//删除
@@ -60,7 +60,7 @@ public class DietCycleService {
         } catch (Exception e) {
             // 记录错误日志
             e.printStackTrace();
-            return new ResponseBean<>(500, "系统错误: " + e.getMessage());
+            return new ResponseBean<>(500, "系统错误");
         }
 	}
 	
@@ -84,7 +84,7 @@ public class DietCycleService {
 	        } catch (Exception e) {
 	            // 记录错误日志
 	            e.printStackTrace();
-	            return new ResponseBean<>(500, "系统错误: " + e.getMessage());
+	            return new ResponseBean<>(500, "系统错误");
 	        }
 		}
 		
@@ -106,8 +106,30 @@ public class DietCycleService {
 	            
 	            return new ResponseBean<>(200,"查询成功",details);
 	        } catch (Exception e) {
-	            return new ResponseBean<>(500, "系统错误: " + e.getMessage());
+	            return new ResponseBean<>(500, "系统错误");
 	        }
 	    }
+		
+		//展示
+				public ResponseBean<List<DietCycleDetail>> getByType(String date,Integer type) {
+			        try {
+			            // 1. 参数校验
+			            if (date == null || date.isEmpty()||type == null) {
+			                return new ResponseBean<>(500, "参数不能为空");
+			            }
+
+			            // 3. 执行查询
+			            List<DietCycleDetail> details = dcd.selectDietCycleWithMealByType(date,type);
+			            
+			            // 4. 处理查询结果
+			            if (details.isEmpty()) {
+			                return new ResponseBean<>(500, "没有符合条件的结果");
+			            }
+			            
+			            return new ResponseBean<>(200,"查询成功",details);
+			        } catch (Exception e) {
+			            return new ResponseBean<>(500, "系统错误");
+			        }
+			    }
     
 }

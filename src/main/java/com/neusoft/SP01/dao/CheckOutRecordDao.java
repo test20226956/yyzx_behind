@@ -118,6 +118,10 @@ public interface CheckOutRecordDao {
             "AND cir.state = 1 "+
             "AND br.state=1 ")
     CheckOutDetailDTO getCheckOutDetailById(@Param("checkOutRecordId") Integer checkOutRecordId);
+    //查今天退住的人
+    @Select("SELECT COUNT(*) FROM t_check_out_record " +
+            "WHERE state=1 AND examine_time=#{today} ")
+    int countTodayCheckOuts(@Param("today") String today);
 	
     
     

@@ -1,6 +1,7 @@
 package com.neusoft.SP01.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.neusoft.SP01.po.CustCheckInDTO;
 import com.neusoft.SP01.po.CustCheckInNurseDTO;
+import com.neusoft.SP01.po.Customer;
+import com.neusoft.SP01.po.CustomerWithCall;
 import com.neusoft.SP01.po.EditCustRequest;
 import com.neusoft.SP01.po.PageResponseBean;
 import com.neusoft.SP01.po.ResponseBean;
@@ -114,5 +117,23 @@ public class CustomerController {
         @RequestParam(defaultValue = "10") long pageSize) {
         
         return cs.searchUnCust(name, checkInTime,nursingLevelId, pageNum, pageSize);
+    }
+    
+//  呼叫护工
+    @PostMapping("/call")
+    public ResponseBean<Integer> call(@RequestParam Integer customerId ,@RequestParam String date){
+        return cs.call(customerId,date);
+    }
+    
+//  不呼叫护工
+    @PostMapping("/noCall")
+    public ResponseBean<Integer> noCall(@RequestParam Integer callId){
+        return cs.noCall(callId);
+    }
+    
+//  护工看
+    @GetMapping("/listCall")
+    public ResponseBean<Map<String, Object>> listCall(@RequestParam Integer userId){
+        return cs.listCall(userId);
     }
 }
