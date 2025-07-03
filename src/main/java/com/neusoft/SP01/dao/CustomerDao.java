@@ -16,6 +16,7 @@ import com.neusoft.SP01.po.CustCheckInNurseDTO;
 import com.neusoft.SP01.po.CustDailyNursingDTO;
 import com.neusoft.SP01.po.CustNursingManageDTO;
 import com.neusoft.SP01.po.Customer;
+import com.neusoft.SP01.po.CustomerWithCall;
 
 @Mapper
 public interface CustomerDao {
@@ -818,6 +819,49 @@ public interface CustomerDao {
 	long countSearchUnCust(@Param("name") String name, 
 	                     @Param("checkInTime") String checkInTime,
 	                     @Param("nursingLevelId") Integer nursingLevelId);
+
+	// 呼叫护工
+    @Insert("Insert into t_call (customer_id,date,state) values(#{customerId},#{date},1)")
+    int call(@Param("customerId") Integer customerId, @Param("date") String date);
+ // 不呼叫护工
+    @Update("UPDATE t_call SET state=0 " +
+            "WHERE call_id=#{callId}")
+    int noCall(@Param("callId") Integer callId);
+    //护工看到是谁呼叫
+    @Select("SELECT c.*, ca.* " +
+            "FROM t_customer c " +
+            "JOIN t_check_in_record cr ON c.customer_id = cr.customer_id " +
+            "JOIN t_call ca ON c.customer_id = ca.customer_id " +
+            "WHERE cr.user_id = #{userId} " +
+            "AND cr.state = 1 " +
+            "AND ca.state = 1 " +
+            "ORDER BY ca.date DESC")
+    @Results({
+    	
+    	// Customer映射
+	    @Result(property = "customer.customerId", column = "customer_id"),
+	    @Result(property = "customer.name", column = "name"),
+	    @Result(property = "customer.type", column = "type"),
+	    @Result(property = "customer.gender", column = "gender"),
+	    @Result(property = "customer.identity", column = "identity"),
+	    @Result(property = "customer.bloodType", column = "blood_type"),
+	    @Result(property = "customer.tel", column = "tel"),
+    	
+        
+        @Result(property = "call.callId", column = "call_id"),
+        @Result(property = "call.date", column = "date"),
+        @Result(property = "call.state", column = "state")
+   
+    })
+    List<CustomerWithCall> findCustomerCallsByUserId(@Param("userId") Integer userId);
+    @Select("SELECT COUNT(*) " +
+            "FROM t_customer c " +
+            "JOIN t_check_in_record cr ON c.customer_id = cr.customer_id " +
+            "JOIN t_call ca ON c.customer_id = ca.customer_id " +
+            "WHERE cr.user_id = #{userId} " +
+            "AND cr.state = 1 " +
+            "AND ca.state = 1")
+    Integer countCustomerCallsByUserId(@Param("userId") Integer userId);
 
 
 

@@ -10,8 +10,8 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.neusoft.SP01.po.CustDailyNursingDTO;
 import com.neusoft.SP01.po.CustNursingRecordDTO;
+import com.neusoft.SP01.po.DailyNursingCount;
 import com.neusoft.SP01.po.NursingRecord;
 import com.neusoft.SP01.po.NursingRecordDTO;
 
@@ -123,4 +123,21 @@ public interface NursingRecordDao {
  //根据ID护理记录
    @Update("update t_nursing_record set state=0 where customer_id=#{customerId} AND state=1")
    Integer deleteOutNursingRecord(Integer customerId);
+   
+   //计数护理业务
+   @Select("<script>" +
+           "SELECT DATE(n.time) AS date, COUNT(*) AS nursingNum " +
+           "FROM t_nursing_record n " +
+           "JOIN t_check_in_record c ON n.customer_id = c.customer_id " +
+           "WHERE n.state = 1 " +
+           "AND DATE(n.time) >= DATE_SUB(CURDATE(), INTERVAL #{days} DAY) " +
+           "<if test='nursingLevelId != null'>" +
+           "   AND c.nursing_level_id = #{nursingLevelId} " +
+           "</if>" +
+           "GROUP BY DATE(n.time) " +
+           "ORDER BY DATE(n.time) DESC" +
+           "</script>")
+   List<DailyNursingCount> countRecentDailyNursing(
+           @Param("days") Integer days,
+           @Param("nursingLevelId") Integer nursingLevelId);
 }

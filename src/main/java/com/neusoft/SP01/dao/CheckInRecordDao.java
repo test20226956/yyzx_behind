@@ -75,4 +75,14 @@ public interface CheckInRecordDao {
             "WHERE customer_id = #{customerId} AND state = 1 AND user_id =#{userId}")
     int deleteUserCust(@Param("customerId") Integer customerId,@Param("userId") Integer userId);
     
+    //查询今日入住数
+    @Select("SELECT COUNT(*) FROM t_check_in_record " +
+            "WHERE check_in_time = #{today}")
+    int countTodayCheckIns(@Param("today") String today);
+    
+  //查询客户数
+    @Select("SELECT COUNT(*) FROM t_check_in_record " +
+            "WHERE state=1")
+    int countCustomer();
+    
 }

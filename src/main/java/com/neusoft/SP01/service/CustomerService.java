@@ -1,21 +1,31 @@
 package com.neusoft.SP01.service;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.neusoft.SP01.po.*;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.LocalDate;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.neusoft.SP01.dao.BedRecordDao;
 import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.CustomerDao;
+import com.neusoft.SP01.po.BedRecord;
+import com.neusoft.SP01.po.CheckInRecord;
+import com.neusoft.SP01.po.CustCheckInDTO;
+import com.neusoft.SP01.po.CustCheckInNurseDTO;
+import com.neusoft.SP01.po.CustDailyNursingDTO;
+import com.neusoft.SP01.po.CustNursingManageDTO;
+import com.neusoft.SP01.po.Customer;
+import com.neusoft.SP01.po.CustomerWithCall;
+import com.neusoft.SP01.po.PageResponseBean;
+import com.neusoft.SP01.po.ResponseBean;
 
 @Service
 @Transactional(rollbackFor = Exception.class) // 添加此注解
@@ -332,6 +342,77 @@ public class CustomerService {
 	    }
 	    
 	    return response;
+	}
+	
+	
+	public ResponseBean<Integer> call(Integer customerId,String date){
+
+		try {
+            // 参数校验
+            if ( customerId == null || date==null|| date.trim().isEmpty()) {
+                return new ResponseBean<>(500, "信息不能为空");
+            }
+
+            // 执行更新操作
+            int affectedRows = cd.call(customerId,date);
+
+            if (affectedRows > 0) {
+                return new ResponseBean<>(200,"呼叫成功",affectedRows);
+            } else {
+                return new ResponseBean<>(500, "呼叫失败");
+            }
+        } catch (Exception e) {
+            // 记录错误日志
+            e.printStackTrace();
+            return new ResponseBean<>(500, "系统错误: " + e.getMessage());
+        }
+	}
+	
+	public ResponseBean<Integer> noCall(Integer callId){
+
+		try {
+            // 参数校验
+            if ( callId == null ) {
+                return new ResponseBean<>(500, "信息不能为空");
+            }
+
+            // 执行更新操作
+            int affectedRows = cd.noCall(callId);
+
+            if (affectedRows > 0) {
+                return new ResponseBean<>(200,"回应成功",affectedRows);
+            } else {
+                return new ResponseBean<>(500, "回应失败");
+            }
+        } catch (Exception e) {
+            // 记录错误日志
+            e.printStackTrace();
+            return new ResponseBean<>(500, "系统错误: " + e.getMessage());
+        }
+	}
+	
+	public ResponseBean<Map<String, Object>> listCall(Integer userId) {
+	    try {
+	        if (userId == null || userId <= 0) {
+	            return new ResponseBean<>(500, "ID不能为空");
+	        }
+
+	        List<CustomerWithCall> customers = cd.findCustomerCallsByUserId(userId);
+	        Integer count = cd.countCustomerCallsByUserId(userId);
+
+	        Map<String, Object> result = new HashMap<>();
+	        result.put("list", customers);
+	        result.put("total", count);
+
+	        if (customers != null && !customers.isEmpty()) {
+	            return new ResponseBean<>(200, "查看成功", result);
+	        } else {
+	            return new ResponseBean<>(500, "无老人呼叫", result);
+	        }
+	    } catch (Exception e) {
+	        log.error("获取呼叫列表失败", e);
+	        return new ResponseBean<>(500, "系统错误");
+	    }
 	}
 
 

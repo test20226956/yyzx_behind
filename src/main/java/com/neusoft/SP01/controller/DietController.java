@@ -36,6 +36,13 @@ public class DietController {
             @RequestParam String date) {
         return dcs.getByDate(date);
     }
+    
+//  展示某一天的膳食安排按照类型
+  @GetMapping("/listDietByType")
+  public ResponseBean<List<DietCycleDetail>> listDietByType(
+          @RequestParam String date,@RequestParam Integer type) {
+      return dcs.getByType(date,type);
+  }
 
     //    增加一条膳食安排
     @PostMapping("/addDiet")

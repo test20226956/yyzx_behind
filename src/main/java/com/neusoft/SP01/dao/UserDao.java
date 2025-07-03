@@ -109,11 +109,16 @@ public interface UserDao {
     /*逻辑删除用户（更新state为0）*/
     @Update("UPDATE t_user SET state = 0 WHERE user_id = #{userId}")
     int logicalDelete(@Param("userId") Integer userId);
+    /*删除老人的护工*/
+    @Update("UPDATE t_check_in_record SET user_id=NULL WHERE user_id = #{userId} and state=1")
+    int logicalDeleteUser(@Param("userId") Integer userId);
     
     /*检查用户是否存在且未删除*/
     @Select("SELECT COUNT(*) FROM t_user WHERE user_id = #{userId} AND state = 1")
     boolean existsActiveUser(@Param("userId") Integer userId);
     
-    
+    /*统计护工数*/
+    @Select("SELECT COUNT(*) FROM t_user WHERE state = 1 AND type=1")
+    int countNurse();
     
 }

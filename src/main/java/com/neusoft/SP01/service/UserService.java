@@ -230,6 +230,7 @@ public class UserService {
             
             // 3. 执行逻辑删除
             int result = ud.logicalDelete(userId);
+            int res=ud.logicalDeleteUser(userId);
             if (result > 0) {
                 return new ResponseBean<>(200, "删除成功", null);
             } else {
