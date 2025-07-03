@@ -113,4 +113,10 @@ public class NursingRecordService {
 	    return response;
         
     }
+
+    //客户端护理查看->展示老人对应护理项目下的护理记录
+    public List<CustNursingRecordDTO> findByNursingServiceId(Integer nursingServiceId){
+        List<CustNursingRecordDTO> byNursingServiceId = nrd.findByNursingServiceId(nursingServiceId);
+        return byNursingServiceId;
+    }
 }

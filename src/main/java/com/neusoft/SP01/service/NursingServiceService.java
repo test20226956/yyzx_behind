@@ -223,6 +223,15 @@ public class NursingServiceService {
         return new ResponseBean<>(500, "系统错误: " + e.getMessage());
     }
 }
-    
-    
+  /*===============客户端护理查看===============*/
+  public List<NursingServiceDailyDTO> findNursingServiceByCustomerIdOnClient(Integer customerId){
+      //执行查询
+      List<NursingServiceDailyDTO> cords = nsd.findNursingServiceByCustomerId(customerId);
+      return cords;
+  }
+  public List<NursingServiceDailyDTO> findNursingServiceByNameOnClient(Integer customerId,String name){
+        //执行查询
+      List<NursingServiceDailyDTO> cords = nsd.findNursingServiceByName(customerId,name);
+      return cords;
+  }
 }
