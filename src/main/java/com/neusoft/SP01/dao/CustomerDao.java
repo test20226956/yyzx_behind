@@ -875,5 +875,12 @@ public interface CustomerDao {
 	//客户管理模块根据老人姓名模糊搜索（其实是增加了身份证号，入住时间以及到期时间这三项内容）
 	List<CustNursingManageDTO> findUserCustManageByName(Integer userId,String name);
 
+	/*===================客户端->我的=====================*/
+	//客户登录
+	CustNursingManageDTO findCustByTel(String tel);
+	//根据customerId查找老人对应的密码
+	@Select("select password from yyzx_st.t_customer where customer_id=#{customerId}")
+	String findPwdByCustomerId(Integer customerId);
+
 
 }
