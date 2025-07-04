@@ -15,7 +15,8 @@
             CASE
                 WHEN ns.end_time &lt; CURRENT_TIMESTAMP THEN '到期'
                 ELSE '未到期'
-                END AS time_status
+                END AS time_status,
+            np.description
         FROM
             t_nursing_service ns
                 JOIN t_nursing_project np ON ns.nursing_project_id = np.nursing_project_id
@@ -35,7 +36,8 @@
             CASE
                 WHEN ns.end_time &lt; CURRENT_TIMESTAMP THEN '到期'
                 ELSE '未到期'
-                END AS time_status
+                END AS time_status,
+            np.description
         FROM
             t_nursing_service ns
                 JOIN t_nursing_project np ON ns.nursing_project_id = np.nursing_project_id
