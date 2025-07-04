@@ -1,7 +1,5 @@
 package com.neusoft.SP01.dao;
 
-import java.sql.Date;
-
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -9,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.neusoft.SP01.po.DailyMealOrderStatus;
 import com.neusoft.SP01.po.Order;
 import com.neusoft.SP01.po.OrderDetail;
 @Mapper
@@ -37,5 +36,15 @@ public interface OrderDao {
     //删除
     @Update("UPDATE t_order SET state = 0 WHERE order_id = #{orderId}")
     int deleteOrder(@Param("orderId") Integer orderId);
+    
+    //查看点餐情况
+    @Select("SELECT " +
+            "MAX(CASE WHEN type = 0 THEN 1 ELSE 0 END) as has_breakfast, " +
+            "MAX(CASE WHEN type = 1 THEN 1 ELSE 0 END) as has_lunch, " +
+            "MAX(CASE WHEN type = 2 THEN 1 ELSE 0 END) as has_dinner " +
+            "FROM t_order " +
+            "WHERE customer_id = #{customerId} AND date = #{date} AND state = 1")
+    DailyMealOrderStatus getDailyMealStatus(@Param("customerId") Integer customerId, 
+                                          @Param("date") String date);
 
 }

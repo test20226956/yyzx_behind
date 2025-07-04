@@ -141,7 +141,7 @@ public class ChartService {
             
             return new ResponseBean<>(200, "查询成功", result);
         } catch (Exception e) {
-            return new ResponseBean<>(500, "查询失败: " + e.getMessage());
+            return new ResponseBean<>(500, "查询失败");
         }
     }
 
