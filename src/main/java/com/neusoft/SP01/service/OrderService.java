@@ -1,12 +1,16 @@
 package com.neusoft.SP01.service;
 
+import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.neusoft.SP01.dao.OrderDao;
+import com.neusoft.SP01.po.DailyMealOrderStatus;
 import com.neusoft.SP01.po.Order;
 import com.neusoft.SP01.po.OrderDetail;
 import com.neusoft.SP01.po.ResponseBean;
@@ -80,5 +84,19 @@ public class OrderService {
 			return new ResponseBean<>(500, "系统错误" );
 		}
 	}
+	
+	// 或者返回更友好的格式
+    public ResponseBean<Map<String, Boolean>> getDailyMealStatus(Integer customerId, String date) {
+        try {
+            DailyMealOrderStatus status = od.getDailyMealStatus(customerId, date);
+            Map<String, Boolean> result = new LinkedHashMap<>();
+            result.put("早餐", status.isHasBreakfast());
+            result.put("午餐", status.isHasLunch());
+            result.put("晚餐", status.isHasDinner());
+            return new ResponseBean<>(200,"查询成功",result);
+        } catch (Exception e) {
+            return new ResponseBean<>(500, "查询失败" );
+        }
+    }
 
 }

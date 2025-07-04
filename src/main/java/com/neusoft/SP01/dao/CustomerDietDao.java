@@ -150,6 +150,10 @@ public interface CustomerDietDao {
   //退住改为无效
     @Update("update t_customer_diet set state=0 where customer_id=#{customerId} AND state=1")
     Integer deleteCustDiet(Integer customerId);
+    
+ // 根据老人ID查询口味偏好
+    @Select("SELECT * FROM t_customer_diet WHERE customer_id = #{customerId} AND state=1")
+    CustomerDiet getElderlyPreferences(@Param("customerId") Integer customerId);
 
     
 }

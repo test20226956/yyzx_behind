@@ -48,5 +48,21 @@ public class CustomerDiet {
 		super();
 	}
 	
+	public String getFullPreference() {
+        StringBuilder sb = new StringBuilder();
+        if (flavor != null && !flavor.isEmpty()) {
+            sb.append(flavor);
+        }
+        if (restraint != null && !restraint.isEmpty()) {
+            if (sb.length() > 0) sb.append("，");
+            sb.append(restraint);
+        }
+        if (comment != null && !comment.isEmpty()) {
+            if (sb.length() > 0) sb.append("，");
+            sb.append(comment);
+        }
+        return sb.toString();
+    }
+	
 	
 }

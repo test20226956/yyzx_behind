@@ -37,7 +37,7 @@ public interface DietCycleDao {
     /*根据日期和type查询膳食安排*/
     @Select("SELECT dc.*, m.name AS mealName, m.img AS mealImg, m.type AS mealType,m.state AS mealState " +
             "FROM t_diet_cycle dc " +
-            "LEFT JOIN t_meal m ON dc.meal_id = m.meal_id " +
+            "LEFT JOIN t_meal m ON dc.meal_id = m.meal_id AND m.state=1 " +
             "WHERE dc.date = #{date} AND dc.type=#{type} ")  
     List<DietCycleDetail> selectDietCycleWithMealByType(@Param("date") String date,@Param("type") Integer type);
     
