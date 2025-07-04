@@ -3,6 +3,7 @@ package com.neusoft.SP01.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -135,5 +136,11 @@ public class CustomerController {
     @GetMapping("/listCall")
     public ResponseBean<Map<String, Object>> listCall(@RequestParam Integer userId){
         return cs.listCall(userId);
+    }
+
+    @PostMapping("/login")//客户端老人登录
+    public ResponseBean<Customer> login(String tel, String password) throws JsonProcessingException {
+        ResponseBean<Customer> login = cs.login(tel, password);
+        return login;
     }
 }

@@ -4,10 +4,16 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.neusoft.SP01.po.*;
+import com.neusoft.SP01.util.JwtUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +22,6 @@ import com.github.pagehelper.PageHelper;
 import com.neusoft.SP01.dao.BedRecordDao;
 import com.neusoft.SP01.dao.CheckInRecordDao;
 import com.neusoft.SP01.dao.CustomerDao;
-import com.neusoft.SP01.po.BedRecord;
-import com.neusoft.SP01.po.CheckInRecord;
-import com.neusoft.SP01.po.CustCheckInDTO;
-import com.neusoft.SP01.po.CustCheckInNurseDTO;
-import com.neusoft.SP01.po.CustDailyNursingDTO;
-import com.neusoft.SP01.po.CustNursingManageDTO;
-import com.neusoft.SP01.po.Customer;
-import com.neusoft.SP01.po.CustomerWithCall;
-import com.neusoft.SP01.po.PageResponseBean;
-import com.neusoft.SP01.po.ResponseBean;
 
 @Service
 @Transactional(rollbackFor = Exception.class) // 添加此注解
@@ -36,6 +32,8 @@ public class CustomerService {
     private CheckInRecordDao cird;
     @Autowired
     private BedRecordDao brd;
+	@Autowired
+	RedisTemplate redisTemplate;
     private static final Logger log = LoggerFactory.getLogger(CheckInRecordService.class);
     
 	/*查自理*/
@@ -507,5 +505,27 @@ public class CustomerService {
 			response.setTotal(p.getTotal()); // 总记录数
 		}
 		return response;
+	}
+
+	//客户端老人登录
+	public ResponseBean<Customer> login(String tel, String password) throws JsonProcessingException {
+		// 1. 验证账号是否存在
+		CustNursingManageDTO custByTel = cd.findCustByTel(tel);
+		if (custByTel == null) {
+			return new ResponseBean<>(500, "手机号不存在");
+		}
+
+		// 2. 验证密码是否正确
+		String pwd = cd.findPwdByCustomerId(custByTel.getCustomerId());
+		if (!pwd.equals(password)) {
+			return new ResponseBean<>(500, "密码错误");
+		}
+
+		// 3. 登录成功，返回用户信息
+		ObjectMapper objectMapper = new ObjectMapper();
+		String s = objectMapper.writeValueAsString(custByTel);
+		String jwt = JwtUtils.createToken(s);//jwt包含了当前登录的用户信息
+		redisTemplate.opsForValue().set(custByTel.getCustomerId().toString(),jwt,20, TimeUnit.MINUTES);
+		return new ResponseBeanJWT(200, "登录成功",custByTel,jwt);
 	}
 }

@@ -7,8 +7,17 @@ public class CustNursingManageDTO extends CustDailyNursingDTO{
     private String identity;//身份证号
     private String checkInTime;//入住时间
     private String endTime;//合同到期时间
+    private String image;//老人头像
 
     public CustNursingManageDTO() {
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override
@@ -17,14 +26,16 @@ public class CustNursingManageDTO extends CustDailyNursingDTO{
                 "identity='" + identity + '\'' +
                 ", checkInTime='" + checkInTime + '\'' +
                 ", endTime='" + endTime + '\'' +
+                ", image='" + image + '\'' +
                 '}';
     }
 
-    public CustNursingManageDTO(Integer customerId, String name, Integer age, String gender, String bloodType, Integer floor, String roomNumber, String fName, String tel, Integer nursingLevelId, Integer bedNumber, String identity, String checkInTime, String endTime) {
+    public CustNursingManageDTO(Integer customerId, String name, Integer age, String gender, String bloodType, Integer floor, String roomNumber, String fName, String tel, Integer nursingLevelId, Integer bedNumber, String identity, String checkInTime, String endTime,String image) {
         super(customerId, name, age, gender, bloodType, floor, roomNumber, fName, tel, nursingLevelId, bedNumber);
         this.identity = identity;
         this.checkInTime = checkInTime;
         this.endTime = endTime;
+        this.image = image;
     }
 
     public String getIdentity() {
