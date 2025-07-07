@@ -16,6 +16,7 @@
                 WHEN ns.end_time &lt; CURRENT_TIMESTAMP THEN '到期'
                 ELSE '未到期'
                 END AS time_status,
+            ns.end_time,
             np.description
         FROM
             t_nursing_service ns
@@ -37,6 +38,7 @@
                 WHEN ns.end_time &lt; CURRENT_TIMESTAMP THEN '到期'
                 ELSE '未到期'
                 END AS time_status,
+            ns.end_time,
             np.description
         FROM
             t_nursing_service ns
