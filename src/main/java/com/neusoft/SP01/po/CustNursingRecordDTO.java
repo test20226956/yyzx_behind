@@ -7,6 +7,16 @@ public class CustNursingRecordDTO {
     private Integer nursingRecordId;
     private String name;//护理记录名称（其实就对应护理项目名称）
     private String time;//护理时间
+    private Integer count;//护理数量
+    private String userName;//护工名字
+
+    public CustNursingRecordDTO(Integer nursingRecordId, String name, String time, Integer count, String userName) {
+        this.nursingRecordId = nursingRecordId;
+        this.name = name;
+        this.time = time;
+        this.count = count;
+        this.userName = userName;
+    }
 
     @Override
     public String toString() {
@@ -14,7 +24,25 @@ public class CustNursingRecordDTO {
                 "nursingRecordId=" + nursingRecordId +
                 ", name='" + name + '\'' +
                 ", time='" + time + '\'' +
+                ", count=" + count +
+                ", userName='" + userName + '\'' +
                 '}';
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Integer getNursingRecordId() {

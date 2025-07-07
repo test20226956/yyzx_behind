@@ -31,6 +31,12 @@
 		<spring-ai.version>1.0.0-M7</spring-ai.version>
 	</properties>
 	<dependencies>
+		<!--		文件上传下载-->
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-core</artifactId>
+			<version>5.6.5</version>
+		</dependency>
 		<!--		springboot整合 redis的依赖-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

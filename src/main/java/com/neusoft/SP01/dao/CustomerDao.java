@@ -881,6 +881,8 @@ public interface CustomerDao {
 	//根据customerId查找老人对应的密码
 	@Select("select password from yyzx_st.t_customer where customer_id=#{customerId}")
 	String findPwdByCustomerId(Integer customerId);
+	//客户端修改个人信息
+//	void update
 
 
 }
