@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 
-@Configuration//配置类注解
+//@Configuration//配置类注解
 public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private LoginCheckInterceptor interceptor;

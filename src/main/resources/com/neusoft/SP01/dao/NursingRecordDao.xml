@@ -54,11 +54,14 @@
         SELECT
             nr.nursing_record_id,
             np.NAME,
-            nr.time
+            nr.time,
+            nr.count,
+            u.user_name
         FROM
             t_nursing_record nr
                 JOIN t_nursing_service ns ON nr.nursing_service_id = ns.nursing_service_id
                 JOIN t_nursing_project np ON ns.nursing_project_id = np.nursing_project_id
+                JOIN t_user u ON u.user_id = nr.user_id
         WHERE
             nr.state = 1
           AND nr.nursing_service_id = #{nursingServiceId}
