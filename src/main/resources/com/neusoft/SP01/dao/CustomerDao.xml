@@ -147,7 +147,7 @@ c.customer_id
             r.room_number ,
             f.name AS fName,
             f.tel,
-            cir.nursing_level_id,
+            nl.name nursing_level_id,
             b.bed_number,
             cir.check_in_time,
             cir.end_time,
@@ -156,6 +156,8 @@ FROM
     t_customer c
 JOIN
     t_check_in_record cir ON c.customer_id = cir.customer_id AND cir.state = 1
+LEFT JOIN
+    t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id
 JOIN
     t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1
 JOIN
@@ -176,18 +178,19 @@ where c.tel=#{tel}
             cir.check_in_time,
             cir.end_time,
             u.user_name,
-            u.tel
+            c.tel,
+            c.image
         FROM
             t_customer c
-                JOIN t_check_in_record cir ON c.customer_id = cir.customer_id
-                AND cir.state = 1
-                LEFT JOIN t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id
-                LEFT JOIN t_user u ON u.user_id = cir.user_id
-                JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id
-                AND br.state = 1
-                JOIN t_bed b ON br.bed_id = b.bed_id
-                JOIN t_room r ON b.room_id = r.room_id
-                LEFT JOIN t_family f ON c.customer_id = f.customer_id
+        JOIN t_check_in_record cir ON c.customer_id = cir.customer_id
+        AND cir.state = 1
+        LEFT JOIN t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id
+        LEFT JOIN t_user u ON u.user_id = cir.user_id
+        JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id
+        AND br.state = 1
+        JOIN t_bed b ON br.bed_id = b.bed_id
+        JOIN t_room r ON b.room_id = r.room_id
+        LEFT JOIN t_family f ON c.customer_id = f.customer_id
         WHERE
             c.customer_id = #{customerId}
     </select>
