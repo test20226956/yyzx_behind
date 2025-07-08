@@ -8,10 +8,11 @@ public class ClientCustDTO {
     private Integer customerId;
     private String name;
     private String address;//老人详细住址，房间号床位号等信息
-    private Integer nursingLevelId;
+    private String nursingLevel;//护理名字
     private String checkInTime;
     private String endTime;
     private String userName;
+    private String tel;
 
     public Integer getCustomerId() {
         return customerId;
@@ -37,12 +38,20 @@ public class ClientCustDTO {
         this.address = address;
     }
 
-    public Integer getNursingLevelId() {
-        return nursingLevelId;
+    public String getImage() {
+        return image;
     }
 
-    public void setNursingLevelId(Integer nursingLevelId) {
-        this.nursingLevelId = nursingLevelId;
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getNursingLevel() {
+        return nursingLevel;
+    }
+
+    public void setNursingLevel(String nursingLevel) {
+        this.nursingLevel = nursingLevel;
     }
 
     public String getCheckInTime() {
@@ -69,12 +78,12 @@ public class ClientCustDTO {
         this.userName = userName;
     }
 
-    public String getImage() {
-        return image;
+    public String getTel() {
+        return tel;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     @Override
@@ -84,22 +93,24 @@ public class ClientCustDTO {
                 ", customerId=" + customerId +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", nursingLevelId=" + nursingLevelId +
+                ", nursingLevel='" + nursingLevel + '\'' +
                 ", checkInTime='" + checkInTime + '\'' +
                 ", endTime='" + endTime + '\'' +
                 ", userName='" + userName + '\'' +
+                ", tel='" + tel + '\'' +
                 '}';
     }
 
-    public ClientCustDTO(String image, Integer customerId, String name, String address, Integer nursingLevelId, String checkInTime, String endTime, String userName) {
+    public ClientCustDTO(String image, Integer customerId, String name, String address, String nursingLevel, String checkInTime, String endTime, String userName, String tel) {
         this.image = image;
         this.customerId = customerId;
         this.name = name;
         this.address = address;
-        this.nursingLevelId = nursingLevelId;
+        this.nursingLevel = nursingLevel;
         this.checkInTime = checkInTime;
         this.endTime = endTime;
         this.userName = userName;
+        this.tel = tel;
     }
 
     public ClientCustDTO() {

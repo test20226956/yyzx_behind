@@ -12,12 +12,14 @@
     r.room_number,
     f.name AS fName,
     f.tel,
-    cir.nursing_level_id,
+    nl.name nursing_level_id,
     b.bed_number
 FROM
     t_customer c
 JOIN
     t_check_in_record cir ON c.customer_id = cir.customer_id AND cir.state = 1
+LEFT JOIN
+    t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id
 JOIN
     t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1
 JOIN
@@ -42,12 +44,14 @@ ORDER BY
             r.room_number ,
             f.name AS fName,
             f.tel,
-            cir.nursing_level_id,
+            nl.name nursing_level_id,
             b.bed_number
 FROM
     t_customer c
 JOIN
     t_check_in_record cir ON c.customer_id = cir.customer_id AND cir.state = 1 and c.name like concat('%',#{name},'%')
+LEFT JOIN
+t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id
 JOIN
     t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1 and user_id=#{userId}
 JOIN
@@ -72,7 +76,7 @@ c.customer_id
             r.room_number ,
             f.name AS fName,
             f.tel,
-            cir.nursing_level_id,
+            nl.name nursing_level_id,
             b.bed_number,
             cir.check_in_time,
             cir.end_time
@@ -80,6 +84,8 @@ FROM
     t_customer c
 JOIN
     t_check_in_record cir ON c.customer_id = cir.customer_id AND cir.state = 1
+LEFT JOIN
+    t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id
 JOIN
     t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1
 JOIN
@@ -106,7 +112,7 @@ c.customer_id
             r.room_number ,
             f.name AS fName,
             f.tel,
-            cir.nursing_level_id,
+            nl.name nursing_level_id,
             b.bed_number,
             cir.check_in_time,
             cir.end_time
@@ -114,6 +120,8 @@ FROM
     t_customer c
 JOIN
     t_check_in_record cir ON c.customer_id = cir.customer_id AND cir.state = 1
+LEFT JOIN
+    t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id
 JOIN
     t_bed_record br ON cir.check_in_record_id = br.check_in_record_id AND br.state = 1
 JOIN
@@ -162,17 +170,18 @@ where c.tel=#{tel}
     <select id="findCustById" resultType="com.neusoft.SP01.po.ClientCustDTO">
         SELECT
             c.customer_id,
-            c.image,
-            c.name,
+            c.NAME,
             CONCAT( r.building_number, '栋-', r.floor, '层-', r.room_number, '-', b.bed_number, '床' ) AS address,
-            cir.nursing_level_id,
+            nl.name nursing_level,
             cir.check_in_time,
             cir.end_time,
-            u.user_name
+            u.user_name,
+            u.tel
         FROM
             t_customer c
                 JOIN t_check_in_record cir ON c.customer_id = cir.customer_id
                 AND cir.state = 1
+                LEFT JOIN t_nursing_level nl ON nl.nursing_level_id = cir.nursing_level_id
                 LEFT JOIN t_user u ON u.user_id = cir.user_id
                 JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id
                 AND br.state = 1

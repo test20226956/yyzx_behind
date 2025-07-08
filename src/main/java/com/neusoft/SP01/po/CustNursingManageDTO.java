@@ -30,7 +30,7 @@ public class CustNursingManageDTO extends CustDailyNursingDTO{
                 '}';
     }
 
-    public CustNursingManageDTO(Integer customerId, String name, Integer age, String gender, String bloodType, Integer floor, String roomNumber, String fName, String tel, Integer nursingLevelId, Integer bedNumber, String identity, String checkInTime, String endTime,String image) {
+    public CustNursingManageDTO(Integer customerId, String name, Integer age, String gender, String bloodType, Integer floor, String roomNumber, String fName, String tel, String nursingLevelId, Integer bedNumber, String identity, String checkInTime, String endTime,String image) {
         super(customerId, name, age, gender, bloodType, floor, roomNumber, fName, tel, nursingLevelId, bedNumber);
         this.identity = identity;
         this.checkInTime = checkInTime;
