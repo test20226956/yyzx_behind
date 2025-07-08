@@ -528,4 +528,20 @@ public class CustomerService {
 		redisTemplate.opsForValue().set(custByTel.getCustomerId().toString(),jwt,20, TimeUnit.MINUTES);
 		return new ResponseBeanJWT(200, "登录成功",custByTel,jwt);
 	}
+
+	//客户端显示老人详细信息
+	public ResponseBean<ClientCustDTO> findCustById(Integer customerId){
+		ClientCustDTO custById = cd.findCustById(customerId);
+		return new ResponseBean<>(200,"查询成功",custById);
+	}
+	//修改老人头像
+	public boolean updateImageById(Integer customerId,String image){
+		cd.updateImageById(customerId,image);
+		return true;
+	}
+	//修改老人手机号
+	public boolean updateTelById(Integer customerId,String tel){
+		cd.updateTelById(customerId,tel);
+		return true;
+	}
 }

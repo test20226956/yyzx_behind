@@ -158,5 +158,29 @@ LEFT JOIN
     t_family f ON c.customer_id = f.customer_id and f.state=1
 where c.tel=#{tel}
     </select>
+<!--    //根据customerId查找老人详细信息-->
+    <select id="findCustById" resultType="com.neusoft.SP01.po.ClientCustDTO">
+        SELECT
+            c.customer_id,
+            c.image,
+            c.name,
+            CONCAT( r.building_number, '栋-', r.floor, '层-', r.room_number, '-', b.bed_number, '床' ) AS address,
+            cir.nursing_level_id,
+            cir.check_in_time,
+            cir.end_time,
+            u.user_name
+        FROM
+            t_customer c
+                JOIN t_check_in_record cir ON c.customer_id = cir.customer_id
+                AND cir.state = 1
+                LEFT JOIN t_user u ON u.user_id = cir.user_id
+                JOIN t_bed_record br ON cir.check_in_record_id = br.check_in_record_id
+                AND br.state = 1
+                JOIN t_bed b ON br.bed_id = b.bed_id
+                JOIN t_room r ON b.room_id = r.room_id
+                LEFT JOIN t_family f ON c.customer_id = f.customer_id
+        WHERE
+            c.customer_id = #{customerId}
+    </select>
 
 </mapper>

@@ -2,6 +2,7 @@ package com.neusoft.SP01.dao;
 
 import java.util.List;
 
+import com.neusoft.SP01.po.*;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -10,13 +11,6 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-
-import com.neusoft.SP01.po.CustCheckInDTO;
-import com.neusoft.SP01.po.CustCheckInNurseDTO;
-import com.neusoft.SP01.po.CustDailyNursingDTO;
-import com.neusoft.SP01.po.CustNursingManageDTO;
-import com.neusoft.SP01.po.Customer;
-import com.neusoft.SP01.po.CustomerWithCall;
 
 @Mapper
 public interface CustomerDao {
@@ -884,5 +878,13 @@ public interface CustomerDao {
 	//客户端修改个人信息
 //	void update
 
+	//根据customerId查找老人详细信息
+	ClientCustDTO findCustById(Integer customerId);
 
+	//修改老人的头像
+	@Update("update yyzx_st.t_customer set image=#{image} where customer_id=#{customerId}")
+	void updateImageById(Integer customerId,String image);
+	//修改老人的手机号
+	@Update("update yyzx_st.t_customer set tel=#{tel} where customer_id=#{customerId}")
+	void updateTelById(Integer customerId,String tel);
 }

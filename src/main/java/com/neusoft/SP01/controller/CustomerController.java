@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.neusoft.SP01.po.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.neusoft.SP01.po.CustCheckInDTO;
-import com.neusoft.SP01.po.CustCheckInNurseDTO;
-import com.neusoft.SP01.po.Customer;
-import com.neusoft.SP01.po.CustomerWithCall;
-import com.neusoft.SP01.po.EditCustRequest;
-import com.neusoft.SP01.po.PageResponseBean;
-import com.neusoft.SP01.po.ResponseBean;
 import com.neusoft.SP01.service.CheckInRecordService;
 import com.neusoft.SP01.service.CustomerService;
 
@@ -142,5 +136,27 @@ public class CustomerController {
     public ResponseBean<Customer> login(String tel, String password) throws JsonProcessingException {
         ResponseBean<Customer> login = cs.login(tel, password);
         return login;
+    }
+
+    @GetMapping("/clientShowCust")//客户端展示老人详细信息
+    public ResponseBean<ClientCustDTO> clientShowCust(Integer customerId){
+        ResponseBean<ClientCustDTO> custById = cs.findCustById(customerId);
+        return custById;
+    }
+    @PostMapping("/editCustImage")//客户端修改老人头像
+    public ResponseBean editCustImage(Integer customerId,String image){
+        if(cs.updateImageById(customerId,image)){
+            return new ResponseBean<>(200,"修改成功");
+        }else {
+            return new ResponseBean<>(500,"修改失败");
+        }
+    }
+    @PostMapping("/editCustTel")//修改老人手机号
+    public ResponseBean editCust(Integer customerId,String tel){
+        if (cs.updateTelById(customerId, tel)) {
+            return new ResponseBean<>(200,"修改成功");
+        }else {
+            return new ResponseBean<>(500,"修改失败");
+        }
     }
 }
