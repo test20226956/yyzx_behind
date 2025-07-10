@@ -39,9 +39,9 @@ public interface OrderDao {
     
     //查看点餐情况
     @Select("SELECT " +
-            "MAX(CASE WHEN type = 0 THEN 1 ELSE 0 END) as has_breakfast, " +
-            "MAX(CASE WHEN type = 1 THEN 1 ELSE 0 END) as has_lunch, " +
-            "MAX(CASE WHEN type = 2 THEN 1 ELSE 0 END) as has_dinner " +
+            "COALESCE(MAX(CASE WHEN type = 0 THEN 1 ELSE 0 END), 0) as has_breakfast, " +
+            "COALESCE(MAX(CASE WHEN type = 1 THEN 1 ELSE 0 END), 0) as has_lunch, " +
+            "COALESCE(MAX(CASE WHEN type = 2 THEN 1 ELSE 0 END), 0) as has_dinner " +
             "FROM t_order " +
             "WHERE customer_id = #{customerId} AND date = #{date} AND state = 1")
     DailyMealOrderStatus getDailyMealStatus(@Param("customerId") Integer customerId, 
