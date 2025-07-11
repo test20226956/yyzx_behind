@@ -6,6 +6,8 @@ import com.neusoft.SP01.po.ResponseBean;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,7 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 @Component//用于拦截器的注册
 public class LoginCheckInterceptor implements HandlerInterceptor {
-
+    @Autowired
+    private RedisTemplate redisTemplate;
     //目标资源（Controller）运行前运行
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
@@ -54,8 +57,16 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         从令牌中截取userId
         根据userId从redis获取对应的值，然后于jwt比较是否相等 不相等false,否则true
          */
+        //5.解析token，失败的话返回错误信息
         try {
-            JwtUtils.parseToken(jwt);
+            if(!JwtUtils.validateToken(jwt,redisTemplate)) {
+                log.info("令牌过期");
+                ResponseBean<Object> notLogin1 = new ResponseBean<>(500, "NOT_LOGIN");
+                //手动将对象转为JSON格式（Controller层是因为有@ResController注解能够自动将对象转为JSON格式了无需手动）
+                String notLogin = JSONObject.toJSONString(notLogin1);
+                resp.getWriter().write(notLogin);
+                return false;
+            }
         } catch (Exception e) {//解析失败
             e.printStackTrace();
             log.info("解析令牌失败，返回错误信息");
