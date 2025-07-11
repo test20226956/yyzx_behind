@@ -44,6 +44,18 @@ public class DietController {
       return dcs.getByType(date,type);
   }
 
+    //根据食物名称、用餐时段查找食物
+    @GetMapping("/searchFoodByName")
+    public ResponseBean<List<DietCycleDetail>> searchFoodByName(
+            @RequestParam String name,
+            @RequestParam Integer type,
+            @RequestParam String date
+    ){
+        return dcs.getByName(name,type,date);
+    }
+
+
+
     //    增加一条膳食安排
     @PostMapping("/addDiet")
 //    增加后可能还会进行其它操作，所以返回Diet
@@ -90,4 +102,6 @@ public class DietController {
     public ResponseBean<Integer> deleteFood(@RequestParam Integer mealId){
     	return ms.deleteFood(mealId);
     }
+
+
 }
