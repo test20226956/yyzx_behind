@@ -76,7 +76,7 @@ public interface OrderDao {
         SELECT * FROM t_order 
         WHERE customer_id = #{customerId}
         AND state = 1
-        <if test="date != null and date != ''">
+        <if test="date != 'null' and date != ''">
             AND date &gt;= #{date}
         </if>
         ORDER BY date DESC
