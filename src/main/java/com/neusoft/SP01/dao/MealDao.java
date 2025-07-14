@@ -42,11 +42,11 @@ public interface MealDao {
     long countMeals(@Param("name") String name, @Param("type") Integer type);
     
     //添加食物
-    @Insert("insert into t_meal (name,type,state) values (#{name},#{type},1)")
+    @Insert("insert into t_meal (name,type,img,state) values (#{name},#{type},#{img},1)")
     Integer addMeal(Meal meal);
     
     //修改食物信息
-    @Update("update t_meal set name=#{name},type=#{type} where meal_id=#{mealId}")
+    @Update("update t_meal set name=#{name},type=#{type},img=#{img} where meal_id=#{mealId}")
     Integer updateMeal(Meal meal);
     //删除存在的食物
     @Update("update t_meal set state=0 where meal_id =#{mealId}")
