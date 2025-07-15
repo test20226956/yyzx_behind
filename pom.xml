@@ -31,6 +31,12 @@
 		<spring-ai.version>1.0.0-M7</spring-ai.version>
 	</properties>
 	<dependencies>
+		<!--阿里云oss依赖-->
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+			<version>3.17.4</version>
+		</dependency>
 		<!--		springboot整合 redis的依赖-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

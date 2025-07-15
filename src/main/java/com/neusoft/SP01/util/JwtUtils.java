@@ -1,10 +1,13 @@
 package com.neusoft.SP01.util;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +58,29 @@ public class JwtUtils {
         Claim mobileClaim=claims.get("mobileJson");
 
         return mobileClaim.asString();
+    }
+    public static boolean validateToken(String token, RedisTemplate<String, String> redisTemplate) {
+        try {
+            // 1. 验证JWT是否过期
+            Map<String, Claim> claims = verifyToken(token);
+            String userJson = claims.get("mobileJson").asString(); // 包含用户信息的JSON
+
+            // 2. 解析JSON，动态获取用户ID（兼容userId和customerId）
+            JSONObject userInfo = JSON.parseObject(userJson);
+            String userId = userInfo.getString("userId");
+            String customerId = userInfo.getString("customerId");
+
+            // 3. 检查Redis中是否存在该Token（优先检查userId，不存在则检查customerId）
+            String redisKey = (userId != null) ? userId : customerId;
+            if (redisKey == null) {
+                return false; // JSON中既无userId也无customerId
+            }
+
+            String redisToken = redisTemplate.opsForValue().get(redisKey);
+            return token.equals(redisToken);
+        } catch (Exception e) {
+            return false; // JWT过期、解析失败或Redis查询异常
+        }
     }
 
 }

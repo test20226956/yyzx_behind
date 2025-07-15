@@ -5,15 +5,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.neusoft.SP01.po.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.neusoft.SP01.dao.OrderDao;
-import com.neusoft.SP01.po.DailyMealOrderStatus;
-import com.neusoft.SP01.po.Order;
-import com.neusoft.SP01.po.OrderDetail;
-import com.neusoft.SP01.po.ResponseBean;
 
 @Service
 
@@ -95,8 +92,37 @@ public class OrderService {
             result.put("晚餐", status.isHasDinner());
             return new ResponseBean<>(200,"查询成功",result);
         } catch (Exception e) {
+			System.out.println(e.getMessage());
             return new ResponseBean<>(500, "查询失败" );
         }
     }
+
+	//根据用户id获得订单列表
+	public ResponseBean<List<CustOrderDTO>> getOrderRequestList(Integer customerId) {
+		try{
+			if(customerId == null){
+				return new ResponseBean<>(500, "参数不能为空");
+			}
+			List<CustOrderDTO> list = od.getCustomerOrdersWithMeals(customerId);
+			return new ResponseBean<>(200, "查询成功",list);
+		}catch (Exception e){
+			System.out.println(e.getMessage());
+			return new ResponseBean<>(500, "查询失败");
+		}
+	}
+
+	//根据id和日期查找订单
+	public ResponseBean<List<CustOrderDTO>> getOrderByCustomerIdAndDate(Integer customerId, String date) {
+		try{
+			if(customerId == null){
+				return new ResponseBean<>(500, "参数不能为空");
+			}
+			List<CustOrderDTO> list = od.searchOrderByDate(customerId, date);
+			return new ResponseBean<>(200, "查询成功",list);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			return new ResponseBean<>(500, "查询失败");
+		}
+	}
 
 }

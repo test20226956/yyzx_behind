@@ -3,6 +3,8 @@ package com.neusoft.SP01.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.neusoft.SP01.po.CustOrderDTO;
+import com.neusoft.SP01.po.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,61 +39,75 @@ public class OrderController {
 	    }
 	 //删除
 	 @PostMapping("/deleteOrder")
-	    public ResponseBean<Integer> deleteOrder(@RequestParam  Integer orderId) {
+	 public ResponseBean<Integer> deleteOrder(@RequestParam  Integer orderId) {
 	        return os.deleteMealOrder(orderId);
-	    }
-	    @GetMapping("/status")
-	    public ResponseBean<?> getDailyMealStatus(
-	            @RequestParam Integer customerId,
-	            @RequestParam String date) {
-	        
-	         return os.getDailyMealStatus(customerId, date);
-	    }
+	 }
 
+
+	 @GetMapping("/status")
+	 public ResponseBean<?> getDailyMealStatus(
+	         @RequestParam Integer customerId,
+	         @RequestParam String date) {
+	        
+	      return os.getDailyMealStatus(customerId, date);
+	 }
+
+	 //客户订单
+	 @GetMapping("/listOrder")
+	public ResponseBean<List<CustOrderDTO>> getOrderByCustomerId(@RequestParam Integer customerId) {
+		 return os.getOrderRequestList(customerId);
+	 }
+
+
+	 //根据日期查找客户订单
+	@GetMapping("searchOrder")
+	public ResponseBean<List<CustOrderDTO>> getOrderByCustomerIdAndDate(@RequestParam Integer customerId, @RequestParam String date) {
+		 return os.getOrderByCustomerIdAndDate(customerId, date);
 	}
+}
 
 	
 
 
 
 
-	class OrderRequest {
-	    private Integer customerId;
-	    private Integer mealType; // 1:早餐, 2:午餐, 3:晚餐
-	    private String date; // 直接使用Date类型
-	    private String request;
-	    private List<OrderDetail> orderDetails;
-		public Integer getCustomerId() {
-			return customerId;
-		}
-		public void setCustomerId(Integer customerId) {
-			this.customerId = customerId;
-		}
-		public Integer getMealType() {
-			return mealType;
-		}
-		public void setMealType(Integer mealType) {
-			this.mealType = mealType;
-		}
-		public String getDate() {
-			return date;
-		}
-		public void setDate(String date) {
-			this.date = date;
-		}
-		public String getRequest() {
-			return request;
-		}
-		public void setRequest(String request) {
-			this.request = request;
-		}
-		public List<OrderDetail> getOrderDetails() {
-			return orderDetails;
-		}
-		public void setOrderDetails(List<OrderDetail> orderDetails) {
-			this.orderDetails = orderDetails;
-		}
-	    
-	}
+//	public class OrderRequest {
+//	    private Integer customerId;
+//	    private Integer mealType; // 1:早餐, 2:午餐, 3:晚餐
+//	    private String date; // 直接使用Date类型
+//	    private String request;
+//	    private List<OrderDetail> orderDetails;
+//		public Integer getCustomerId() {
+//			return customerId;
+//		}
+//		public void setCustomerId(Integer customerId) {
+//			this.customerId = customerId;
+//		}
+//		public Integer getMealType() {
+//			return mealType;
+//		}
+//		public void setMealType(Integer mealType) {
+//			this.mealType = mealType;
+//		}
+//		public String getDate() {
+//			return date;
+//		}
+//		public void setDate(String date) {
+//			this.date = date;
+//		}
+//		public String getRequest() {
+//			return request;
+//		}
+//		public void setRequest(String request) {
+//			this.request = request;
+//		}
+//		public List<OrderDetail> getOrderDetails() {
+//			return orderDetails;
+//		}
+//		public void setOrderDetails(List<OrderDetail> orderDetails) {
+//			this.orderDetails = orderDetails;
+//		}
+//
+//	}
 
 

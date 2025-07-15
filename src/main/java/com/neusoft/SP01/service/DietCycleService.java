@@ -5,6 +5,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -131,5 +132,21 @@ public class DietCycleService {
 			            return new ResponseBean<>(500, "系统错误");
 			        }
 			    }
+
+				public ResponseBean<List<DietCycleDetail>> getByName(String name, Integer type, String date) {
+					try{
+						//1.参数校验
+						if(date == null || date.isEmpty() || type == null){
+							return new ResponseBean<>(500, "参数不能为空");
+						}
+						//2.执行查询
+						List<DietCycleDetail> details = dcd.selectDietCycleByName(date,name,type);
+
+						return new ResponseBean<>(200, "查询成功", details);
+					}catch (Exception e){
+						System.out.println(e.getMessage());
+						return new ResponseBean<>(500, "系统错误");
+					}
+				}
     
 }

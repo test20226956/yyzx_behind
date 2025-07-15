@@ -10,6 +10,16 @@ public class NursingServiceDailyDTO {
     private Integer amount;
     private String state;//根据数量显示该服务状态
     private String timeStatus;//到期时间
+    private String description;//项目描述
+    private String endTime;//到期时间
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 
     @Override
     public String toString() {
@@ -20,7 +30,20 @@ public class NursingServiceDailyDTO {
                 ", amount=" + amount +
                 ", state='" + state + '\'' +
                 ", timeStatus='" + timeStatus + '\'' +
+                ", description='" + description + '\'' +
+                ", endTime='" + endTime + '\'' +
                 '}';
+    }
+
+    public NursingServiceDailyDTO(Integer nursingServiceId, Integer customerId, String name, Integer amount, String state, String timeStatus, String description, String endTime) {
+        this.nursingServiceId = nursingServiceId;
+        this.customerId = customerId;
+        this.name = name;
+        this.amount = amount;
+        this.state = state;
+        this.timeStatus = timeStatus;
+        this.description = description;
+        this.endTime = endTime;
     }
 
     public Integer getNursingServiceId() {
@@ -71,13 +94,22 @@ public class NursingServiceDailyDTO {
         this.timeStatus = timeStatus;
     }
 
-    public NursingServiceDailyDTO(Integer nursingServiceId, Integer customerId, String name, Integer amount, String state, String timeStatus) {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public NursingServiceDailyDTO(Integer nursingServiceId, Integer customerId, String name, Integer amount, String state, String timeStatus, String description) {
         this.nursingServiceId = nursingServiceId;
         this.customerId = customerId;
         this.name = name;
         this.amount = amount;
         this.state = state;
         this.timeStatus = timeStatus;
+        this.description = description;
     }
 
     public NursingServiceDailyDTO() {
