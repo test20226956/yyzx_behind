@@ -47,14 +47,14 @@ public class ChartService {
             String todayStr = sdf.format(new Date());
             
             // 查询数据库
-            int checklnToday = cird.countTodayCheckIns(todayStr);
+            int checkInToday = cird.countTodayCheckIns(todayStr);
             int checkOutToday = cord.countTodayCheckOuts(todayStr);
             int totalCust = cird.countCustomer();
             int totalNurse = ud.countNurse();
             
             // 构建返回结果
             Map<String, Integer> result = new HashMap<>();
-            result.put("checklnToday", checklnToday);
+            result.put("checkInToday", checkInToday);
             result.put("checkOutToday", checkOutToday);
             result.put("totalCust", totalCust);
             result.put("totalNurse", totalNurse);

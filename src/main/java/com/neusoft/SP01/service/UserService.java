@@ -140,10 +140,6 @@ public class UserService {
                 return new ResponseBean<>(500, "账号已存在", null);
             }
 
-            
-
-            // 4. 密码加密（实际项目中应该加密存储）
-            // user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setState(1);
             // 5. 保存用户
             int result = ud.insertUser(user);
